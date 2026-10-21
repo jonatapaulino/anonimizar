@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>iSACI — Arquitetura do nó soberano de anonimização e tramitação</title>
+<style>
+  :root { --az:#0d3b66; --ac:#1b6ca8; --tx:#1a1a1a; --mut:#666;
+          --bg:#f7f9fc; --bd:#d8e0ea; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--tx); max-width: 980px; margin: 0 auto;
+         padding: 32px 24px 64px; background: #fff; }
+  h1 { color: var(--az); font-size: 26px; margin-bottom: 4px; }
+  h2 { color: var(--az); font-size: 19px; margin-top: 36px;
+       border-bottom: 2px solid var(--ac); padding-bottom: 4px; }
+  h3 { color: var(--ac); font-size: 15px; margin-bottom: 6px; }
+  .sub { color: var(--mut); font-size: 14px; margin-bottom: 24px; }
+  code { background: var(--bg); border: 1px solid var(--bd);
+         border-radius: 4px; padding: 1px 5px; font-size: 90%; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px;
+          margin: 12px 0; }
+  th, td { border: 1px solid var(--bd); padding: 7px 9px;
+           text-align: left; vertical-align: top; }
+  th { background: var(--az); color: #fff; font-weight: 600; }
+  tr:nth-child(even) td { background: var(--bg); }
+  tr.t { cursor: pointer; }
+  tr.t:hover td { background: #e7f0f8; }
+  td.gar { font-weight: 600; color: var(--az);
+           border-left: 3px solid var(--ac); }
+  tr.x td { background: #eef4fa; font-size: 13px; color: #334;
+            border-left: 3px solid var(--ac); }
+  tr.x td b { color: var(--ac); }
+  .hint { font-size: 12px; color: var(--mut); margin: 4px 0 0; }
+  details.g { background: var(--bg); border: 1px solid var(--bd);
+            border-left: 3px solid var(--ac); border-radius: 6px;
+            padding: 9px 14px; margin: 8px 0; font-size: 13.5px; }
+  details.g summary { cursor: pointer; font-weight: 600;
+                      color: var(--az); }
+  details.g[open] summary { color: var(--ac); }
+  details.g p { margin: 8px 0 2px; color: #334; }
+  pre.alg { background: #0f2438; color: #d6e6f5; border-radius: 8px;
+            padding: 16px 20px; font-family: Consolas, "Courier New",
+            monospace; font-size: 12.5px; line-height: 1.55;
+            overflow-x: auto; }
+  pre.alg .c { color: #7fa8c9; }   /* comentários */
+  pre.alg .k { color: #8fd0a0; }   /* etapas */
+  .card { background: var(--bg); border: 1px solid var(--bd);
+          border-radius: 8px; padding: 14px 18px; margin: 12px 0; }
+  .note { border-left: 4px solid var(--ac); padding: 8px 14px;
+          background: var(--bg); margin: 14px 0; font-size: 13.5px; }
+  .warn { border-left-color: #b3541e; }
+  ol.flow li { margin-bottom: 8px; }
+  svg { display: block; margin: 16px auto; }
+  .legend { font-size: 12px; color: var(--mut); text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>iSACI — nó soberano de anonimização e tramitação</h1>
+<div class="sub">PIDE / FAPESPA · POC de arquitetura · documento de
+apresentação</div>
+
+<div class="note"><b>Princípio estruturante:</b> cada instituição roda
+um <b>nó de borda soberano</b> — guarda, processa e assina os próprios
+documentos. O que atravessa a fronteira entre organizações são apenas
+<b>envelopes de metadados</b> (hashes, IDs, estado), nunca o documento
+binário nem texto extraído.</div>
+
+<h2>1. Desenho da arquitetura</h2>
+
+<svg width="940" height="620" viewBox="0 0 940 620"
+     xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial">
+<defs>
+  <marker id="ar" markerWidth="9" markerHeight="9" refX="8" refY="3"
+          orient="auto">
+    <path d="M0,0 L8,3 L0,6 Z" fill="#1b6ca8"/></marker>
+  <marker id="arR" markerWidth="9" markerHeight="9" refX="8" refY="3"
+          orient="auto">
+    <path d="M0,0 L8,3 L0,6 Z" fill="#b3541e"/></marker>
+</defs>
+<!-- nó -->
+<rect x="10" y="10" width="700" height="600" rx="14" fill="#f7f9fc"
+      stroke="#0d3b66" stroke-width="2" stroke-dasharray="7 4"/>
+<text x="28" y="38" fill="#0d3b66" font-size="15" font-weight="bold">
+  NÓ DA INSTITUIÇÃO (órgão A) — soberano</text>
+
+<!-- caixas -->
+<g font-size="12">
+<rect x="40" y="60" width="150" height="56" rx="8" fill="#fff"
+      stroke="#1b6ca8" stroke-width="1.6"/>
+<text x="115" y="82" text-anchor="middle" fill="#0d3b66"
+      font-weight="bold">API FastAPI</text>
+<text x="115" y="98" text-anchor="middle" fill="#555">upload · recebimento</text>
+<text x="115" y="111" text-anchor="middle" fill="#555">JWT offline</text>
+
+<rect x="40" y="160" width="150" height="66" rx="8" fill="#fff"
+      stroke="#1b6ca8" stroke-width="1.6"/>
+<text x="115" y="184" text-anchor="middle" fill="#0d3b66"
+      font-weight="bold">PostgreSQL</text>
+<text x="115" y="200" text-anchor="middle" fill="#555">tramitação · outbox</text>
+<text x="115" y="214" text-anchor="middle" fill="#555">trilha (hash-chain)</text>
+
+<rect x="40" y="270" width="150" height="60" rx="8" fill="#fff"
+      stroke="#1b6ca8" stroke-width="1.6"/>
+<text x="115" y="294" text-anchor="middle" fill="#0d3b66"
+      font-weight="bold">MinIO (S3)</text>
+<text x="115" y="310" text-anchor="middle" fill="#555">&lt;org&gt;-docs</text>
+<text x="115" y="324" text-anchor="middle" fill="#555">&lt;org&gt;-docs-anon</text>
+
+<rect x="270" y="60" width="150" height="56" rx="8" fill="#fff"
+      stroke="#1b6ca8" stroke-width="1.6"/>
+<text x="345" y="86" text-anchor="middle" fill="#0d3b66"
+      font-weight="bold">Relay</text>
+<text x="345" y="102" text-anchor="middle" fill="#555">outbox → envelopes</text>
+
+<rect x="500" y="60" width="180" height="56" rx="8" fill="#fff"
+      stroke="#1b6ca8" stroke-width="1.6"/>
+<text x="590" y="86" text-anchor="middle" fill="#0d3b66"
+      font-weight="bold">RabbitMQ</text>
+<text x="590" y="102" text-anchor="middle" fill="#555">quorum + DLX +
+      retry/backoff</text>
+
+<rect x="270" y="170" width="150" height="60" rx="8" fill="#fff"
+      stroke="#1b6ca8" stroke-width="1.6"/>
+<text x="345" y="194" text-anchor="middle" fill="#0d3b66"
+      font-weight="bold">Worker IA</text>
+<text x="345" y="210" text-anchor="middle" fill="#555">consumo assíncrono</text>
+<text x="345" y="224" text-anchor="middle" fill="#555">prefetch=1</text>
+
+<rect x="500" y="160" width="180" height="80" rx="8" fill="#fff"
+      stroke="#1b6ca8" stroke-width="1.6"/>
+<text x="590" y="184" text-anchor="middle" fill="#0d3b66"
+      font-weight="bold">MotorIA (porta)</text>
+<text x="590" y="200" text-anchor="middle" fill="#555">cascata: regex +</text>
+<text x="590" y="214" text-anchor="middle" fill="#555">LLM local (qwen2.5)</text>
+<text x="590" y="228" text-anchor="middle" fill="#555">+ guarda CNJ/VALOR</text>
+
+<rect x="500" y="270" width="180" height="56" rx="8" fill="#fff7ed"
+      stroke="#b3541e" stroke-width="1.6"/>
+<text x="590" y="292" text-anchor="middle" fill="#b3541e"
+      font-weight="bold">Gate residual PII</text>
+<text x="590" y="308" text-anchor="middle" fill="#8a4318">regex + contexto</text>
+
+<!-- setas internas -->
+<g stroke="#1b6ca8" stroke-width="1.6" fill="none"
+   marker-end="url(#ar)">
+  <path d="M115,116 L115,160"/>
+  <path d="M115,226 L115,270"/>
+  <path d="M190,190 L270,90"/>
+  <path d="M345,116 L345,170"/>
+  <path d="M420,200 L500,200"/>
+  <path d="M590,240 L590,270"/>
+  <path d="M500,298 L190,298"/>
+  <path d="M270,200 C200,120 220,120 190,110"/>
+  <path d="M420,88 L500,88"/>
+  <path d="M345,230 C345,260 200,320 190,310"/>
+</g>
+<g stroke="#b3541e" stroke-width="1.6" fill="none"
+   marker-end="url(#arR)">
+  <path d="M590,298 C400,400 220,220 140,170"/>
+</g>
+
+<!-- fronteira -->
+<line x1="715" y1="20" x2="715" y2="600" stroke="#b3541e"
+      stroke-width="2" stroke-dasharray="10 6"/>
+<text x="722" y="36" fill="#b3541e" font-size="12" font-weight="bold">
+  fronteira — só metadados</text>
+
+<!-- nó B -->
+<rect x="740" y="60" width="170" height="66" rx="10" fill="#eef4fa"
+      stroke="#1b6ca8" stroke-width="1.6"/>
+<text x="825" y="86" text-anchor="middle" fill="#0d3b66"
+      font-weight="bold">NÓ B (órgão destino)</text>
+<text x="825" y="102" text-anchor="middle" fill="#555">mesmo desenho</text>
+<text x="825" y="116" text-anchor="middle" fill="#555">idempotente</text>
+
+<path d="M680,88 L740,93" stroke="#1b6ca8" stroke-width="1.6"
+      fill="none" marker-end="url(#ar)"/>
+<path d="M740,120 L680,150" stroke="#1b6ca8" stroke-width="1.6"
+      fill="none" marker-end="url(#ar)"/>
+<text x="652" y="80" fill="#555" font-size="11">envelope</text>
+<text x="648" y="143" fill="#555" font-size="11">confirmação</text>
+
+<!-- invariantes -->
+<rect x="40" y="370" width="640" height="200" rx="10" fill="#fff"
+      stroke="#d8e0ea"/>
+<text x="58" y="394" fill="#0d3b66" font-size="13" font-weight="bold">
+  INVARIANTES DE PRIVACIDADE</text>
+<g font-size="11.5" fill="#333">
+  <text x="58" y="418">• binário nunca entra no PostgreSQL, envelopes,
+    broker nem respostas de API</text>
+  <text x="58" y="438">• upload → SHA-256 verificado → storage
+    por-órgão → evento auditável</text>
+  <text x="58" y="458">• trilha append-only com encadeamento de hash
+    (hash_cadeia)</text>
+  <text x="58" y="478">• outbox transacional: evento e estado
+    cometidos no mesmo COMMIT</text>
+  <text x="58" y="498">• gate residual bloqueia gravação de saída com
+    PII residual</text>
+  <text x="58" y="518">• idempotência por (orgão, chave); reenvio é
+    eco, não novo efeito</text>
+  <text x="58" y="538">• JWT validado offline; mTLS planejado para a
+    fronteira</text>
+</g>
+</svg>
+<div class="legend">Figura 1 — nó soberano A e fronteira com o nó B.
+Setas azuis = fluxo normal; seta laranja = falha residual → trilha de
+falha (sem gravação).</div>
+
+<h2>2. O fluxo, em algoritmo</h2>
+<div class="hint">O mesmo desenho, lido como sequência de passos.
+<span class="c">Linhas cinza-azuladas são comentários.</span></div>
+<pre class="alg"><span class="k">UPLOAD (nó A)</span>
+ 1  recebe metadados + SHA-256 do documento
+ 2  se (orgao, chave) ja existe -&gt; devolve resultado cometido
+       <span class="c">// idempotente: reenvio = eco</span>
+ 3  recebe binario (multipart) -&gt; verifica SHA-256
+ 4  hash confere? <b>nao</b> -&gt; rejeita; <b>sim</b> -&gt; grava em
+       &lt;org&gt;-docs
+ 5  num unico COMMIT: trilha += doc_arquivado:{id}
+                    outbox += ia.anonimizacao:{id}
+       <span class="c">// evento e estado vivem ou morrem juntos</span>
+
+<span class="k">ANONIMIZACAO (worker, fila ia.anonimizacao)</span>
+ 6  baixa o bruto -&gt; MotorIA.anonimizar(bytes)
+       <span class="c">// cascata: regex -> spans LLM -> so-nomes -> guarda
+          // -> substituicao por codigo</span>
+ 7  saida ilegivel? -&gt; trilha += falha; NACK/requeue; FIM
+ 8  pii_residual(saida) &gt; 0? -&gt; trilha += falha:residual_pii;
+       <span class="c">// sem gravacao no bucket - fail-closed</span>
+       ACK; FIM
+ 9  grava em &lt;org&gt;-docs-anonimizados;
+    trilha += doc_anonimizado:{id}; ACK
+
+<span class="k">TRAMITACAO A -&gt; B</span>
+10  trilha += criada:{id}; outbox += envelope
+       <span class="c">// envelope = so metadados + hash; nunca binario</span>
+11  relay publica com retry limitado -&gt; EM_TRANSITO
+12  B recebe (idempotente) -&gt; RECEBIDA;
+    resposta do 1o ingresso traz hash_cadeia
+13  B decide -&gt; CONFIRMADA | RECUSADA | CANCELADA
+14  esgotou retry? -&gt; estado EXAUSTO (visivel, auditado)
+15  reconciliador varre EM_TRANSITO antigos -&gt; reencaminha
+       <span class="c">// "perdido em transito" nao vira buraco</span>
+</pre>
+
+<h2>3. Conceitos-chave (clique para expandir)</h2>
+
+<details class="g"><summary>PII — Personally Identifiable
+Information</summary><p>Dado que identifica uma pessoa: nome, CPF,
+RG, e-mail, telefone, endereço. É o objeto de proteção da LGPD e o
+que o sistema deve remover ou referenciar. Tudo no projeto gira em
+torno de três perguntas: <i>onde o PII pode circular? quem vê? como
+saber se sobrou algum?</i></p></details>
+
+<details class="g"><summary>Nó soberano / fronteira</summary>
+<p>Cada instituição roda seu próprio nó (api + banco + broker +
+storage + worker) e <b>guarda os próprios documentos</b>. Entre nós
+só circulam <b>envelopes de metadados</b> — ID, hash SHA-256, estado
+— nunca o binário nem texto extraído. Resultado: não existe ponto
+central onde o PII de todas as instituições se concentre.</p>
+</details>
+
+<details class="g"><summary>Envelope e hash</summary><p>Mensagem
+entre nós A→B contendo identificadores e o SHA-256 do documento, não
+o documento. O hash serve como <i>impressão digital</i>: o receptor
+verifica que o objeto recebido corresponde ao declarado, e a trilha
+amarra eventos ao mesmo artefato.</p></details>
+
+<details class="g"><summary>Outbox transacional</summary><p>Padrão
+para não perder eventos: em vez de "gravar no banco e depois tentar
+publicar na fila" (que falha no meio), o evento vai numa tabela
+<code>outbox</code> <b>na mesma transação</b> da mudança de estado.
+Se o commit falha, nada persiste; se comete, um relay drena e
+publica. Elimina a falha "o estado mudou mas ninguém foi
+avisado".</p></details>
+
+<details class="g"><summary>Trilha de auditoria (hash-chain)</summary>
+<p>Log append-only de eventos (<code>criada:{id}</code>,
+<code>doc_arquivado:{id}</code>, <code>doc_anonimizado:{id}</code>,
+falhas). Cada evento carrega o hash do anterior formando uma cadeia:
+alterar um evento antigo invalida todos os seguintes — adulteração é
+detectável por verificação, sem precisar confiar no emissor.</p>
+</details>
+
+<details class="g"><summary>Idempotência e at-least-once</summary>
+<p>O broker garante <i>at-least-once</i>: pode entregar a mesma
+mensagem duas vezes. A contrapartida é a <b>idempotência</b>: o nó B
+reconhece duplicatas pela chave e devolve o resultado já cometido —
+reenvio é eco, não novo efeito. Sem idempotência, at-least-once vira
+processamento duplicado.</p></details>
+
+<details class="g"><summary>Quorum + DLX (filas)</summary><p>Filas
+quorum replicam o conteúdo entre brokers: o nó sobrevive à morte de
+uma réplica. Mensagem que falha além do <i>delivery-limit</i> vai
+para a <i>dead-letter exchange</i> (DLQ) — fila-morta — em vez de
+circular para sempre. Erro permanente vira estado visível, não loop
+silencioso.</p></details>
+
+<details class="g"><summary>MotorIA — a porta permutável</summary>
+<p>Contrato único <code>anonimizar(bytes) -&gt; bytes</code>: stub,
+demo-regex, Ollama e o futuro NER discriminativo implementam a mesma
+interface. Trocar o motor não toca worker, trilha, buckets nem
+broker — é onde a arquitetura evolui sem se quebrar.</p></details>
+
+<details class="g"><summary>Cascata det + LLM</summary><p>Motor
+avaliado na POC: (1) regex determinístico pega CPF/RG/e-mail/
+telefone/endereço; (2) LLM local extrai spans semânticos (nomes e
+demais); (3) segunda passada só de nomes; (4) guarda protege
+CNJ/VALOR; (5) a substituição é feita por código, não pelo modelo —
+o LLM só <i>aponta</i>, o código <i>apaga</i>.</p></details>
+
+<details class="g"><summary>PII residual e o gate de saída</summary>
+<p><b>PII residual</b> = dado pessoal que sobrou no texto já
+"anonimizado". O gate (<code>pii_residual</code>) conta sobras por
+regex + contexto e, se <code>residual &gt; 0</code>, <b>bloqueia a
+gravação</b> no bucket anonimizado e encadeia
+<code>falha_anonimizacao:{id}:residual_pii</code> na trilha —
+registrando só quantidades, nunca o valor. Falha vira evento
+auditável, não vazamento silencioso (<i>fail-closed</i>).</p>
+</details>
+
+<details class="g"><summary>NER exact × overlap</summary><p>Duas
+formas de medir acerto de detecção: <b>exact</b> exige fronteira
+idêntica ao gabarito; <b>overlap</b> aceita sobreposição parcial. Na
+teste: exact F1 0,755 (reprovou o gate 0,85) × overlap F1 0,938 — o
+motor <i>encontra</i> quase tudo, mas <i>delimita</i> mal: corta ou
+arrasta palavras extras nas bordas dos spans.</p></details>
+
+<details class="g"><summary>Reidentificação por menção × por
+documento</summary><p>Por menção: quantas entidades privadas
+escaparam (4/360 = 1,1%). Por documento: quantos documentos saíram
+com algum PII (4/80 = 5,0%). A unidade de risco LGPD é o
+<b>documento</b> — um doc com um único nome residual já expõe uma
+pessoa.</p></details>
+
+<details class="g"><summary>ADR-0011 — zero IA generativa</summary>
+<p>Decisão arquitetural registrada: processamento local,
+determinístico/discriminativo, sem IA generativa. O LLM local da
+cascata é um <b>desvio documentado</b> — experimento pra medir o
+recall que regex não cobre. Voltar à ADR = trocar o componente por
+NER discriminativo treinado, medido contra o mesmo gate. Aceitar o
+desvio é decisão do requisitante.</p></details>
+
+<h2>4. O que cada tecnologia decide na arquitetura</h2>
+
+<div class="hint">Clique em qualquer linha para expandir a
+explicação.</div>
+<table>
+<tr><th>Tecnologia</th><th>Papel</th><th>O que ela influencia /
+garante ▾</th></tr>
+<tr class="t"><td><b>FastAPI + pydantic</b></td>
+<td>contrato HTTP do nó</td>
+<td class="gar">validação de envelope na borda; nada de binário em
+resposta</td></tr>
+<tr class="x" hidden><td colspan="3"><b>Por que importa:</b>
+todo envelope que entra é validado por pydantic antes de tocar o
+estado — erro de formato morre na borda, não no meio do pipeline. O
+schema de resposta carrega só metadados: é a primeira camada que
+impõe "binário nunca sai pela API".</td></tr>
+
+<tr class="t"><td><b>PostgreSQL + SQLAlchemy + Alembic</b></td>
+<td>estado, outbox, trilha</td>
+<td class="gar">outbox transacional + trilha hash-chain: auditoria
+verificável, sem "mudou e não publicou"</td></tr>
+<tr class="x" hidden><td colspan="3"><b>Por que importa:</b> o
+outbox é uma tabela gravada <i>na mesma transação</i> da mudança de
+estado — se o commit falha, evento e estado desaparecem juntos. A
+trilha encadeia o hash do evento anterior: qualquer alteração
+retroativa quebra a cadeia e é detectável. Alembic versiona o esquema
+(ex.: migração 0005 adicionou retry ao outbox).</td></tr>
+
+<tr class="t"><td><b>RabbitMQ (quorum + DLX)</b></td>
+<td>envelopes entre nós e fila de anonimização</td>
+<td class="gar">quorum tolera réplica morta; DLX + delivery-limit
+isolam mensagem envenenada</td></tr>
+<tr class="x" hidden><td colspan="3"><b>Por que importa:</b> filas
+quorum replicam entre brokers — o nó continua com uma réplica morta.
+Mensagem que falha repetidas vezes sai pela dead-letter exchange após
+o delivery-limit, virando estado de exaustão explícito em vez de loop
+silencioso. Prefetch=1 faz processamento justo entre workers.</td></tr>
+
+<tr class="t"><td><b>MinIO (S3)</b></td>
+<td>objetos por órgão</td>
+<td class="gar">buckets <code>&lt;org&gt;-docs</code> /
+<code>-anonimizados</code>: isolamento físico entre instituições</td>
+</tr>
+<tr class="x" hidden><td colspan="3"><b>Por que importa:</b> bruto e
+anonimizado vivem em buckets separados por órgão, e o binário nunca
+passa por PostgreSQL, broker ou resposta de API — o caminho do dado
+pessoal fica restrito ao storage local do nó. É a materialização da
+soberania: cada instituição guarda os próprios arquivos.</td></tr>
+
+<tr class="t"><td><b>Worker (aio-pika)</b></td>
+<td>esteira de IA assíncrona</td>
+<td class="gar">ACK só após upload+trilha → at-least-once sem duplicar
+efeito</td></tr>
+<tr class="x" hidden><td colspan="3"><b>Por que importa:</b> consome
+a fila <code>ia.anonimizacao</code> com prefetch=1 e só confirma
+(ACK) depois de gravar objeto e trilha — se o worker cair no meio, a
+mensagem volta pra fila. Desacopla a latência do modelo da API: o
+upload responde rápido e a anonimização acontece em segundo
+plano.</td></tr>
+
+<tr class="t"><td><b>Relay</b></td>
+<td>drenador do outbox</td>
+<td class="gar">retry limitado + exaustão explícita + reconciliador de
+"perdidos em trânsito"</td></tr>
+<tr class="x" hidden><td colspan="3"><b>Por que importa:</b> lê o
+outbox e publica envelopes com backoff limitado; quem esgota as
+tentativas vira estado visível, não falha silenciosa. O reconciliador
+varre tramitações presas em <code>EM_TRANSITO</code> e reencaminha —
+é o mecanismo que fecha o problema "envelope perdido entre A e
+B".</td></tr>
+
+<tr class="t"><td><b>MotorIA (porta)</b></td>
+<td><code>anonimizar(bytes)-&gt;bytes</code></td>
+<td class="gar">contrato permutável: a arquitetura não depende do
+motor</td></tr>
+<tr class="x" hidden><td colspan="3"><b>Por que importa:</b> stub,
+demo-regex, Ollama e o futuro NER discriminativo implementam a mesma
+porta — trocar o motor não toca worker, trilha, buckets nem broker. É
+o ponto de evolução do sistema: o pipeline estável, o detector
+substituível.</td></tr>
+
+<tr class="t"><td><b>Ollama + qwen2.5 (7B/14B)</b></td>
+<td>detector semântico local</td>
+<td class="gar">processamento on-prem, temperature=0 — nada sai da
+instituição</td></tr>
+<tr class="x" hidden><td colspan="3"><b>Por que importa:</b> roda na
+GPU do próprio nó, sem envio a nuvem. Na POC mede se um LLM local
+cobre o recall que regex não cobre (97% do tipo PESSOA). <b>É
+desvio documentado da ADR-0011</b> (que prevê discriminativo) —
+evidência para a decisão do requisitante, não decisão de
+produção.</td></tr>
+
+<tr class="t"><td><b>pii_residual</b></td>
+<td>gate de saída</td>
+<td class="gar">residual&gt;0 → <code>falha_anonimizacao:
+…:residual_pii</code> e nada vai ao bucket</td></tr>
+<tr class="x" hidden><td colspan="3"><b>Por que importa:</b> última
+linha de defesa: regex (CPF, RG, e-mail, telefone) + contexto
+("intimado", "em face de", "servidor") sobre o texto já anonimizado.
+É <i>gate</i>, não métrica — bloqueia a gravação e registra a falha
+na trilha, contando só quantidades por tipo (nunca o valor).</td></tr>
+
+<tr class="t"><td><b>JWT offline + HMAC</b></td>
+<td>autenticação/integridade</td>
+<td class="gar">validação sem IdP online → soberania; mTLS planejado
+na fronteira</td></tr>
+<tr class="x" hidden><td colspan="3"><b>Por que importa:</b> o nó
+valida JWT localmente pela chave pública — funciona mesmo
+desconectado do emissor. HMAC encadeia a trilha de auditoria. A
+fronteira A↔B hoje é autenticada por token; mTLS mútuo está
+planejado.</td></tr>
+
+<tr class="t"><td><b>Docker Compose</b></td>
+<td>empacotamento do nó</td>
+<td class="gar">nó reproduzível por instituição</td></tr>
+<tr class="x" hidden><td colspan="3"><b>Por que importa:</b> um único
+compose sobe api + postgres + rabbitmq + minio + worker + relay com o
+<code>orgao</code> da instituição — o mesmo desenho se replica em
+cada ente da rede.</td></tr>
+
+<tr class="t"><td><b>pytest (smoke e2e)</b></td>
+<td>verificação</td>
+<td class="gar">a suíte é o contrato de comportamento</td></tr>
+<tr class="x" hidden><td colspan="3"><b>Por que importa:</b> cada
+invariante tem teste fim-a-fim: dedup de upload, reconciliação,
+retry/backoff, DLQ, gate residual bloqueando gravação. Rodar a suíte
+verde é provar que o desenho se comporta como especificado.</td></tr>
+
+<tr class="t"><td><b>fpdf2 / pypdf</b></td>
+<td>corpus e relatório</td>
+<td class="gar">ferramenta de medição — não está no pipeline</td></tr>
+<tr class="x" hidden><td colspan="3"><b>Por que importa:</b> gera o
+corpus sintético em PDF sem quebrar entidades (evidência válida) e o
+relatório de avaliação. Importa para a avaliação, não para a
+arquitetura em si.</td></tr>
+</table>
+
+<h2>5. Fluxos essenciais</h2>
+
+<h3>5.1 Upload e registro</h3>
+<ol class="flow">
+<li>metadados + hash SHA-256 registrados (idempotência por
+<code>(orgão, chave)</code>);</li>
+<li>upload multipart → verificação do hash → objeto em
+<code>&lt;org&gt;-docs</code>;</li>
+<li>evento <code>doc_arquivado:{id}</code> encadeado na trilha +
+evento de outbox na mesma transação.</li>
+</ol>
+
+<h3>5.2 Tramitação A → B</h3>
+<ol class="flow">
+<li><code>criada:{id}</code> na trilha; outbox publica envelope
+(metadados, nunca binário);</li>
+<li>nó B recebe idempotentemente; resposta de primeiro ingresso traz
+<code>hash_cadeia</code>; duplicata retorna eco do resultado já
+cometido;</li>
+<li>estados: <code>CRIADA → EM_TRANSITO → RECEBIDA →
+CONFIRMADA/RECUSADA/CANCELADA</code>;</li>
+<li>relay multi-réplica com backoff limitado; reconciliador varre
+"perdidos em trânsito" e reencaminha; exaustão é estado explícito,
+não falha silenciosa.</li>
+</ol>
+
+<h3>5.3 Anonimização (esteira IA)</h3>
+<ol class="flow">
+<li>outbox <code>ia.anonimizacao</code> → worker consome
+(prefetch=1);</li>
+<li>download do bruto → <code>MotorIA.anonimizar</code> (cascata:
+detector regex + spans LLM + passada só-nomes + guarda CNJ/VALOR +
+substituição por código);</li>
+<li><b>gate de legibilidade</b>: saída ilegível → falha na trilha,
+sem gravação;</li>
+<li><b>gate residual</b>: PII residual →
+<code>falha_anonimizacao:{id}:residual_pii</code>, sem gravação;</li>
+<li>sucesso → objeto em <code>&lt;org&gt;-docs-anonimizados</code> +
+<code>doc_anonimizado:{id}</code> na trilha → ACK.</li>
+</ol>
+
+<h2>6. O que a avaliação mediu (resumo)</h2>
+<div class="card">
+Cascata sobre a partição teste (80 docs, held-out): recall agregado
+356/360 (98,9%), excesso em preservados 0/305, reidentificação por
+menção 4/360 (1,1% — dentro do gate ≤0,05) e por documento 4/80 (5,0%
+— limite dentro do IC). NER exact F1 0,755 — <b>abaixo do gate 0,85</b>
+(fronteiras frouxas dos spans LLM). Detalhe completo em
+<code>docs/relatorio_avaliacao.pdf</code>.
+</div>
+
+<div class="note warn"><b>Leitura honesta para apresentação:</b> a
+arquitetura está validada como desenho; o motor é candidato de POC,
+não aprovado para produção (gate NER exact reprovado; decisão de usar
+LLM generativo local é um desvio documentado da ADR-0011 e cabe ao
+requisitante aceitá-lo).</div>
+
+<script>
+document.querySelectorAll('tr.t').forEach(function(tr) {
+  tr.addEventListener('click', function() {
+    var x = tr.nextElementSibling;
+    if (x && x.classList.contains('x')) x.hidden = !x.hidden;
+  });
+});
+</script>
+
+</body>
+</html>
