@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0087.txt",
+  "pdf": "doc-0087.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 36,
+      "preservar": true
+    },
+    {
+      "texto": "6680085-25.2024.8.12.4093",
+      "tipo": "CNJ",
+      "inicio": 79,
+      "fim": 104,
+      "preservar": true
+    },
+    {
+      "texto": "Francisca De Oliveira Lima",
+      "tipo": "NOME",
+      "inicio": 117,
+      "fim": 143,
+      "preservar": false
+    },
+    {
+      "texto": "JOAO_COSTA@HOTMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 156,
+      "fim": 178,
+      "preservar": false
+    },
+    {
+      "texto": "(94) 96393-1795",
+      "tipo": "TELEFONE",
+      "inicio": 191,
+      "fim": 206,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 28.781,41",
+      "tipo": "VALOR",
+      "inicio": 248,
+      "fim": 263,
+      "preservar": true
+    },
+    {
+      "texto": "Belem",
+      "tipo": "CIDADE",
+      "inicio": 266,
+      "fim": 271,
+      "preservar": true
+    },
+    {
+      "texto": "Perito Judicial",
+      "tipo": "CARGO",
+      "inicio": 290,
+      "fim": 305,
+      "preservar": true
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0044.txt",
+  "pdf": "doc-0044.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Secretaria de Estado de Fazenda",
+      "tipo": "ORGAO",
+      "inicio": 12,
+      "fim": 43,
+      "preservar": true
+    },
+    {
+      "texto": "ROSA MARIA CONCEICAO",
+      "tipo": "NOME",
+      "inicio": 62,
+      "fim": 82,
+      "preservar": false
+    },
+    {
+      "texto": "45252881758",
+      "tipo": "CPF",
+      "inicio": 88,
+      "fim": 99,
+      "preservar": false
+    },
+    {
+      "texto": "Av. Governador Jose Malcher, 303, Cidade Velha, Ananindeua-PA, CEP 66722-835",
+      "tipo": "ENDERECO",
+      "inicio": 110,
+      "fim": 186,
+      "preservar": false
+    },
+    {
+      "texto": "9892715-18.2023.8.12.2573",
+      "tipo": "CNJ",
+      "inicio": 232,
+      "fim": 257,
+      "preservar": true
+    },
+    {
+      "texto": "PEDRO.FERREIRA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 276,
+      "fim": 306,
+      "preservar": false
+    },
+    {
+      "texto": "(93) 3590-2120",
+      "tipo": "TELEFONE",
+      "inicio": 309,
+      "fim": 323,
+      "preservar": false
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "documento": "doc-0103.txt",
+  "pdf": "doc-0103.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Defensor Publico",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 38,
+      "preservar": true
+    },
+    {
+      "texto": "CASTANHAL",
+      "tipo": "CIDADE",
+      "inicio": 67,
+      "fim": 76,
+      "preservar": true
+    },
+    {
+      "texto": "9871367-18.2019.8.14.1955",
+      "tipo": "CNJ",
+      "inicio": 90,
+      "fim": 115,
+      "preservar": true
+    },
+    {
+      "texto": "Antonio Marcos Pinheiro",
+      "tipo": "NOME",
+      "inicio": 117,
+      "fim": 140,
+      "preservar": false
+    },
+    {
+      "texto": "89.562.071",
+      "tipo": "RG",
+      "inicio": 148,
+      "fim": 158,
+      "preservar": false
+    },
+    {
+      "texto": "938.292.467-14",
+      "tipo": "CPF",
+      "inicio": 160,
+      "fim": 174,
+      "preservar": false
+    },
+    {
+      "texto": "Travessa Dom Pedro I, 821, Sao Bras, Belem-PA, CEP 66856-296",
+      "tipo": "ENDERECO",
+      "inicio": 184,
+      "fim": 244,
+      "preservar": false
+    },
+    {
+      "texto": "JOSE.OLIVEIRA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 253,
+      "fim": 282,
+      "preservar": false
+    },
+    {
+      "texto": "(93)45542333",
+      "tipo": "TELEFONE",
+      "inicio": 293,
+      "fim": 305,
+      "preservar": false
+    },
+    {
+      "texto": "Instituto Nacional do Seguro Social",
+      "tipo": "INSTITUICAO",
+      "inicio": 379,
+      "fim": 414,
+      "preservar": true
+    },
+    {
+      "texto": "R$ 133.006,16",
+      "tipo": "VALOR",
+      "inicio": 456,
+      "fim": 469,
+      "preservar": true
+    },
+    {
+      "texto": "de R$ 77.093,23",
+      "tipo": "VALOR",
+      "inicio": 510,
+      "fim": 525,
+      "preservar": true
+    }
+  ]
+}

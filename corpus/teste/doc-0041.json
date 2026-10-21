@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0041.txt",
+  "pdf": "doc-0041.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "JOSE RIBAMAR DA COSTA",
+      "tipo": "NOME",
+      "inicio": 48,
+      "fim": 69,
+      "preservar": false
+    },
+    {
+      "texto": "960.133.162-01",
+      "tipo": "CPF",
+      "inicio": 75,
+      "fim": 89,
+      "preservar": false
+    },
+    {
+      "texto": "Denise Costa",
+      "tipo": "NOME",
+      "inicio": 103,
+      "fim": 115,
+      "preservar": false
+    },
+    {
+      "texto": "632.577.845-62",
+      "tipo": "CPF",
+      "inicio": 121,
+      "fim": 135,
+      "preservar": false
+    },
+    {
+      "texto": "Av. Almirante Barroso, 1858, Cidade Velha, Castanhal-PA, CEP 68943-934",
+      "tipo": "ENDERECO",
+      "inicio": 146,
+      "fim": 216,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 75.364,79",
+      "tipo": "VALOR",
+      "inicio": 254,
+      "fim": 269,
+      "preservar": true
+    },
+    {
+      "texto": "7861289-38.2022.8.12.7193",
+      "tipo": "CNJ",
+      "inicio": 307,
+      "fim": 332,
+      "preservar": true
+    },
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 343,
+      "fim": 379,
+      "preservar": true
+    }
+  ]
+}

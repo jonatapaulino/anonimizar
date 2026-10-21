@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0079.txt",
+  "pdf": "doc-0079.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Tribunal de Justica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 37,
+      "preservar": true
+    },
+    {
+      "texto": "3069771-62.2019.8.14.9922",
+      "tipo": "CNJ",
+      "inicio": 80,
+      "fim": 105,
+      "preservar": true
+    },
+    {
+      "texto": "Francisca De Oliveira Lima",
+      "tipo": "NOME",
+      "inicio": 118,
+      "fim": 144,
+      "preservar": false
+    },
+    {
+      "texto": "JOSE.SANTOS@MPPA.MP.BR",
+      "tipo": "EMAIL",
+      "inicio": 157,
+      "fim": 179,
+      "preservar": false
+    },
+    {
+      "texto": "91 97283-8206",
+      "tipo": "TELEFONE",
+      "inicio": 192,
+      "fim": 205,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 186.101,00",
+      "tipo": "VALOR",
+      "inicio": 247,
+      "fim": 263,
+      "preservar": true
+    },
+    {
+      "texto": "Santarem",
+      "tipo": "CIDADE",
+      "inicio": 266,
+      "fim": 274,
+      "preservar": true
+    },
+    {
+      "texto": "Escrivao Judicial",
+      "tipo": "CARGO",
+      "inicio": 293,
+      "fim": 310,
+      "preservar": true
+    }
+  ]
+}

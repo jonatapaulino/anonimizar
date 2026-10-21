@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0029.txt",
+  "pdf": "doc-0029.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "SEDUC-PA",
+      "tipo": "ORGAO",
+      "inicio": 20,
+      "fim": 28,
+      "preservar": true
+    },
+    {
+      "texto": "Tribunal Regional Eleitoral do Para",
+      "tipo": "ORGAO",
+      "inicio": 33,
+      "fim": 68,
+      "preservar": true
+    },
+    {
+      "texto": "ANTONIO MARCOS PINHEIRO",
+      "tipo": "NOME",
+      "inicio": 113,
+      "fim": 136,
+      "preservar": false
+    },
+    {
+      "texto": "86.893.583-1",
+      "tipo": "RG",
+      "inicio": 141,
+      "fim": 153,
+      "preservar": false
+    },
+    {
+      "texto": "99082736470",
+      "tipo": "CPF",
+      "inicio": 159,
+      "fim": 170,
+      "preservar": false
+    },
+    {
+      "texto": "DENISE.FERREIRA@TJPA.JUS.BR",
+      "tipo": "EMAIL",
+      "inicio": 193,
+      "fim": 220,
+      "preservar": false
+    },
+    {
+      "texto": "(94) 98635-6434",
+      "tipo": "TELEFONE",
+      "inicio": 231,
+      "fim": 246,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 168.225,96",
+      "tipo": "VALOR",
+      "inicio": 269,
+      "fim": 285,
+      "preservar": true
+    },
+    {
+      "texto": "Procurador da Republica",
+      "tipo": "CARGO",
+      "inicio": 306,
+      "fim": 329,
+      "preservar": true
+    }
+  ]
+}

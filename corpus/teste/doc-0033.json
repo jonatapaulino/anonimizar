@@ -1,0 +1,77 @@
+{
+  "documento": "doc-0033.txt",
+  "pdf": "doc-0033.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Defensor Publico",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 38,
+      "preservar": true
+    },
+    {
+      "texto": "CASTANHAL",
+      "tipo": "CIDADE",
+      "inicio": 67,
+      "fim": 76,
+      "preservar": true
+    },
+    {
+      "texto": "7186578-91.2020.8.12.9210",
+      "tipo": "CNJ",
+      "inicio": 90,
+      "fim": 115,
+      "preservar": true
+    },
+    {
+      "texto": "Carlos Eduardo Nascimento",
+      "tipo": "NOME",
+      "inicio": 117,
+      "fim": 142,
+      "preservar": false
+    },
+    {
+      "texto": "54.687.218-X",
+      "tipo": "RG",
+      "inicio": 162,
+      "fim": 174,
+      "preservar": false
+    },
+    {
+      "texto": "37676434483",
+      "tipo": "CPF",
+      "inicio": 180,
+      "fim": 191,
+      "preservar": false
+    },
+    {
+      "texto": "Av. Governador Jose Malcher, 1841, Centro, Castanhal-PA, CEP 69566-631",
+      "tipo": "ENDERECO",
+      "inicio": 193,
+      "fim": 263,
+      "preservar": false
+    },
+    {
+      "texto": "Maria Oliveira",
+      "tipo": "NOME",
+      "inicio": 337,
+      "fim": 351,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 41.904,05",
+      "tipo": "VALOR",
+      "inicio": 393,
+      "fim": 408,
+      "preservar": true
+    },
+    {
+      "texto": "R$ 125.881,91",
+      "tipo": "VALOR",
+      "inicio": 449,
+      "fim": 462,
+      "preservar": true
+    }
+  ]
+}

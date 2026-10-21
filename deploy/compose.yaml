@@ -1,0 +1,51 @@
+# Contrato de topologia do nó edge — referência normativa.
+# Este arquivo define o ISOLAMENTO como contrato verificável:
+# tests/smoke/test_isolamento.py o valida estaticamente antes de
+# qualquer deploy. Regras (ADR-0007/0008):
+#   - `interna` é internal:true — egress deny-all por ausência de rota
+#   - apenas nginx toca a rede `borda`; apenas nginx publica porta (443)
+#   - api/db/vault não publicam portas nem veem a borda
+#   - hardening baseline obrigatório: read_only, cap_drop ALL,
+#     no-new-privileges, usuário não-root
+name: tramitacao-node
+
+networks:
+  borda: {}                  # LAN do órgão — único caminho externo
+  interna:
+    internal: true           # sem rota de saída (provado em P2)
+
+services:
+  nginx:                     # única superfície exposta
+    image: nginx:1.27
+    networks: [borda, interna]
+    ports: ["443:443"]       # TLS 1.3 + mTLS (ADR-0007)
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges]
+
+  api:
+    image: tramitacao-api:dev
+    networks: [interna]      # NÃO publica porta — só via nginx
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges]
+    user: "10001:10001"
+    tmpfs: [/tmp]            # sem scratch persistente (não-persistência)
+
+  db:
+    image: postgres:16
+    networks: [interna]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges]
+    tmpfs: [/tmp, /run]
+    # volume de dados declarado na implantação — fora do contrato
+
+  vault:
+    image: hashicorp/vault:1.18
+    networks: [interna]
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [IPC_LOCK]      # exigência do Vault — exceção documentada
+    security_opt: [no-new-privileges]
+    tmpfs: [/tmp]

@@ -1,0 +1,91 @@
+{
+  "documento": "doc-0090.txt",
+  "pdf": "doc-0090.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Desembargador",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 35,
+      "preservar": true
+    },
+    {
+      "texto": "ANANINDEUA",
+      "tipo": "CIDADE",
+      "inicio": 64,
+      "fim": 74,
+      "preservar": true
+    },
+    {
+      "texto": "5076638-81.2023.8.13.9080",
+      "tipo": "CNJ",
+      "inicio": 88,
+      "fim": 113,
+      "preservar": true
+    },
+    {
+      "texto": "Pedro Pinheiro",
+      "tipo": "NOME",
+      "inicio": 119,
+      "fim": 133,
+      "preservar": false
+    },
+    {
+      "texto": "64.855.705-1",
+      "tipo": "RG",
+      "inicio": 159,
+      "fim": 171,
+      "preservar": false
+    },
+    {
+      "texto": "768.145.237-01",
+      "tipo": "CPF",
+      "inicio": 201,
+      "fim": 215,
+      "preservar": false
+    },
+    {
+      "texto": "Av. Conselheiro Furtado, 2700, Batista Campos, Santarem-PA, CEP 68277-655",
+      "tipo": "ENDERECO",
+      "inicio": 227,
+      "fim": 300,
+      "preservar": false
+    },
+    {
+      "texto": "SEBASTIAOOLIVEIRA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 309,
+      "fim": 342,
+      "preservar": false
+    },
+    {
+      "texto": "(94)37362917",
+      "tipo": "TELEFONE",
+      "inicio": 353,
+      "fim": 365,
+      "preservar": false
+    },
+    {
+      "texto": "LUCIA HELENA BARBOSA",
+      "tipo": "NOME",
+      "inicio": 439,
+      "fim": 459,
+      "preservar": false
+    },
+    {
+      "texto": "R$150.949,61",
+      "tipo": "VALOR",
+      "inicio": 501,
+      "fim": 513,
+      "preservar": true
+    },
+    {
+      "texto": "de R$ 145.429,62",
+      "tipo": "VALOR",
+      "inicio": 554,
+      "fim": 570,
+      "preservar": true
+    }
+  ]
+}

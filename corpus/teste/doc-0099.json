@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0099.txt",
+  "pdf": "doc-0099.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Defensoria Publica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 12,
+      "fim": 48,
+      "preservar": true
+    },
+    {
+      "texto": "Marcos Pinheiro",
+      "tipo": "NOME",
+      "inicio": 67,
+      "fim": 82,
+      "preservar": false
+    },
+    {
+      "texto": "92507528656",
+      "tipo": "CPF",
+      "inicio": 88,
+      "fim": 99,
+      "preservar": false
+    },
+    {
+      "texto": "Av. Governador Jose Malcher, 1375, Batista Campos, Ananindeua-PA, CEP 66144-312",
+      "tipo": "ENDERECO",
+      "inicio": 110,
+      "fim": 189,
+      "preservar": false
+    },
+    {
+      "texto": "3194364-35.2024.8.12.5782",
+      "tipo": "CNJ",
+      "inicio": 235,
+      "fim": 260,
+      "preservar": true
+    },
+    {
+      "texto": "SEBASTIAO_COSTA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 279,
+      "fim": 310,
+      "preservar": false
+    },
+    {
+      "texto": "94975124542",
+      "tipo": "TELEFONE",
+      "inicio": 313,
+      "fim": 324,
+      "preservar": false
+    }
+  ]
+}

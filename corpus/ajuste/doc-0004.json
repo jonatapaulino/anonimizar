@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0004.txt",
+  "pdf": "doc-0004.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Camara Municipal de Belem",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 25,
+      "preservar": true
+    },
+    {
+      "texto": "1986842-34.2022.8.12.6854",
+      "tipo": "CNJ",
+      "inicio": 68,
+      "fim": 93,
+      "preservar": true
+    },
+    {
+      "texto": "Ivonete Cristina Rocha",
+      "tipo": "NOME",
+      "inicio": 106,
+      "fim": 128,
+      "preservar": false
+    },
+    {
+      "texto": "SEBASTIAOBARBOSA@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 141,
+      "fim": 167,
+      "preservar": false
+    },
+    {
+      "texto": "(91)971973449",
+      "tipo": "TELEFONE",
+      "inicio": 180,
+      "fim": 193,
+      "preservar": false
+    },
+    {
+      "texto": "R$224.094,83",
+      "tipo": "VALOR",
+      "inicio": 235,
+      "fim": 247,
+      "preservar": true
+    },
+    {
+      "texto": "Ananindeua",
+      "tipo": "CIDADE",
+      "inicio": 250,
+      "fim": 260,
+      "preservar": true
+    },
+    {
+      "texto": "Analista Judiciario",
+      "tipo": "CARGO",
+      "inicio": 279,
+      "fim": 298,
+      "preservar": true
+    }
+  ]
+}

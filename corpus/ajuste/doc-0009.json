@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0009.txt",
+  "pdf": "doc-0009.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Ana Santos",
+      "tipo": "NOME",
+      "inicio": 48,
+      "fim": 58,
+      "preservar": false
+    },
+    {
+      "texto": "718.185.215-98",
+      "tipo": "CPF",
+      "inicio": 64,
+      "fim": 78,
+      "preservar": false
+    },
+    {
+      "texto": "CARLOS EDUARDO NASCIMENTO",
+      "tipo": "NOME",
+      "inicio": 92,
+      "fim": 117,
+      "preservar": false
+    },
+    {
+      "texto": "74758198411",
+      "tipo": "CPF",
+      "inicio": 123,
+      "fim": 134,
+      "preservar": false
+    },
+    {
+      "texto": "Rua Santo Antonio, 1446, Nazare, Ananindeua-PA, CEP 67928-601",
+      "tipo": "ENDERECO",
+      "inicio": 145,
+      "fim": 206,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 44.979,75",
+      "tipo": "VALOR",
+      "inicio": 244,
+      "fim": 256,
+      "preservar": true
+    },
+    {
+      "texto": "5592546-35.2023.8.11.7346",
+      "tipo": "CNJ",
+      "inicio": 294,
+      "fim": 319,
+      "preservar": true
+    },
+    {
+      "texto": "Camara Municipal de Belem",
+      "tipo": "ORGAO",
+      "inicio": 330,
+      "fim": 355,
+      "preservar": true
+    }
+  ]
+}

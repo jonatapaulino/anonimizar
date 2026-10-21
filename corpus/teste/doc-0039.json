@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0039.txt",
+  "pdf": "doc-0039.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Secretaria de Estado de Fazenda",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 31,
+      "preservar": true
+    },
+    {
+      "texto": "7516177-17.2023.8.10.2851",
+      "tipo": "CNJ",
+      "inicio": 74,
+      "fim": 99,
+      "preservar": true
+    },
+    {
+      "texto": "MARIA DAS GRACAS SANTANA",
+      "tipo": "NOME",
+      "inicio": 112,
+      "fim": 136,
+      "preservar": false
+    },
+    {
+      "texto": "MARIA.SANTOS@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 149,
+      "fim": 177,
+      "preservar": false
+    },
+    {
+      "texto": "(91) 98326-7290",
+      "tipo": "TELEFONE",
+      "inicio": 190,
+      "fim": 205,
+      "preservar": false
+    },
+    {
+      "texto": "R$203.477,55",
+      "tipo": "VALOR",
+      "inicio": 247,
+      "fim": 259,
+      "preservar": true
+    },
+    {
+      "texto": "Santarem",
+      "tipo": "CIDADE",
+      "inicio": 262,
+      "fim": 270,
+      "preservar": true
+    },
+    {
+      "texto": "Desembargador",
+      "tipo": "CARGO",
+      "inicio": 289,
+      "fim": 302,
+      "preservar": true
+    }
+  ]
+}

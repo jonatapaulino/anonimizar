@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0015.txt",
+  "pdf": "doc-0015.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Banco do Brasil S.A.",
+      "tipo": "INSTITUICAO",
+      "inicio": 48,
+      "fim": 68,
+      "preservar": true
+    },
+    {
+      "texto": "Maria Jose Ferreira",
+      "tipo": "NOME",
+      "inicio": 82,
+      "fim": 101,
+      "preservar": false
+    },
+    {
+      "texto": "69853223953",
+      "tipo": "CPF",
+      "inicio": 107,
+      "fim": 118,
+      "preservar": false
+    },
+    {
+      "texto": "Av. Governador Jose Malcher, 183, Sao Bras, Maraba-PA, CEP 67561-602",
+      "tipo": "ENDERECO",
+      "inicio": 129,
+      "fim": 197,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 123.188,00",
+      "tipo": "VALOR",
+      "inicio": 235,
+      "fim": 251,
+      "preservar": true
+    },
+    {
+      "texto": "1118811-97.2023.8.14.6500",
+      "tipo": "CNJ",
+      "inicio": 289,
+      "fim": 314,
+      "preservar": true
+    },
+    {
+      "texto": "Tribunal de Justica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 325,
+      "fim": 362,
+      "preservar": true
+    }
+  ]
+}

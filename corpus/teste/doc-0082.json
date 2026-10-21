@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0082.txt",
+  "pdf": "doc-0082.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 11,
+      "fim": 47,
+      "preservar": true
+    },
+    {
+      "texto": "JOSE RIBAMAR DA COSTA",
+      "tipo": "NOME",
+      "inicio": 63,
+      "fim": 84,
+      "preservar": false
+    },
+    {
+      "texto": "PA 95.778.453-5",
+      "tipo": "RG",
+      "inicio": 89,
+      "fim": 104,
+      "preservar": false
+    },
+    {
+      "texto": "9605849-16.2023.8.13.4871",
+      "tipo": "CNJ",
+      "inicio": 144,
+      "fim": 169,
+      "preservar": true
+    },
+    {
+      "texto": "Maraba",
+      "tipo": "CIDADE",
+      "inicio": 205,
+      "fim": 211,
+      "preservar": true
+    },
+    {
+      "texto": "9449197863",
+      "tipo": "TELEFONE",
+      "inicio": 252,
+      "fim": 262,
+      "preservar": false
+    },
+    {
+      "texto": "MARCOS.BARBOSA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 273,
+      "fim": 303,
+      "preservar": false
+    }
+  ]
+}

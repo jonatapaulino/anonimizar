@@ -1,0 +1,84 @@
+{
+  "documento": "doc-0078.txt",
+  "pdf": "doc-0078.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Perito Judicial",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 37,
+      "preservar": true
+    },
+    {
+      "texto": "MARABA",
+      "tipo": "CIDADE",
+      "inicio": 66,
+      "fim": 72,
+      "preservar": true
+    },
+    {
+      "texto": "4499106-28.2026.8.14.1798",
+      "tipo": "CNJ",
+      "inicio": 86,
+      "fim": 111,
+      "preservar": true
+    },
+    {
+      "texto": "MARIA JOSE FERREIRA",
+      "tipo": "NOME",
+      "inicio": 113,
+      "fim": 132,
+      "preservar": false
+    },
+    {
+      "texto": "PA 45.767.173-X",
+      "tipo": "RG",
+      "inicio": 140,
+      "fim": 155,
+      "preservar": false
+    },
+    {
+      "texto": "80818503092",
+      "tipo": "CPF",
+      "inicio": 161,
+      "fim": 172,
+      "preservar": false
+    },
+    {
+      "texto": "Tv. Castelo Branco, 1674, Nazare, Castanhal-PA, CEP 66821-617",
+      "tipo": "ENDERECO",
+      "inicio": 174,
+      "fim": 235,
+      "preservar": false
+    },
+    {
+      "texto": "(94)988039404",
+      "tipo": "TELEFONE",
+      "inicio": 246,
+      "fim": 259,
+      "preservar": false
+    },
+    {
+      "texto": "Pedro Henrique Almeida",
+      "tipo": "NOME",
+      "inicio": 333,
+      "fim": 355,
+      "preservar": false
+    },
+    {
+      "texto": "R$228.878,83",
+      "tipo": "VALOR",
+      "inicio": 397,
+      "fim": 409,
+      "preservar": true
+    },
+    {
+      "texto": "de R$ 34.700,67",
+      "tipo": "VALOR",
+      "inicio": 450,
+      "fim": 465,
+      "preservar": true
+    }
+  ]
+}

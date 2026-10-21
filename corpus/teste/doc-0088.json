@@ -1,0 +1,84 @@
+{
+  "documento": "doc-0088.txt",
+  "pdf": "doc-0088.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Escrivao Judicial",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 39,
+      "preservar": true
+    },
+    {
+      "texto": "MARABA",
+      "tipo": "CIDADE",
+      "inicio": 68,
+      "fim": 74,
+      "preservar": true
+    },
+    {
+      "texto": "5647260-28.2020.8.14.4738",
+      "tipo": "CNJ",
+      "inicio": 88,
+      "fim": 113,
+      "preservar": true
+    },
+    {
+      "texto": "Pedro De Souza",
+      "tipo": "NOME",
+      "inicio": 115,
+      "fim": 129,
+      "preservar": false
+    },
+    {
+      "texto": "30.677.315-X",
+      "tipo": "RG",
+      "inicio": 155,
+      "fim": 167,
+      "preservar": false
+    },
+    {
+      "texto": "765.605.774-90",
+      "tipo": "CPF",
+      "inicio": 197,
+      "fim": 211,
+      "preservar": false
+    },
+    {
+      "texto": "Rua das Flores, 1117, Centro, Ananindeua-PA, CEP 67044-529",
+      "tipo": "ENDERECO",
+      "inicio": 240,
+      "fim": 298,
+      "preservar": false
+    },
+    {
+      "texto": "MARIA_COSTA@MPPA.MP.BR",
+      "tipo": "EMAIL",
+      "inicio": 307,
+      "fim": 329,
+      "preservar": false
+    },
+    {
+      "texto": "Instituto Nacional do Seguro Social",
+      "tipo": "INSTITUICAO",
+      "inicio": 403,
+      "fim": 438,
+      "preservar": true
+    },
+    {
+      "texto": "de R$ 31.343,34",
+      "tipo": "VALOR",
+      "inicio": 480,
+      "fim": 495,
+      "preservar": true
+    },
+    {
+      "texto": "R$173.898,89",
+      "tipo": "VALOR",
+      "inicio": 536,
+      "fim": 548,
+      "preservar": true
+    }
+  ]
+}

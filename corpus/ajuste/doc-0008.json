@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0008.txt",
+  "pdf": "doc-0008.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 12,
+      "fim": 48,
+      "preservar": true
+    },
+    {
+      "texto": "Marcos Aurelio Tavares",
+      "tipo": "NOME",
+      "inicio": 67,
+      "fim": 89,
+      "preservar": false
+    },
+    {
+      "texto": "62577814348",
+      "tipo": "CPF",
+      "inicio": 95,
+      "fim": 106,
+      "preservar": false
+    },
+    {
+      "texto": "Rua dos Mundurucus, 731, Cidade Velha, Santarem-PA, CEP 67273-852",
+      "tipo": "ENDERECO",
+      "inicio": 117,
+      "fim": 182,
+      "preservar": false
+    },
+    {
+      "texto": "6223313-27.2020.8.14.6778",
+      "tipo": "CNJ",
+      "inicio": 228,
+      "fim": 253,
+      "preservar": true
+    },
+    {
+      "texto": "DENISEPINHEIRO@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 272,
+      "fim": 302,
+      "preservar": false
+    },
+    {
+      "texto": "(94) 97626-9520",
+      "tipo": "TELEFONE",
+      "inicio": 305,
+      "fim": 320,
+      "preservar": false
+    }
+  ]
+}

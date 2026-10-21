@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0063.txt",
+  "pdf": "doc-0063.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Tribunal de Contas dos Municipios",
+      "tipo": "INSTITUICAO",
+      "inicio": 48,
+      "fim": 81,
+      "preservar": true
+    },
+    {
+      "texto": "Antonio Marcos Pinheiro",
+      "tipo": "NOME",
+      "inicio": 95,
+      "fim": 118,
+      "preservar": false
+    },
+    {
+      "texto": "203.425.761-86",
+      "tipo": "CPF",
+      "inicio": 124,
+      "fim": 138,
+      "preservar": false
+    },
+    {
+      "texto": "Rua das Flores, 1038, Batista Campos, Maraba-PA, CEP 69738-789",
+      "tipo": "ENDERECO",
+      "inicio": 149,
+      "fim": 211,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 28.475,00",
+      "tipo": "VALOR",
+      "inicio": 249,
+      "fim": 261,
+      "preservar": true
+    },
+    {
+      "texto": "9983082-45.2019.8.13.7937",
+      "tipo": "CNJ",
+      "inicio": 299,
+      "fim": 324,
+      "preservar": true
+    },
+    {
+      "texto": "Tribunal de Justica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 335,
+      "fim": 372,
+      "preservar": true
+    }
+  ]
+}

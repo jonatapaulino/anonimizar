@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0023.txt",
+  "pdf": "doc-0023.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Camara Municipal de Belem",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 25,
+      "preservar": true
+    },
+    {
+      "texto": "5767128-42.2024.8.14.9386",
+      "tipo": "CNJ",
+      "inicio": 68,
+      "fim": 93,
+      "preservar": true
+    },
+    {
+      "texto": "JOAO CARLOS DE SOUZA",
+      "tipo": "NOME",
+      "inicio": 106,
+      "fim": 126,
+      "preservar": false
+    },
+    {
+      "texto": "FRANCISCA.FERREIRA@HOTMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 139,
+      "fim": 169,
+      "preservar": false
+    },
+    {
+      "texto": "93984914634",
+      "tipo": "TELEFONE",
+      "inicio": 182,
+      "fim": 193,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 74.438,79",
+      "tipo": "VALOR",
+      "inicio": 235,
+      "fim": 247,
+      "preservar": true
+    },
+    {
+      "texto": "Maraba",
+      "tipo": "CIDADE",
+      "inicio": 250,
+      "fim": 256,
+      "preservar": true
+    },
+    {
+      "texto": "Juiz de Direito",
+      "tipo": "CARGO",
+      "inicio": 275,
+      "fim": 290,
+      "preservar": true
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0019.txt",
+  "pdf": "doc-0019.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Secretaria de Estado de Fazenda",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 31,
+      "preservar": true
+    },
+    {
+      "texto": "1331085-30.2021.8.10.7414",
+      "tipo": "CNJ",
+      "inicio": 74,
+      "fim": 99,
+      "preservar": true
+    },
+    {
+      "texto": "Denise Aparecida Moraes",
+      "tipo": "NOME",
+      "inicio": 112,
+      "fim": 135,
+      "preservar": false
+    },
+    {
+      "texto": "ANTONIOCOSTA@MPPA.MP.BR",
+      "tipo": "EMAIL",
+      "inicio": 148,
+      "fim": 171,
+      "preservar": false
+    },
+    {
+      "texto": "9342958271",
+      "tipo": "TELEFONE",
+      "inicio": 184,
+      "fim": 194,
+      "preservar": false
+    },
+    {
+      "texto": "R$46.371,20",
+      "tipo": "VALOR",
+      "inicio": 236,
+      "fim": 247,
+      "preservar": true
+    },
+    {
+      "texto": "Santarem",
+      "tipo": "CIDADE",
+      "inicio": 250,
+      "fim": 258,
+      "preservar": true
+    },
+    {
+      "texto": "Procurador da Republica",
+      "tipo": "CARGO",
+      "inicio": 277,
+      "fim": 300,
+      "preservar": true
+    }
+  ]
+}

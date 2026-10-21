@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0055.txt",
+  "pdf": "doc-0055.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "IVONETE CRISTINA ROCHA",
+      "tipo": "NOME",
+      "inicio": 48,
+      "fim": 70,
+      "preservar": false
+    },
+    {
+      "texto": "204.306.939-07",
+      "tipo": "CPF",
+      "inicio": 76,
+      "fim": 90,
+      "preservar": false
+    },
+    {
+      "texto": "IVONETE FERREIRA",
+      "tipo": "NOME",
+      "inicio": 104,
+      "fim": 120,
+      "preservar": false
+    },
+    {
+      "texto": "734.906.234-60",
+      "tipo": "CPF",
+      "inicio": 126,
+      "fim": 140,
+      "preservar": false
+    },
+    {
+      "texto": "Rua dos Mundurucus, 2580, Centro, Maraba-PA, CEP 68482-331",
+      "tipo": "ENDERECO",
+      "inicio": 151,
+      "fim": 209,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 97.265,47",
+      "tipo": "VALOR",
+      "inicio": 247,
+      "fim": 259,
+      "preservar": true
+    },
+    {
+      "texto": "5216783-44.2019.8.12.4019",
+      "tipo": "CNJ",
+      "inicio": 297,
+      "fim": 322,
+      "preservar": true
+    },
+    {
+      "texto": "Ministerio Publico Federal",
+      "tipo": "ORGAO",
+      "inicio": 333,
+      "fim": 359,
+      "preservar": true
+    }
+  ]
+}

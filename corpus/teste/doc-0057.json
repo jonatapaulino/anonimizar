@@ -1,0 +1,91 @@
+{
+  "documento": "doc-0057.txt",
+  "pdf": "doc-0057.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Analista Judiciario",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 41,
+      "preservar": true
+    },
+    {
+      "texto": "CASTANHAL",
+      "tipo": "CIDADE",
+      "inicio": 70,
+      "fim": 79,
+      "preservar": true
+    },
+    {
+      "texto": "4366634-46.2026.8.12.3010",
+      "tipo": "CNJ",
+      "inicio": 93,
+      "fim": 118,
+      "preservar": true
+    },
+    {
+      "texto": "IVONETE CRISTINA ROCHA",
+      "tipo": "NOME",
+      "inicio": 120,
+      "fim": 142,
+      "preservar": false
+    },
+    {
+      "texto": "58.320.829",
+      "tipo": "RG",
+      "inicio": 168,
+      "fim": 178,
+      "preservar": false
+    },
+    {
+      "texto": "732.590.332-46",
+      "tipo": "CPF",
+      "inicio": 208,
+      "fim": 222,
+      "preservar": false
+    },
+    {
+      "texto": "Av. Conselheiro Furtado, 823, Batista Campos, Castanhal-PA, CEP 69131-501",
+      "tipo": "ENDERECO",
+      "inicio": 250,
+      "fim": 323,
+      "preservar": false
+    },
+    {
+      "texto": "PEDRO_OLIVEIRA@MPPA.MP.BR",
+      "tipo": "EMAIL",
+      "inicio": 332,
+      "fim": 357,
+      "preservar": false
+    },
+    {
+      "texto": "(93) 4502-8335",
+      "tipo": "TELEFONE",
+      "inicio": 368,
+      "fim": 382,
+      "preservar": false
+    },
+    {
+      "texto": "Maria Das Gracas Santana",
+      "tipo": "NOME",
+      "inicio": 456,
+      "fim": 480,
+      "preservar": false
+    },
+    {
+      "texto": "R$94.812,57",
+      "tipo": "VALOR",
+      "inicio": 522,
+      "fim": 533,
+      "preservar": true
+    },
+    {
+      "texto": "R$10.213,00",
+      "tipo": "VALOR",
+      "inicio": 574,
+      "fim": 585,
+      "preservar": true
+    }
+  ]
+}

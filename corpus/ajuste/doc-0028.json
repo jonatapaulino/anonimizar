@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0028.txt",
+  "pdf": "doc-0028.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "MPPA",
+      "tipo": "ORGAO",
+      "inicio": 20,
+      "fim": 24,
+      "preservar": true
+    },
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 29,
+      "fim": 65,
+      "preservar": true
+    },
+    {
+      "texto": "Antonio Marcos Pinheiro",
+      "tipo": "NOME",
+      "inicio": 110,
+      "fim": 133,
+      "preservar": false
+    },
+    {
+      "texto": "SSP-PA 93.676.526-X",
+      "tipo": "RG",
+      "inicio": 138,
+      "fim": 157,
+      "preservar": false
+    },
+    {
+      "texto": "156.416.788-72",
+      "tipo": "CPF",
+      "inicio": 163,
+      "fim": 177,
+      "preservar": false
+    },
+    {
+      "texto": "CARLOSSANTOS@TJPA.JUS.BR",
+      "tipo": "EMAIL",
+      "inicio": 200,
+      "fim": 224,
+      "preservar": false
+    },
+    {
+      "texto": "(91)35666316",
+      "tipo": "TELEFONE",
+      "inicio": 235,
+      "fim": 247,
+      "preservar": false
+    },
+    {
+      "texto": "R$223.084,80",
+      "tipo": "VALOR",
+      "inicio": 270,
+      "fim": 282,
+      "preservar": true
+    },
+    {
+      "texto": "Escrivao Judicial",
+      "tipo": "CARGO",
+      "inicio": 303,
+      "fim": 320,
+      "preservar": true
+    }
+  ]
+}

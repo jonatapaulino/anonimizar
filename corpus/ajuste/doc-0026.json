@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0026.txt",
+  "pdf": "doc-0026.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Tribunal Regional Eleitoral do Para",
+      "tipo": "ORGAO",
+      "inicio": 11,
+      "fim": 46,
+      "preservar": true
+    },
+    {
+      "texto": "MARIA JOSE FERREIRA",
+      "tipo": "NOME",
+      "inicio": 62,
+      "fim": 81,
+      "preservar": false
+    },
+    {
+      "texto": "67.993.718-2",
+      "tipo": "RG",
+      "inicio": 86,
+      "fim": 98,
+      "preservar": false
+    },
+    {
+      "texto": "9989329-28.2019.8.12.1391",
+      "tipo": "CNJ",
+      "inicio": 138,
+      "fim": 163,
+      "preservar": true
+    },
+    {
+      "texto": "Santarem",
+      "tipo": "CIDADE",
+      "inicio": 199,
+      "fim": 207,
+      "preservar": true
+    },
+    {
+      "texto": "9133976859",
+      "tipo": "TELEFONE",
+      "inicio": 248,
+      "fim": 258,
+      "preservar": false
+    },
+    {
+      "texto": "ROSA.SOUZA@HOTMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 269,
+      "fim": 291,
+      "preservar": false
+    }
+  ]
+}

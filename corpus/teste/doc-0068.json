@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0068.txt",
+  "pdf": "doc-0068.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico Federal",
+      "tipo": "ORGAO",
+      "inicio": 11,
+      "fim": 37,
+      "preservar": true
+    },
+    {
+      "texto": "LUCIA HELENA BARBOSA",
+      "tipo": "NOME",
+      "inicio": 53,
+      "fim": 73,
+      "preservar": false
+    },
+    {
+      "texto": "10.644.063-X",
+      "tipo": "RG",
+      "inicio": 78,
+      "fim": 90,
+      "preservar": false
+    },
+    {
+      "texto": "7147147-10.2026.8.14.4452",
+      "tipo": "CNJ",
+      "inicio": 130,
+      "fim": 155,
+      "preservar": true
+    },
+    {
+      "texto": "Belem",
+      "tipo": "CIDADE",
+      "inicio": 191,
+      "fim": 196,
+      "preservar": true
+    },
+    {
+      "texto": "(93)989644979",
+      "tipo": "TELEFONE",
+      "inicio": 237,
+      "fim": 250,
+      "preservar": false
+    },
+    {
+      "texto": "FRANCISCA.FERREIRA@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 261,
+      "fim": 289,
+      "preservar": false
+    }
+  ]
+}

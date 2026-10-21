@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0002.txt",
+  "pdf": "doc-0002.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Tribunal Regional Eleitoral do Para",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 35,
+      "preservar": true
+    },
+    {
+      "texto": "6825736-32.2019.8.10.3877",
+      "tipo": "CNJ",
+      "inicio": 78,
+      "fim": 103,
+      "preservar": true
+    },
+    {
+      "texto": "CARLOS EDUARDO NASCIMENTO",
+      "tipo": "NOME",
+      "inicio": 116,
+      "fim": 141,
+      "preservar": false
+    },
+    {
+      "texto": "PEDRO_SILVA@MPPA.MP.BR",
+      "tipo": "EMAIL",
+      "inicio": 154,
+      "fim": 176,
+      "preservar": false
+    },
+    {
+      "texto": "9443618272",
+      "tipo": "TELEFONE",
+      "inicio": 189,
+      "fim": 199,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 142.098,88",
+      "tipo": "VALOR",
+      "inicio": 241,
+      "fim": 254,
+      "preservar": true
+    },
+    {
+      "texto": "Maraba",
+      "tipo": "CIDADE",
+      "inicio": 257,
+      "fim": 263,
+      "preservar": true
+    },
+    {
+      "texto": "Perito Judicial",
+      "tipo": "CARGO",
+      "inicio": 282,
+      "fim": 297,
+      "preservar": true
+    }
+  ]
+}

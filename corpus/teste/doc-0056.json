@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0056.txt",
+  "pdf": "doc-0056.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "SEDUC-PA",
+      "tipo": "ORGAO",
+      "inicio": 20,
+      "fim": 28,
+      "preservar": true
+    },
+    {
+      "texto": "Secretaria de Estado de Fazenda",
+      "tipo": "ORGAO",
+      "inicio": 33,
+      "fim": 64,
+      "preservar": true
+    },
+    {
+      "texto": "Antonio Marcos Pinheiro",
+      "tipo": "NOME",
+      "inicio": 109,
+      "fim": 132,
+      "preservar": false
+    },
+    {
+      "texto": "PA 05.031.796",
+      "tipo": "RG",
+      "inicio": 137,
+      "fim": 150,
+      "preservar": false
+    },
+    {
+      "texto": "835.985.589-70",
+      "tipo": "CPF",
+      "inicio": 156,
+      "fim": 170,
+      "preservar": false
+    },
+    {
+      "texto": "FRANCISCA_SILVA@MPPA.MP.BR",
+      "tipo": "EMAIL",
+      "inicio": 193,
+      "fim": 219,
+      "preservar": false
+    },
+    {
+      "texto": "9342358542",
+      "tipo": "TELEFONE",
+      "inicio": 230,
+      "fim": 240,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 104.343,00",
+      "tipo": "VALOR",
+      "inicio": 263,
+      "fim": 279,
+      "preservar": true
+    },
+    {
+      "texto": "Analista Judiciario",
+      "tipo": "CARGO",
+      "inicio": 300,
+      "fim": 319,
+      "preservar": true
+    }
+  ]
+}

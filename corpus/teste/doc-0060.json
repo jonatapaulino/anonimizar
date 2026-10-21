@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0060.txt",
+  "pdf": "doc-0060.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Tribunal Regional Eleitoral do Para",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 35,
+      "preservar": true
+    },
+    {
+      "texto": "5240321-63.2020.8.11.3811",
+      "tipo": "CNJ",
+      "inicio": 78,
+      "fim": 103,
+      "preservar": true
+    },
+    {
+      "texto": "Denise Aparecida Moraes",
+      "tipo": "NOME",
+      "inicio": 116,
+      "fim": 139,
+      "preservar": false
+    },
+    {
+      "texto": "CARLOS.BARBOSA@HOTMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 152,
+      "fim": 178,
+      "preservar": false
+    },
+    {
+      "texto": "91 96629-5232",
+      "tipo": "TELEFONE",
+      "inicio": 191,
+      "fim": 204,
+      "preservar": false
+    },
+    {
+      "texto": "R$210.406,11",
+      "tipo": "VALOR",
+      "inicio": 246,
+      "fim": 258,
+      "preservar": true
+    },
+    {
+      "texto": "Ananindeua",
+      "tipo": "CIDADE",
+      "inicio": 261,
+      "fim": 271,
+      "preservar": true
+    },
+    {
+      "texto": "Perito Judicial",
+      "tipo": "CARGO",
+      "inicio": 290,
+      "fim": 305,
+      "preservar": true
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0032.txt",
+  "pdf": "doc-0032.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 36,
+      "preservar": true
+    },
+    {
+      "texto": "3042668-34.2025.8.13.6223",
+      "tipo": "CNJ",
+      "inicio": 79,
+      "fim": 104,
+      "preservar": true
+    },
+    {
+      "texto": "Maria Das Gracas Santana",
+      "tipo": "NOME",
+      "inicio": 117,
+      "fim": 141,
+      "preservar": false
+    },
+    {
+      "texto": "MARIASOUZA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 154,
+      "fim": 180,
+      "preservar": false
+    },
+    {
+      "texto": "93 98629-9454",
+      "tipo": "TELEFONE",
+      "inicio": 193,
+      "fim": 206,
+      "preservar": false
+    },
+    {
+      "texto": "R$8.452,91",
+      "tipo": "VALOR",
+      "inicio": 248,
+      "fim": 258,
+      "preservar": true
+    },
+    {
+      "texto": "Ananindeua",
+      "tipo": "CIDADE",
+      "inicio": 261,
+      "fim": 271,
+      "preservar": true
+    },
+    {
+      "texto": "Procurador da Republica",
+      "tipo": "CARGO",
+      "inicio": 290,
+      "fim": 313,
+      "preservar": true
+    }
+  ]
+}

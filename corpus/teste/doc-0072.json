@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0072.txt",
+  "pdf": "doc-0072.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ana Paula Santos",
+      "tipo": "NOME",
+      "inicio": 48,
+      "fim": 64,
+      "preservar": false
+    },
+    {
+      "texto": "41895772788",
+      "tipo": "CPF",
+      "inicio": 70,
+      "fim": 81,
+      "preservar": false
+    },
+    {
+      "texto": "DENISE FERREIRA",
+      "tipo": "NOME",
+      "inicio": 95,
+      "fim": 110,
+      "preservar": false
+    },
+    {
+      "texto": "56187388569",
+      "tipo": "CPF",
+      "inicio": 116,
+      "fim": 127,
+      "preservar": false
+    },
+    {
+      "texto": "Rua das Flores, 664, Reduto, Belem-PA, CEP 68345-975",
+      "tipo": "ENDERECO",
+      "inicio": 138,
+      "fim": 190,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 74.038,12",
+      "tipo": "VALOR",
+      "inicio": 228,
+      "fim": 240,
+      "preservar": true
+    },
+    {
+      "texto": "7709748-36.2019.8.12.2794",
+      "tipo": "CNJ",
+      "inicio": 278,
+      "fim": 303,
+      "preservar": true
+    },
+    {
+      "texto": "Defensoria Publica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 314,
+      "fim": 350,
+      "preservar": true
+    }
+  ]
+}

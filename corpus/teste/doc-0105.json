@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0105.txt",
+  "pdf": "doc-0105.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Camara Municipal de Belem",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 25,
+      "preservar": true
+    },
+    {
+      "texto": "3819615-89.2022.8.10.5606",
+      "tipo": "CNJ",
+      "inicio": 68,
+      "fim": 93,
+      "preservar": true
+    },
+    {
+      "texto": "MARCOS PINHEIRO",
+      "tipo": "NOME",
+      "inicio": 106,
+      "fim": 121,
+      "preservar": false
+    },
+    {
+      "texto": "MARIA_SILVA@MPPA.MP.BR",
+      "tipo": "EMAIL",
+      "inicio": 134,
+      "fim": 156,
+      "preservar": false
+    },
+    {
+      "texto": "91 3371-5300",
+      "tipo": "TELEFONE",
+      "inicio": 169,
+      "fim": 181,
+      "preservar": false
+    },
+    {
+      "texto": "R$4.081,66",
+      "tipo": "VALOR",
+      "inicio": 223,
+      "fim": 233,
+      "preservar": true
+    },
+    {
+      "texto": "Belem",
+      "tipo": "CIDADE",
+      "inicio": 236,
+      "fim": 241,
+      "preservar": true
+    },
+    {
+      "texto": "Defensor Publico",
+      "tipo": "CARGO",
+      "inicio": 260,
+      "fim": 276,
+      "preservar": true
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0081.txt",
+  "pdf": "doc-0081.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico Federal",
+      "tipo": "ORGAO",
+      "inicio": 12,
+      "fim": 38,
+      "preservar": true
+    },
+    {
+      "texto": "MARCOS AURELIO TAVARES",
+      "tipo": "NOME",
+      "inicio": 57,
+      "fim": 79,
+      "preservar": false
+    },
+    {
+      "texto": "031.244.116-92",
+      "tipo": "CPF",
+      "inicio": 85,
+      "fim": 99,
+      "preservar": false
+    },
+    {
+      "texto": "Travessa Dom Pedro I, 2646, Batista Campos, Belem-PA, CEP 66376-835",
+      "tipo": "ENDERECO",
+      "inicio": 110,
+      "fim": 177,
+      "preservar": false
+    },
+    {
+      "texto": "8829872-80.2019.8.11.9395",
+      "tipo": "CNJ",
+      "inicio": 223,
+      "fim": 248,
+      "preservar": true
+    },
+    {
+      "texto": "PEDRO.OLIVEIRA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 267,
+      "fim": 297,
+      "preservar": false
+    },
+    {
+      "texto": "(94)33878327",
+      "tipo": "TELEFONE",
+      "inicio": 300,
+      "fim": 312,
+      "preservar": false
+    }
+  ]
+}

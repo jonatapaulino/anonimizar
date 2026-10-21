@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0021.txt",
+  "pdf": "doc-0021.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Caixa Economica Federal",
+      "tipo": "INSTITUICAO",
+      "inicio": 48,
+      "fim": 71,
+      "preservar": true
+    },
+    {
+      "texto": "MARIA DAS GRACAS SANTANA",
+      "tipo": "NOME",
+      "inicio": 85,
+      "fim": 109,
+      "preservar": false
+    },
+    {
+      "texto": "320.775.575-59",
+      "tipo": "CPF",
+      "inicio": 115,
+      "fim": 129,
+      "preservar": false
+    },
+    {
+      "texto": "Rua dos Mundurucus, 1764, Batista Campos, Belem-PA, CEP 69520-984",
+      "tipo": "ENDERECO",
+      "inicio": 140,
+      "fim": 205,
+      "preservar": false
+    },
+    {
+      "texto": "R$37.868,86",
+      "tipo": "VALOR",
+      "inicio": 243,
+      "fim": 254,
+      "preservar": true
+    },
+    {
+      "texto": "4502154-17.2025.8.12.1561",
+      "tipo": "CNJ",
+      "inicio": 292,
+      "fim": 317,
+      "preservar": true
+    },
+    {
+      "texto": "Defensoria Publica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 328,
+      "fim": 364,
+      "preservar": true
+    }
+  ]
+}

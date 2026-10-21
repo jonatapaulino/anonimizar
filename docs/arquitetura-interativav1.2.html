@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arquitetura v1.2 — Módulo de Anonimização Jurídica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e1a; --bg2:#0e1424; --surface:#121a30; --surface2:#16203a;
+  --border:rgba(148,163,184,.14); --border-hi:rgba(212,175,55,.45);
+  --text:#e6eaf2; --muted:#8b96ad; --faint:#5d6880;
+  --gold:#d4af37; --gold2:#e9cd6e; --blue:#5b8cff; --cyan:#4fd1c5;
+  --green:#34d399; --red:#f87171; --amber:#fbbf24; --violet:#a78bfa;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --sans:'Inter',system-ui,sans-serif; --serif:'Fraunces',Georgia,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(1000px 600px at 80% -10%,rgba(91,140,255,.08),transparent 60%),
+  radial-gradient(800px 500px at 10% 30%,rgba(212,175,55,.05),transparent 60%);pointer-events:none;z-index:0}
+main,nav,footer{position:relative;z-index:1}
+::selection{background:rgba(212,175,55,.3)}
+.mono{font-family:var(--mono)}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(10,14,26,.75);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1240px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:18px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:.02em}
+.nav-logo .glyph{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--gold),#8a6d1d);display:grid;place-items:center;color:#0a0e1a;font-family:var(--serif);font-weight:700;font-size:15px}
+.nav-links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:12.5px;font-weight:500;padding:6px 10px;border-radius:6px;transition:.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold2);background:rgba(212,175,55,.08)}
+
+/* ── HERO ── */
+.hero{max-width:1240px;margin:0 auto;padding:90px 24px 60px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:'';width:34px;height:1px;background:var(--gold)}
+.hero h1{font-family:var(--serif);font-size:clamp(38px,5.4vw,66px);line-height:1.06;margin:18px 0 20px;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(120deg,var(--gold2),var(--gold) 60%,#a8842a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:760px;color:var(--muted);font-size:17px}
+.hero-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.badge{font-family:var(--mono);font-size:11.5px;padding:7px 13px;border-radius:999px;border:1px solid var(--border);color:var(--muted);background:rgba(255,255,255,.02)}
+.badge b{color:var(--text);font-weight:600}
+.badge.gold{border-color:var(--border-hi);color:var(--gold2)}
+.badge.green{border-color:rgba(52,211,153,.4);color:var(--green)}
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:44px;max-width:820px}
+.stat{border:1px solid var(--border);border-radius:14px;padding:18px;background:linear-gradient(180deg,rgba(255,255,255,.025),transparent)}
+.stat .num{font-family:var(--serif);font-size:32px;color:var(--gold2);line-height:1}
+.stat .lbl{font-size:12px;color:var(--muted);margin-top:6px}
+
+/* ── SECTIONS ── */
+section{max-width:1240px;margin:0 auto;padding:64px 24px}
+.sec-head{margin-bottom:36px}
+.sec-num{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.2em}
+.sec-head h2{font-family:var(--serif);font-size:clamp(26px,3.4vw,40px);margin:8px 0 10px;font-weight:700}
+.sec-head p{color:var(--muted);max-width:720px;font-size:15px}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── PIPELINE ── */
+.pipeline-wrap{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:28px;align-items:start}
+@media(max-width:960px){.pipeline-wrap{grid-template-columns:1fr}}
+.stepper{position:relative;padding-left:54px}
+.stepper::before{content:'';position:absolute;left:21px;top:8px;bottom:8px;width:2px;background:var(--border)}
+.step-fill{position:absolute;left:21px;top:8px;width:2px;background:linear-gradient(180deg,var(--gold),var(--blue));height:0;transition:height .45s cubic-bezier(.22,1,.36,1);z-index:1}
+.packet{position:absolute;left:14px;top:0;width:16px;height:16px;border-radius:50%;background:var(--gold2);box-shadow:0 0 18px 3px rgba(212,175,55,.5);transition:top .45s cubic-bezier(.22,1,.36,1);z-index:2;opacity:0}
+.packet.on{opacity:1}
+.step{position:relative;margin-bottom:10px;cursor:pointer}
+.step-dot{position:absolute;left:-54px;top:16px;width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--surface);display:grid;place-items:center;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--muted);transition:.3s;z-index:2}
+.step-body{border:1px solid var(--border);border-radius:14px;padding:15px 18px;background:var(--surface);transition:border-color .3s,background .3s,transform .3s}
+.step:hover .step-body{border-color:rgba(212,175,55,.3)}
+.step.active .step-dot{border-color:var(--gold);color:var(--gold2);box-shadow:0 0 0 4px rgba(212,175,55,.12)}
+.step.active .step-body{border-color:var(--border-hi);background:var(--surface2)}
+.step-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.step-title{font-weight:600;font-size:14.5px}
+.step-adr{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--gold);border:1px solid rgba(212,175,55,.35);padding:2px 8px;border-radius:999px}
+.step-sub{font-size:12.5px;color:var(--muted);margin-top:2px}
+.step-detail{max-height:0;overflow:hidden;transition:max-height .45s ease,margin .45s ease}
+.step.open .step-detail{max-height:300px;margin-top:12px}
+.step-detail p{font-size:13.5px;color:var(--muted)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.chip{font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:6px;background:rgba(91,140,255,.1);color:#9db8ff;border:1px solid rgba(91,140,255,.25)}
+.chip.g{background:rgba(52,211,153,.08);color:var(--green);border-color:rgba(52,211,153,.25)}
+.chip.o{background:rgba(251,191,36,.08);color:var(--amber);border-color:rgba(251,191,36,.25)}
+.detail-panel{position:sticky;top:86px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,var(--surface2),var(--surface));padding:26px;min-height:340px}
+.detail-panel h3{font-family:var(--serif);font-size:22px;margin-bottom:4px}
+.detail-panel .tag{font-family:var(--mono);font-size:11px;color:var(--gold)}
+.detail-panel .desc{color:var(--muted);font-size:14px;margin-top:12px}
+.detail-panel .kv{margin-top:18px;display:grid;gap:10px}
+.detail-panel .kv div{display:flex;gap:10px;font-size:12.5px}
+.detail-panel .kv b{font-family:var(--mono);color:var(--cyan);min-width:86px;font-weight:600;font-size:11px;padding-top:2px}
+.play-btn{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(120deg,var(--gold),#b08d28);color:#0a0e1a;border:none;font-weight:700;font-size:13.5px;padding:11px 22px;border-radius:10px;cursor:pointer;margin-bottom:22px;transition:.2s;font-family:var(--sans)}
+.play-btn:hover{transform:translateY(-1px);box-shadow:0 8px 26px rgba(212,175,55,.3)}
+.play-btn:disabled{opacity:.5;cursor:default;transform:none}
+
+/* ── LAYERS CARDS ── */
+.cards3{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.card{border:1px solid var(--border);border-radius:18px;padding:26px;background:linear-gradient(165deg,var(--surface),transparent);transition:.3s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0;transition:.3s}
+.card:hover{border-color:var(--border-hi);transform:translateY(-3px)}
+.card:hover::before{opacity:1}
+.card .icon{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;font-size:19px;margin-bottom:16px}
+.card h3{font-size:16.5px;font-weight:600;margin-bottom:8px}
+.card p{font-size:13.5px;color:var(--muted)}
+.card ul{margin-top:12px;list-style:none;display:grid;gap:6px}
+.card li{font-size:12.5px;color:var(--muted);padding-left:16px;position:relative}
+.card li::before{content:'▸';position:absolute;left:0;color:var(--gold)}
+.ic-blue{background:rgba(91,140,255,.12)}.ic-gold{background:rgba(212,175,55,.12)}.ic-green{background:rgba(52,211,153,.1)}
+
+/* ── MODES ── */
+.mode-toggle{display:inline-flex;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px}
+.mode-toggle button{background:transparent;border:none;color:var(--muted);font-family:var(--mono);font-size:12.5px;font-weight:600;padding:12px 22px;cursor:pointer;transition:.25s}
+.mode-toggle button.on{background:var(--gold);color:#0a0e1a}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:860px){.mode-grid{grid-template-columns:1fr}}
+.mode-box{border:1px solid var(--border);border-radius:18px;padding:26px;background:var(--surface)}
+.mode-box .flow{font-family:var(--mono);font-size:12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin:14px 0;line-height:1.9;overflow-x:auto;white-space:pre}
+.mode-box h3{font-size:15.5px;display:flex;align-items:center;gap:8px}
+.dot-ind{width:9px;height:9px;border-radius:50%}
+.kv-list{display:grid;gap:8px;font-size:13px;color:var(--muted)}
+.kv-list b{color:var(--text);font-weight:600}
+.tagline{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:3px 10px;border-radius:999px;margin-bottom:12px}
+.tg-green{background:rgba(52,211,153,.1);color:var(--green);border:1px solid rgba(52,211,153,.3)}
+.tg-amber{background:rgba(251,191,36,.08);color:var(--amber);border:1px solid rgba(251,191,36,.3)}
+
+/* ── DEFESA ── */
+.defense{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center}
+@media(max-width:900px){.defense{grid-template-columns:1fr}}
+.onion{position:relative;aspect-ratio:1.35;max-width:560px;margin:0 auto;width:100%}
+.layer{position:absolute;border-radius:22px;border:1.5px solid var(--border);display:flex;align-items:flex-start;justify-content:center;padding-top:9px;cursor:pointer;transition:.3s;font-family:var(--mono);font-size:10.5px;color:var(--muted);text-align:center}
+.layer span{background:var(--bg);padding:2px 8px;border-radius:6px}
+.layer:hover{border-color:var(--border-hi);color:var(--gold2)}
+.layer.on{border-color:var(--gold);color:var(--gold2);box-shadow:inset 0 0 40px rgba(212,175,55,.06)}
+.l1{inset:0;border-style:dashed}.l2{inset:11%}.l3{inset:22%}.l4{inset:33%}.l5{inset:44%;background:rgba(212,175,55,.05);font-weight:600}
+.def-detail{border:1px solid var(--border);border-radius:18px;padding:26px;background:var(--surface);min-height:280px}
+.def-detail h3{font-family:var(--serif);font-size:21px;margin-bottom:10px}
+.def-detail p{color:var(--muted);font-size:14px}
+.def-detail .proves{margin-top:14px;font-size:12.5px;color:var(--cyan);font-family:var(--mono)}
+
+/* ── TIMELINE ── */
+.tl{position:relative;height:190px;margin-top:56px}
+.tl-track{position:absolute;left:0;right:0;top:96px;height:3px;border-radius:2px;background:linear-gradient(90deg,rgba(52,211,153,.5) 0%,rgba(52,211,153,.5) 78%,rgba(248,113,113,.55) 78%,rgba(248,113,113,.55) 100%)}
+.tl-cut{position:absolute;top:30px;bottom:30px;width:0;border-left:2px dashed var(--red);z-index:2}
+.tl-cut .lbl{position:absolute;top:-16px;left:-40px;font-family:var(--mono);font-size:10.5px;color:var(--red);white-space:nowrap}
+.tl-cut .lbl2{position:absolute;bottom:-16px;left:-52px;font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap}
+.tl-dot{position:absolute;top:88px;width:15px;height:15px;border-radius:50%;border:3px solid var(--bg);transform:translateX(-50%);cursor:pointer;transition:.2s;z-index:3}
+.tl-dot:hover{transform:translateX(-50%) scale(1.45)}
+.tl-dot.pass{background:var(--green)}.tl-dot.fail{background:var(--red)}.tl-dot.edge{background:var(--amber)}
+.tl-lbl{position:absolute;transform:translateX(-50%);font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap;text-align:center;transition:.2s;cursor:pointer}
+.tl-lbl:hover{color:var(--text)}
+.tl-lbl.up{top:58px}.tl-lbl.dn{top:112px}
+.tl-lbl .yr{display:block;font-size:9px;color:var(--faint);color:#64748b}
+.tl-year{position:absolute;top:140px;transform:translateX(-50%);font-family:var(--mono);font-size:10px;color:#475569}
+.tl-legend{display:flex;gap:20px;margin-top:16px;font-size:12px;color:var(--muted);font-family:var(--mono)}
+.tl-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+
+/* ── STACK TABLE ── */
+.stack{display:grid;gap:10px}
+.stack-row{display:grid;grid-template-columns:170px 1fr 150px;gap:16px;align-items:center;border:1px solid var(--border);border-radius:13px;padding:15px 20px;background:var(--surface);transition:.25s}
+.stack-row:hover{border-color:var(--border-hi)}
+.stack-block{font-family:var(--mono);font-size:11.5px;color:var(--gold);letter-spacing:.05em}
+.stack-tech{font-size:14px;font-weight:500}
+.stack-tech small{display:block;color:var(--muted);font-weight:400;font-size:12px;margin-top:2px}
+.stack-year{font-family:var(--mono);font-size:11px;color:var(--green);text-align:right}
+.stack-year small{display:block;color:var(--faint);color:#64748b;font-size:9.5px}
+@media(max-width:700px){.stack-row{grid-template-columns:1fr}.stack-year{text-align:left}}
+
+/* ── METRICS ── */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.metric{border:1px solid var(--border);border-radius:16px;padding:22px;background:var(--surface)}
+.metric .name{font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between}
+.metric .target{font-family:var(--mono);color:var(--gold2);font-weight:600}
+.bar{height:7px;border-radius:5px;background:rgba(148,163,184,.12);margin-top:16px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:5px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width 1.2s cubic-bezier(.22,1,.36,1)}
+.bar.red i{background:linear-gradient(90deg,var(--red),#fca5a5)}
+
+/* ── RISKS ── */
+.risks{border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.risk-row{display:grid;grid-template-columns:26px 210px 1fr 40%;gap:18px;padding:16px 20px;border-bottom:1px solid var(--border);align-items:center;transition:.2s}
+.risk-row:last-child{border-bottom:none}
+.risk-row:hover{background:rgba(255,255,255,.02)}
+.risk-sev{font-family:var(--mono);font-size:9.5px;font-weight:700;padding:4px 8px;border-radius:6px;text-align:center}
+.sev-h{background:rgba(248,113,113,.12);color:var(--red)}
+.sev-m{background:rgba(251,191,36,.1);color:var(--amber)}
+.risk-name{font-size:13.5px;font-weight:600}
+.risk-desc{font-size:12.5px;color:var(--muted)}
+.risk-mit{font-size:12.5px;color:var(--cyan)}
+@media(max-width:860px){.risk-row{grid-template-columns:26px 1fr;gap:8px}.risk-desc,.risk-mit{grid-column:2}}
+
+/* ── ADR ACCORDION ── */
+.adrs{display:grid;gap:10px}
+.adr{border:1px solid var(--border);border-radius:14px;background:var(--surface);overflow:hidden;transition:border-color .25s}
+.adr.open{border-color:var(--border-hi)}
+.adr-head{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;user-select:none}
+.adr-id{font-family:var(--mono);font-size:12px;color:var(--gold);font-weight:600}
+.adr-title{font-size:14px;font-weight:600;flex:1}
+.adr-status{font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:999px;background:rgba(52,211,153,.1);color:var(--green);border:1px solid rgba(52,211,153,.3)}
+.adr-caret{color:var(--muted);transition:.3s;font-size:12px}
+.adr.open .adr-caret{transform:rotate(90deg);color:var(--gold)}
+.adr-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.adr.open .adr-body{max-height:420px}
+.adr-inner{padding:0 20px 20px;border-top:1px solid var(--border);padding-top:16px}
+.adr-inner p{font-size:13px;color:var(--muted);margin-bottom:10px}
+.adr-inner p b{color:var(--text)}
+.adr-inner .cut{font-family:var(--mono);font-size:11px;color:var(--red)}
+
+/* ── ROADMAP ── */
+.gantt{border:1px solid var(--border);border-radius:16px;padding:24px;background:var(--surface);overflow-x:auto}
+.gantt-grid{min-width:820px}
+.gantt-months{display:grid;grid-template-columns:190px repeat(12,1fr);gap:4px;margin-bottom:12px}
+.gantt-months span{font-family:var(--mono);font-size:10px;color:var(--faint);color:#64748b;text-align:center}
+.gantt-row{display:grid;grid-template-columns:190px repeat(12,1fr);gap:4px;align-items:center;margin-bottom:8px}
+.gantt-name{font-size:12px;color:var(--muted);padding-right:10px}
+.gantt-track{grid-column:2/-1;display:grid;grid-template-columns:repeat(12,1fr);gap:4px;position:relative;height:26px}
+.gantt-bar{height:26px;border-radius:7px;display:flex;align-items:center;padding:0 10px;font-family:var(--mono);font-size:9.5px;font-weight:600;white-space:nowrap;overflow:hidden;transition:.25s}
+.gantt-bar:hover{transform:scaleY(1.15)}
+.gb-1{background:rgba(91,140,255,.2);color:#9db8ff;border:1px solid rgba(91,140,255,.4)}
+.gb-2{background:rgba(212,175,55,.16);color:var(--gold2);border:1px solid rgba(212,175,55,.4)}
+.gb-3{background:rgba(52,211,153,.14);color:var(--green);border:1px solid rgba(52,211,153,.4)}
+.gb-4{background:rgba(167,139,250,.14);color:var(--violet);border:1px solid rgba(167,139,250,.4)}
+
+/* ── STATUS / FOOTER ── */
+.honest{border:1px solid rgba(251,191,36,.3);border-radius:18px;padding:28px;background:linear-gradient(160deg,rgba(251,191,36,.05),transparent)}
+.honest h3{font-family:var(--serif);font-size:20px;color:var(--amber);margin-bottom:12px}
+.honest ul{list-style:none;display:grid;gap:10px}
+.honest li{font-size:13.5px;color:var(--muted);padding-left:22px;position:relative}
+.honest li::before{content:'⚠';position:absolute;left:0;color:var(--amber)}
+.honest li b{color:var(--text)}
+footer{border-top:1px solid var(--border);margin-top:40px}
+.foot-inner{max-width:1240px;margin:0 auto;padding:32px 24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--faint);color:#64748b;font-family:var(--mono)}
+.back-top{position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--gold);cursor:pointer;font-size:18px;opacity:0;pointer-events:none;transition:.3s;z-index:60}
+.back-top.show{opacity:1;pointer-events:auto}
+
+/* ── v1.2 DELTA ── */
+.badge.violet{border-color:rgba(167,139,250,.4);color:var(--violet)}
+.v12tag{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(167,139,250,.15);color:var(--violet);border:1px solid rgba(167,139,250,.45);vertical-align:middle;margin-left:8px;letter-spacing:.06em}
+.newv12{border-color:rgba(167,139,250,.45)!important;box-shadow:inset 3px 0 0 var(--violet)}
+.changelog{border:1px solid rgba(167,139,250,.35);border-radius:18px;padding:28px;background:linear-gradient(160deg,rgba(167,139,250,.07),transparent)}
+.changelog h3{font-family:var(--serif);font-size:22px;color:var(--violet);margin-bottom:6px}
+.changelog .sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+.changelog ul{list-style:none;display:grid;gap:12px}
+.changelog li{font-size:13.5px;color:var(--muted);padding-left:22px;position:relative}
+.changelog li::before{content:'◆';position:absolute;left:0;color:var(--violet)}
+.changelog li b{color:var(--text)}
+.changelog code{font-family:var(--mono);font-size:11.5px;color:var(--cyan);background:rgba(79,209,197,.08);padding:1px 6px;border-radius:5px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo"><span class="glyph">A</span> AnonJur <span class="mono" style="color:var(--faint);color:#64748b;font-weight:400">/ arquitetura · <span style="color:var(--violet)">v1.2</span></span></div>
+    <div class="nav-links">
+      <a href="#v12" style="color:var(--violet)">Δ v1.2</a><a href="#pipeline">Pipeline</a><a href="#camadas">Camadas</a><a href="#modos">Modos</a>
+      <a href="#defesa">Defesa</a><a href="#regua">Régua 3 anos</a><a href="#stack">Stack</a>
+      <a href="#metricas">Métricas</a><a href="#adrs">ADRs</a><a href="#roadmap">Roadmap</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">PIDE · FAPESPA · iSACI — arquitetura validada em decisões</div>
+  <h1>Módulo de <em>Anonimização Jurídica</em><br>com Coerência Processual</h1>
+  <p>API REST/HTTP soberana que protege documentos do sistema jurídico estadual do Pará sem destruir o sentido do processo — papéis, relações e linha temporal preservados.</p>
+  <div class="hero-badges">
+    <span class="badge gold">REST + OpenAPI · OAuth2/OIDC · container</span>
+    <span class="badge">entrega única obrigatória pela proposta</span>
+    <span class="badge green">régua: toda tecnologia ≥ 3 anos de uso</span>
+    <span class="badge violet">zero IA generativa — só encoders locais</span>
+    <span class="badge violet">nó edge soberano por órgão</span>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="num">3</div><div class="lbl">camadas: guardrails → anonimização → auditoria</div></div>
+    <div class="stat"><div class="num">12</div><div class="lbl">ADRs com decisões rastreáveis</div></div>
+    <div class="stat"><div class="num">~60%</div><div class="lbl">da arquitetura fixada pela própria proposta</div></div>
+    <div class="stat"><div class="num">0</div><div class="lbl">dependências externas em runtime</div></div>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══ DELTA v1.2 ═══ -->
+<section id="v12">
+  <div class="sec-head reveal">
+    <span class="sec-num">00 — DELTA</span>
+    <h2>O que mudou na v1.2</h2>
+    <p>Decisões registradas em 15/out/2026 sobre a v1.1 — destacadas em <span style="color:var(--violet)">violeta</span> ao longo da página.</p>
+  </div>
+  <div class="changelog reveal">
+    <h3>Zero IA generativa · edge nomeado · lacunas mapeadas</h3>
+    <div class="sub">Consolidadas no ADR-0011 e na especificação técnica — nenhuma alteração de contrato da API.</div>
+    <ul>
+      <li><b>ADR-0011 — zero IA generativa:</b> nenhum componente gera texto. Só encoders discriminativos locais (NER legal-BERT, embeddings BERTimbau, spaCy do re-scan). LLMs proibidos por construção — não por preferência. <code>RAG não se aplica: o módulo não tem tarefa generativa.</code></li>
+      <li><b>Perplexidade → pseudo-perplexidade:</b> o filtro de anomalia passa a usar masked-LM — o BERT pontua tokens mascarados, sem decodificação. Mesma função, zero geração.</li>
+      <li><b>Guardrails reenquadrados:</b> sem LLM interno, injeção no documento é inerte para o módulo — a higienização protege o <b>consumidor downstream</b> que alimentará o texto a LLMs (o caso JUDICATA) e sinaliza docs envenenados.</li>
+      <li><b>Nó edge soberano:</b> implantação de referência nomeada — instância autocontida por órgão (VLAN isolada + imagem OCI autocontida, ADR-0007/0008).</li>
+      <li><b>Novo risco mapeado:</b> validade externa do corpus sintético entra na matriz de riscos (métricas podem superestimar peças reais).</li>
+      <li><b>Nova métrica pendente:</b> recall de correferência (% de menções sem vínculo) — a definir no pré-registro.</li>
+      <li><b>Rascunhos a refinar:</b> política de pseudônimos (<code>placeholder_tipado</code> × <code>nome_ficticio</code>) · fórmula do <code>residual_score</code> — ver seção final.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══ PIPELINE ═══ -->
+<section id="pipeline">
+  <div class="sec-head reveal">
+    <span class="sec-num">01 — FLUXO</span>
+    <h2>Ciclo de vida de uma requisição</h2>
+    <p>Onze estágios entre o documento entrar e sair protegido. Clique em cada etapa ou pressione play para ver o pacote percorrer o pipeline.</p>
+  </div>
+  <button class="play-btn" id="playBtn">▶ Simular requisição</button>
+  <div class="pipeline-wrap">
+    <div class="stepper" id="stepper">
+      <div class="step-fill" id="stepFill"></div>
+      <div class="packet" id="packet"></div>
+    </div>
+    <div class="detail-panel" id="detailPanel"></div>
+  </div>
+</section>
+
+<!-- ═══ CAMADAS ═══ -->
+<section id="camadas">
+  <div class="sec-head reveal">
+    <span class="sec-num">02 — INTERNO</span>
+    <h2>As três camadas do módulo</h2>
+    <p>A proposta divide o núcleo em três camadas encadeadas e auditáveis — cada uma com responsabilidade e tecnologia próprias.</p>
+  </div>
+  <div class="cards3">
+    <div class="card reveal"><div class="icon ic-blue">🛡</div><h3>Higienização de Entrada</h3><p>Guardrails que precedem a anonimização — o documento é inspecionado antes de qualquer processamento.</p>
+      <ul><li>Detecção de prompt injection: regex + classificador</li><li>Pseudo-perplexidade via masked-LM — sem geração<span class="v12tag">v1.2</span></li><li>Validação de proveniência e cadeia de custódia</li><li>Protege o consumidor downstream (LLMs)<span class="v12tag">v1.2</span></li></ul></div>
+    <div class="card reveal"><div class="icon ic-gold">⚖</div><h3>Anonimização</h3><p>O núcleo científico — detecção híbrida e substituição consistente com preservação de coerência.</p>
+      <ul><li>NER: legal-BERT PT-BR fine-tunado + regex/validadores + gazetteers</li><li>Classificador de papéis processuais (contextual)</li><li>Motor simbólico Linked Entities (determinístico, auditável)</li></ul></div>
+    <div class="card reveal"><div class="icon ic-green">📋</div><h3>Saída e Auditoria</h3><p>Governança — tudo que entra e sai deixa rastro verificável, sem persistir o conteúdo.</p>
+      <ul><li>Trilha hash-chained (tamper-evident) + request_id único</li><li>Logs estruturados JSON/OTLP + métricas Prometheus</li><li>Cofre de mapeamentos cifrado (modo pseudonimização)</li></ul></div>
+  </div>
+</section>
+
+<!-- ═══ MODOS ═══ -->
+<section id="modos">
+  <div class="sec-head reveal">
+    <span class="sec-num">03 — LGPD</span>
+    <h2>Uma tabela, dois modos</h2>
+    <p>A mesma estrutura de cofre implementa a distinção jurídica central do projeto — o modo escolhido define o que persiste.</p>
+  </div>
+  <div class="mode-toggle reveal">
+    <button class="on" data-mode="a">Anonimização</button>
+    <button data-mode="p">Pseudonimização</button>
+  </div>
+  <div class="mode-grid" id="modeGrid"></div>
+</section>
+
+<!-- ═══ DEFESA ═══ -->
+<section id="defesa">
+  <div class="sec-head reveal">
+    <span class="sec-num">04 — SEGURANÇA</span>
+    <h2>Defesa em profundidade</h2>
+    <p>Cinco anéis concêntricos — cada camada prova algo diferente e cobre a falha das outras. Clique nos anéis.</p>
+  </div>
+  <div class="defense">
+    <div class="onion" id="onion"></div>
+    <div class="def-detail" id="defDetail"></div>
+  </div>
+</section>
+
+<!-- ═══ RÉGUA ═══ -->
+<section id="regua">
+  <div class="sec-head reveal">
+    <span class="sec-num">05 — CRITÉRIO</span>
+    <h2>A régua de 3 anos em ação</h2>
+    <p>Toda tecnologia deve estar em uso estável desde ~out/2023. A linha vermelha é o corte — à direita, candidatos eliminados por imaturidade.</p>
+  </div>
+  <div class="tl reveal" id="timeline"></div>
+  <div class="tl-legend">
+    <span><i style="background:var(--green)"></i>aprovado</span>
+    <span><i style="background:var(--red)"></i>cortado pela régua</span>
+    <span><i style="background:var(--amber)"></i>limítrofe / restrição adicional</span>
+  </div>
+</section>
+
+<!-- ═══ STACK ═══ -->
+<section id="stack">
+  <div class="sec-head reveal">
+    <span class="sec-num">06 — DECISÕES</span>
+    <h2>Stack por bloco</h2>
+    <p>Os ~60% fixados pela proposta + os 40% decididos e validados bloco a bloco.</p>
+  </div>
+  <div class="stack" id="stackList"></div>
+</section>
+
+<!-- ═══ MÉTRICAS ═══ -->
+<section id="metricas">
+  <div class="sec-head reveal">
+    <span class="sec-num">07 — SUCESSO</span>
+    <h2>Métricas que o sistema precisa provar</h2>
+    <p>Metas do pré-registro experimental — viram gates automatizados de CI, não relatório posterior.</p>
+  </div>
+  <div class="metrics">
+    <div class="metric reveal"><div class="name"><span>F1 do NER</span><span class="target">≥ 0,85</span></div><div class="bar"><i data-w="85"></i></div></div>
+    <div class="metric reveal"><div class="name"><span>Consistência de correferência</span><span class="target">≥ 0,90</span></div><div class="bar"><i data-w="90"></i></div></div>
+    <div class="metric reveal"><div class="name"><span>Reidentificação adversarial</span><span class="target">≤ 5%</span></div><div class="bar red"><i data-w="5"></i></div></div>
+    <div class="metric reveal"><div class="name"><span>Utility score (TAB adaptado)</span><span class="target">≥ 0,85</span></div><div class="bar"><i data-w="85"></i></div></div>
+    <div class="metric reveal newv12"><div class="name"><span>Recall de correferência<span class="v12tag">v1.2</span></span><span class="target">a definir · pré-registro</span></div><div class="bar"><i data-w="0"></i></div></div>
+  </div>
+</section>
+
+<!-- ═══ RISCOS ═══ -->
+<section id="riscos">
+  <div class="sec-head reveal">
+    <span class="sec-num">08 — RISCOS</span>
+    <h2>O que pode dar errado — e a resposta</h2>
+  </div>
+  <div class="risks reveal" id="riskList"></div>
+</section>
+
+<!-- ═══ ADRs ═══ -->
+<section id="adrs">
+  <div class="sec-head reveal">
+    <span class="sec-num">09 — REGISTRO</span>
+    <h2>Architecture Decision Records</h2>
+    <p>Doze decisões com contexto, opções avaliadas e consequências. Documentos completos em <span class="mono" style="color:var(--gold2)">docs/adr/</span>.</p>
+  </div>
+  <div class="adrs" id="adrList"></div>
+</section>
+
+<!-- ═══ ROADMAP ═══ -->
+<section id="roadmap">
+  <div class="sec-head reveal">
+    <span class="sec-num">10 — TEMPO</span>
+    <h2>Roadmap — 12 meses, 12 etapas</h2>
+    <p>Alinhado ao cronograma da proposta PIDE. Barras indicam o período de execução de cada etapa.</p>
+  </div>
+  <div class="gantt reveal">
+    <div class="gantt-grid" id="gantt"></div>
+  </div>
+</section>
+
+<!-- ═══ HONEST ═══ -->
+<section>
+  <div class="honest reveal">
+    <h3>Status honesto: validada no papel, pendente em prova</h3>
+    <ul>
+      <li><b>Validado:</b> cada decisão tem justificativa, alternativas e verificação de maturidade — mas nenhum código rodou ainda.</li>
+      <li><b>Pendente:</b> F1 no tagset próprio (só após fine-tune na Etapa 3) · correferência ≥ 0,90 (maior risco científico) · latência BERT-base em CPU · capacidade de TI do órgão.</li>
+      <li><b>Próximas provas:</b> spike NER em texto real · benchmark de latência · smoke test de isolamento (egress deny-all).</li>
+      <li><b>Deferido:</b> PDF/docx pós-MVP · política de reversão (com jurídico) · batch assíncrono (se latência exigir).</li>
+      <li><b>Rascunhos a refinar (v1.2):</b> política de pseudônimos (placeholder tipado × nome fictício) · fórmula do <span class="mono">residual_score</span> · recall de correferência — entram no pré-registro da Etapa 1.</li>
+      <li><b>Especificações abertas:</b> tagset definitivo + esquema de anotação (E3) · regra de merge de spans do janelamento · modelo de relações entre sujeitos (parentesco/hierarquia/temporal) · definições operacionais das métricas — cada lacuna tem etapa dona na proposta.</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <span>AnonJur · módulo API — sistema jurídico estadual do Pará</span>
+    <span>arquitetura v1.2 · docs/adr · out/2026</span>
+  </div>
+</footer>
+<button class="back-top" id="backTop">↑</button>
+
+<script>
+/* ═══════════ DADOS ═══════════ */
+const STAGES=[
+ {t:"Borda — nginx + mTLS",s:"TLS 1.3 + certificado cliente obrigatório",adr:"ADR-0007",
+  d:"O reverse proxy exige certificado de cliente emitido pela CA do órgão. Sem cert válido, a requisição mora aqui — a API não é sequer alcançável. O fingerprint do certificado segue para a app (suporte a RFC 8705).",
+  k:["nginx 2004","TLS 1.3","mTLS"]},
+ {t:"Autenticação / Autorização",s:"JWT OIDC validado offline (JWKS)",adr:"ADR-0006",
+  d:"FastAPI valida o token JWT com JWKS em cache — sem chamar o IdP a cada request (essencial p/ rede isolada). Escopo do token define quais endpoints o cliente pode usar. client_id vira a identidade de auditoria.",
+  k:["OIDC","JWKS offline","PyJWT/Authlib","scopes"]},
+ {t:"Idempotência e cota",s:"Idempotency-Key + rate limit por client_id",adr:"ADR-0003",
+  d:"Chave de idempotência impede reprocessamento acidental (requisito para docs longos). Rate limit e cotas por client_id cumprem o 'controle de cotas' da proposta.",
+  k:["slowapi·Redis","Idempotency-Key","429"]},
+ {t:"Guardrails de entrada",s:"prompt injection · pseudo-perplexidade · proveniência",adr:"E6 · ADR-0011",
+  d:"Três inspeções antes de processar: (a) prompt injection em dual-pass — padrões regex sintáticos + similaridade semântica de embeddings PT-BR contra ataques canônicos, com limiar calibrado no dataset adversarial; (b) pseudo-perplexidade via masked-LM flagra passagens estatisticamente anômalas (pontua tokens mascarados — sem geração); (c) proveniência valida metadados, assinatura e custódia. Sem LLM interno, injeção é inerte para o módulo — a camada protege o consumidor que alimentará o texto a LLMs.",
+  k:["dual-pass","regex+semântica","BERTimbau θ0,84","pseudo-perplexidade MLM","proveniência"],warn:true},
+ {t:"Janelamento 512 tokens",s:"overlap + reconciliação de entidades",adr:"ADR-0001",
+  d:"Limite físico do BERT: 512 posições. Documentos jurídicos têm milhares de tokens → janela deslizante com overlap, depois reconciliar spans de entidades cortados entre janelas.",
+  k:["sliding window","span merge"],warn:true},
+ {t:"Detecção ensemble",s:"NER neural + regras + gazetteers",adr:"ADR-0001",
+  d:"Três vias fundidas por reconciliação: legal-BERT fine-tunado (entidades contextuais), regex+validadores de dígito p/ CPF/CNJ/OAB (precisão ~100%), gazetteers de listas controladas (recall garantido).",
+  k:["legal-BERT STF","regex/CPF/CNJ","gazetteers"]},
+ {t:"Papéis processuais",s:"classificador contextual",adr:"ADR-0001",
+  d:"Papel é atributo contextual, não lexical — 'João' vira AUTOR pela posição na peça. Classificador sobre pessoas detectadas com features de posição e marcadores discursivos: autor, réu, vítima, testemunha, procurador, autoridade...",
+  k:["AUTOR","RÉU","TESTEMUNHA","+7 papéis"]},
+ {t:"Linked Entities",s:"motor simbólico → entidade canônica",adr:"ADR-0002",
+  d:"Motor determinístico resolve menções ('João','o réu','ele','seu pai') para a mesma entidade via regras ordenadas: match exato > nome parcial > papel > regra pronominal. Toda vinculação registra a regra que disparou — auditável por decisão. Fallback conservador: não vincular > vincular errado.",
+  k:["simbólico","100% auditável","fallback seguro"]},
+ {t:"Substituição + persistência",s:"cofre por case_id — 2 modos",adr:"ADR-0004/05",
+  d:"Consulta o cofre no Postgres por case_id: pseudônimo existente → reutiliza (consistência inter-documento); novo → gera. Persistência conforme o modo: anonimização guarda só HMAC(entidade); pseudonimização guarda ciphertext via DEK embrulhada por KEK no Vault.",
+  k:["PostgreSQL","HMAC/AES-GCM","Vault transit"]},
+ {t:"Verificação residual",s:"re-scan de saída + supressão conservadora",adr:"ADR-0010",
+  d:"Segunda passagem orientada a recall sobre o texto JÁ anonimizado — regex + NER em limiar baixo + gazetteers + detector independente (spaCy) caçam PII residual. Independência do detector reduz falhas correlacionadas. Span suspeito → suprimido + registrado. Entidades de baixa confiança foram mascaradas mesmo assim e sinalizadas em review_flags[]. O pior caso deixa de ser 'vazou PII' e vira 'mascaramos demais' — erro no lado seguro.",
+  k:["re-scan","spaCy independente","review_flags","needs_review"],warn:true},
+ {t:"Auditoria + resposta",s:"hash-chain + logs OTLP + metrics",adr:"ADR-0004/09",
+  d:"Audit row encadeada por hash (tamper-evident): request_id, client_id, hashes de entrada/saída, contagens por tipo, model_version — nunca o conteúdo. Resposta: texto tratado + stats + audit_id.",
+  k:["hash-chain","OTLP","Prometheus","model_version"],good:true}
+];
+
+const MODES={
+ a:{tag:"LGPD — dado anonimizado",cls:"tg-green",title:"Anonimização — irreversível",
+   flow:`cofre persiste:\ncase_id │ HMAC(entidade) │ pseudônimo\n\nsem plaintext → sem reversão\ndestruir a chave = irreversibilidade demonstrável`,
+   pts:[["O que guarda","Apenas HMAC(entidade) → pseudônimo, com chave separada"],
+        ["Reversão","Impossível por construção — nem com acesso ao cofre"],
+        ["Uso","Pesquisa aberta, compartilhamento, bases tratadas"],
+        ["Status LGPD","Fora do escopo de dado pessoal (se irreversível de fato)"],
+        ["Consistência","Mantida: HMAC garante mesmo pseudônimo no mesmo caso"]]},
+ p:{tag:"LGPD — continua dado pessoal",cls:"tg-amber",title:"Pseudonimização — reversível controlada",
+   flow:`cofre persiste:\ncase_id │ HMAC(entidade) │ pseudônimo │ ciphertext\n\nciphertext = AES-GCM(entidade) c/ DEK por caso\nDEK embrulhada por KEK no Vault (não exporta)`,
+   pts:[["O que guarda","HMAC + ciphertext reversível por DEK do caso"],
+        ["Reversão","Só via endpoint break-glass + justificativa + auditoria reforçada"],
+        ["Uso","Operação interna, revisão humana, necessidade institucional"],
+        ["Status LGPD","Segue sendo dado pessoal — exige controle de acesso"],
+        ["Consistência","Mantida: mesmo pseudônimo no mesmo caso"]]}
+};
+
+const LAYERS=[
+ {n:"Túnel site-to-site",tech:"WireGuard / IPsec",proves:"'quem pode chegar' — a API não existe para quem está fora",
+  d:"Canal entre órgãos (ex.: iSACI ↔ TJPA). UDP-based, sem TCP meltdown. Preferência WireGuard (2020, auditado); IPsec quando a infra do órgão já existe (firewalls de tribunal)."},
+ {n:"Rede isolada",tech:"VLAN + egress deny-all",proves:"soberania verificável — nada sai, nada baixa em runtime",
+  d:"Contêineres sem rota de saída: sem download de modelo, sem telemetria, sem dependência externa. NTP interno obrigatório p/ timestamps auditáveis. É o que torna a soberania verdadeira, não declarativa. Cada órgão hospeda um nó edge autocontido (nomenclatura v1.2)."},
+ {n:"mTLS na borda",tech:"nginx ssl_verify_client",proves:"'esta máquina é autorizada' — identidade do sistema",
+  d:"Certificado de cliente emitido pela CA do órgão (ou step-ca). Termina TLS 1.3 e repassa fingerprint à app. Sem cert → conexão recusada antes de tocar a aplicação."},
+ {n:"JWT + escopos",tech:"OIDC offline (JWKS)",proves:"'este cliente pode fazer isto' — identidade e autorização",
+  d:"Token JWT validado offline por issuer configurável. client_credentials p/ sistemas, auth code p/ humanos. client_id → cotas + identidade na trilha. Opcional: RFC 8705 vincula token ao certificado."},
+ {n:"Dados cifrados",tech:"Postgres + Vault (KEK/DEK)",proves:"mesmo com tudo comprometido, o conteúdo não se abre",
+  d:"Mapeamentos cifrados por DEK por caso; KEK no Vault transit — nunca exportada. Audit trail hash-chained detecta adulteração retroativa. Conteúdo de documentos nunca é persistido."}
+];
+
+const TIMELINE=[
+ {y:2010,n:"Flask",s:"pass"},{y:2012,n:"OAuth2",s:"pass"},{y:2013,n:"Docker",s:"pass"},
+ {y:2014,n:"Keycloak·OIDC",s:"pass"},{y:2015,n:"JWT·pytest·hypoth.",s:"pass"},
+ {y:2016,n:"Vault·spaCy·PyTorch",s:"pass"},{y:2018,n:"FastAPI·poetry",s:"pass"},
+ {y:2019,n:"HF Transformers·schemathesis",s:"pass"},{y:2020,n:"BERTimbau·WireGuard·cosign",s:"pass"},
+ {y:2021,n:"OTLP·OpenAPI 3.1",s:"pass"},{y:2022,n:"legal-NER STF",s:"pass"},
+ {y:2023.5,n:"Pydantic v2",s:"edge"},{y:2023.8,n:"fastcoref",s:"edge"},
+ {y:2023.9,n:"GLiNER",s:"fail"},{y:2023.92,n:"OpenBao",s:"fail"},
+ {y:2024.2,n:"uv",s:"fail"},{y:2024.6,n:"Sabiá-2/3·LLMs",s:"fail"},{y:2025.5,n:"hoje →",s:"edge"}
+];
+
+const STACK=[
+ ["NÚCLEO NLP","legal-BERT PT-BR (backbone STF) + regex/validadores + gazetteers","NER fine-tunado no corpus próprio; tagset estendido; spaCy como detector independente no re-scan","2020–2022","HF/BRACIS"],
+ ["CORREFERÊNCIA","Motor simbólico Linked Entities","código próprio determinístico — única opção madura em PT-BR","design próprio","ADR-0002"],
+ ["API","FastAPI + uvicorn + Pydantic v2 · Redis","OpenAPI do código; ASGI; cliente Py gerado; rate limit","2018 / 2023","ADR-0003"],
+ ["DADOS / COFRE","PostgreSQL 15+ (pgcrypto, pgaudit)","mapeamentos por caso + trilha hash-chained","1996","ADR-0004"],
+ ["CHAVES","HashiCorp Vault — transit engine","KEK não exportável embrulha DEKs","2016","ADR-0005"],
+ ["IDENTIDADE","OIDC · JWT offline · Keycloak ref.","issuer-agnóstico; client_credentials p/ sistemas","2014","ADR-0006"],
+ ["REDE","nginx mTLS · WireGuard/IPsec · VLAN isolada","egress deny-all · NTP interno · bastion SSH","2004/2020","ADR-0007"],
+ ["DEPLOY","OCI · docker compose · modelo pinado por SHA","imagem = código + modelo; SBOM syft · cosign","2013–21","ADR-0008"],
+ ["TESTES/CI","pytest · hypothesis · schemathesis · testcontainers","poetry · ruff · mypy · bandit · Prometheus","2004–22","ADR-0009"],
+ ["CLASSE DE IA","Zero IA generativa — só encoders discriminativos","LLMs proibidos por construção · pseudo-perplexidade via masked-LM · inferência determinística auditável","permanente","ADR-0011",1]
+];
+
+const RISKS=[
+ ["h","Reidentificação residual","Identificadores indiretos escapam à detecção","Ensemble + gazetteers + re-scan de saída (ADR-0010) + avaliação adversarial + hypothesis em CI (≤5%)"],
+ ["h","Vinculação errada","Menção ligada à entidade errada quebra coerência","Fallback conservador: não vincular > errar; supressão conservadora em baixa confiança (ADR-0010)"],
+ ["h","Tagset divergente","Modelos prontos usam esquema LeNER-Br ≠ do projeto","Fine-tune no corpus próprio — já previsto na Etapa 3"],
+ ["m","Prompt injection evasivo","Ataque contorna regex + classificador","Dataset adversarial + perplexidade + quarentena"],
+ ["m","Chaves comprometidas","DEK/KEK vazam → pseudonimização vira exposição","KEK não exportável (transit); rotação; hash-chain detecta"],
+ ["m","Abuso da reversão","Endpoint de reversão mal utilizado","Escopo separado, break-glass, justificativa, auditoria reforçada"],
+ ["m","Infra do órgão","CA/NTP/IdP indisponíveis no ambiente","Keycloak + step-ca de referência no compose — autônomo"],
+ ["m","Deriva do modelo","Novos tipos de peça degradam NER","model_version auditado; ciclo de fine-tune; release = nova imagem"],
+ ["m","Validade externa do corpus","Métricas só sobre dados sintéticos podem superestimar peças reais","Templates adversariais (ruído OCR, formatos variados) + amostras reais quando autorizadas + Etapa 11",1]
+];
+
+const ADRS=[
+ ["0000","Régua de maturidade ≥ 3 anos","Toda tecnologia precisa estar em uso desde ~out/2023, com sinal de uso ativo — projeto abandonado reprova mesmo sendo antigo.",
+   "Cortados: GLiNER (nov/23) · OpenBao (nov/23) · Sabiá-2/3 · uv (fev/24) · Litestar · neuralcoref (abandonado). Limítrofes: Pydantic v2, fastcoref."],
+ ["0001","Detecção híbrida de entidades","Ensemble: legal-BERT fine-tunado (contextual) + regex/validadores (estruturado) + gazetteers (recall). Papéis processuais = classificador separado — papel é contextual, não lexical.",
+   "Alternativas: regex só (insuficiente — Lison 2021) · CRF (contexto fraco) · GLiNER/LLM (cortados). Backbone ref: dominguesm legal-BERT, F1 0,953 no corpus STF."],
+ ["0002","Correferência simbólica","Motor Linked Entities determinístico — regras ordenadas de vinculação com registro da regra disparada. Fallback: não vincular > vincular errado.",
+   "Motivo: não existe ferramenta madura de correferência em PT-BR (só pesquisa/inglês). CNJ 615/2025 exige auditabilidade → determinístico é explicável."],
+ ["0003","FastAPI","Único maduro com OpenAPI gerado do código — contrato nasce dos modelos Pydantic, zero drift. ASGI p/ concorrência sob inferência longa; cliente Py gerado do spec.",
+   "Flask/Django exigiriam plugin de contrato (drift risk). Litestar cortado pela régua. Pin de versão obrigatório (histórico 0.x)."],
+ ["0004","Postgres: cofre + auditoria","Uma tabela de mapeamentos, dois modos: anonimização guarda só HMAC(entidade); pseudonimização guarda ciphertext. Trilha hash-chained = tamper-evident.",
+   "Mapeamento escopo por case_id → consistência inter-documento (Etapa 5). Conteúdo de documento nunca persistido — só metadados e hashes."],
+ ["0005","Vault para KEK/DEK","Transit engine: KEK nunca exportada; DEKs por caso embrulhadas via API. Audit devices próprios. Fallback documentado: secret montado + disco cifrado.",
+   "OpenBao (fork) cortado pela régua — nov/2023. HSM físico = overkill p/ módulo de pesquisa. Licença BSL permite uso interno governamental."],
+ ["0006","OIDC + Keycloak referência","API agnóstica de issuer: valida JWT offline via JWKS cache — IdP só na emissão. Keycloak bundled (mesmo do gov.br); órgão com IdP próprio só troca a URL.",
+   "client_credentials p/ sistemas · auth code p/ humanos. client_id → cotas + auditoria. RFC 8705 (cert-bound tokens) opcional endurecido."],
+ ["0007","Rede isolada + túneis","VLAN isolada + egress deny-all (soberania real) · nginx mTLS na borda · WireGuard preferido/IPsec fallback inter-órgãos · SSH bastion · NTP interno.",
+   "Túnel = fronteira de alcançabilidade, não criptografia — TLS já confidencia. UDP evita TCP meltdown em payloads grandes."],
+ ["0008","OCI + compose","Imagem única: código + modelo pinado por SHA no build (único momento com internet). Tag = código+modelo. Compose orquestra api/nginx/pg/vault/keycloak.",
+   "K8s maduro mas overkill p/ 5 serviços num tribunal — caminho futuro no white paper. model_version gravado na trilha de cada request."],
+ ["0009","Testes + toolchain","pytest TDD · hypothesis (propriedade 'saída nunca contém PII da entrada') · schemathesis (fuzzing contra o próprio OpenAPI) · testcontainers.",
+   "poetry (uv cortado pela régua — fev/24) · ruff/mypy/bandit gates · syft SBOM · cosign assina imagem · Prometheus alimenta as métricas do próprio experimento."],
+ ["0010","Verificação residual + confiança","Re-scan de saída recall-oriented sobre o texto anonimizado; entidades abaixo do limiar são mascaradas mesmo assim + sinalizadas; resposta carrega risk_score/needs_review — risco vira algo medido, não silencioso.",
+   "Aditivo, sem quebrar o contrato síncrono: falha de detecção deixa de ser invisível e vira flag auditável. Custo: uma passagem barata de latência; needs_review pressupõe processo de revisão no consumidor. Não promete 100% — torna o residual limitado e mensurável (LGPD: meios razoáveis)."],
+ ["0011","Zero IA generativa","Nenhum componente gera texto — só encoders discriminativos locais e determinísticos (NER legal-BERT, embeddings BERTimbau, spaCy). Perplexidade vira pseudo-perplexidade via masked-LM. RAG não se aplica: o módulo não tem tarefa generativa — retrieval sobre docs anonimizados seria serviço adjacente futuro.",
+   "Proibido: LLMs (locais ou API), decodificação autoregressiva, sumarizadores. Guardrails passam a proteger o consumidor downstream que alimentará o texto a LLMs. Componente generativo futuro exige ADR supersedendo este + threat model novo.",1]
+];
+
+const GANTT=[
+ ["E3 Corpus sintético + tagset",1,2,"gb-1"],
+ ["E4 NER + papéis processuais",3,5,"gb-2"],
+ ["E5 Motor Linked Entities",4,6,"gb-2"],
+ ["E6 Guardrails de entrada",5,7,"gb-3"],
+ ["E7 Cofre + auditoria + Vault",6,8,"gb-3"],
+ ["E9 Integração API/OpenAPI/OIDC",7,9,"gb-4"],
+ ["E10 Avaliação experimental",8,10,"gb-4"],
+ ["E11 Validação institucional",9,11,"gb-1"],
+ ["E12 Disseminação + white paper",12,12,"gb-1"]
+];
+
+/* ═══════════ PIPELINE ═══════════ */
+const stepper=document.getElementById('stepper');
+STAGES.forEach((st,i)=>{
+  const el=document.createElement('div');
+  el.className='step';el.dataset.i=i;
+  el.innerHTML=`<div class="step-dot">${String(i+1).padStart(2,'0')}</div>
+    <div class="step-body">
+      <div class="step-top"><span class="step-title">${st.t}</span><span class="step-adr">${st.adr}</span></div>
+      <div class="step-sub">${st.s}</div>
+      <div class="step-detail"><p>${st.d}</p><div class="chips">${st.k.map(k=>`<span class="chip${st.warn?' o':st.good?' g':''}">${k}</span>`).join('')}</div></div>
+    </div>`;
+  el.onclick=()=>selectStep(i,true);
+  stepper.appendChild(el);
+});
+const steps=[...document.querySelectorAll('.step')],fill=document.getElementById('stepFill'),
+      packet=document.getElementById('packet'),panel=document.getElementById('detailPanel'),playBtn=document.getElementById('playBtn');
+function selectStep(i,toggle=false){
+  steps.forEach((s,j)=>{
+    s.classList.toggle('active',j===i);
+    if(j===i)s.classList.toggle('open',toggle?!s.classList.contains('open'):true);else s.classList.remove('open');
+  });
+  const st=STAGES[i];
+  panel.innerHTML=`<span class="tag">${st.adr}</span><h3>${st.t}</h3>
+    <div class="desc">${st.d}</div>
+    <div class="kv">${st.k.map(k=>`<div><b>tec</b><span>${k}</span></div>`).join('')}</div>`;
+  // centro do badge = step.offsetTop + 16 (top do dot) + 22 (metade do dot)
+  fill.style.height=(steps[i].offsetTop+38-8)+'px';
+}
+function movePacket(i){
+  packet.style.top=(steps[i].offsetTop+30)+'px';packet.classList.add('on');
+}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let playing=false;
+playBtn.onclick=async()=>{
+  if(playing)return;playing=true;playBtn.disabled=true;playBtn.textContent='● processando…';
+  steps.forEach(s=>{s.classList.remove('active','open')});fill.style.height='0';
+  for(let i=0;i<steps.length;i++){
+    steps.forEach((s,j)=>{s.classList.toggle('active',j===i);s.classList.toggle('open',j===i)});
+    movePacket(i);selectStep(i);await sleep(650);
+  }
+  await sleep(400);packet.classList.remove('on');
+  playing=false;playBtn.disabled=false;playBtn.innerHTML='▶ Simular requisição';
+};
+selectStep(0);
+
+/* ═══════════ MODOS ═══════════ */
+const modeGrid=document.getElementById('modeGrid');
+function renderMode(key){
+  const m=MODES[key];
+  modeGrid.innerHTML=`
+    <div class="mode-box"><span class="tagline ${m.cls}">${m.tag}</span><h3><span class="dot-ind" style="background:${key==='a'?'var(--green)':'var(--amber)'}"></span>${m.title}</h3>
+      <div class="flow">${m.flow}</div></div>
+    <div class="mode-box"><h3>O que isso significa</h3><div class="kv-list" style="margin-top:14px">
+      ${m.pts.map(p=>`<div><b>${p[0]}:</b> ${p[1]}</div>`).join('')}</div></div>`;
+}
+document.querySelectorAll('.mode-toggle button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.mode-toggle button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');renderMode(b.dataset.mode);
+});
+renderMode('a');
+
+/* ═══════════ DEFESA ═══════════ */
+const onion=document.getElementById('onion'),defDetail=document.getElementById('defDetail');
+LAYERS.forEach((l,i)=>{
+  const d=document.createElement('div');d.className='layer l'+(i+1);
+  d.innerHTML=`<span>${l.n}</span>`;d.onclick=()=>selLayer(i);onion.appendChild(d);
+});
+function selLayer(i){
+  document.querySelectorAll('.layer').forEach((l,j)=>l.classList.toggle('on',j===i));
+  const l=LAYERS[i];
+  defDetail.innerHTML=`<h3>${l.n}</h3><div class="proves">${l.tech}</div><p style="margin-top:10px">${l.d}</p>
+    <div class="proves" style="margin-top:16px">prova → ${l.proves}</div>`;
+}
+selLayer(1);
+
+/* ═══════════ TIMELINE ═══════════ */
+const tl=document.getElementById('timeline');
+const Y0=2009,Y1=2026.9,CUT=2023.75;
+const pct=y=>((y-Y0)/(Y1-Y0)*100);
+tl.innerHTML=`<div class="tl-track"></div><div class="tl-cut" style="left:${pct(CUT)}%"><span class="lbl">✂ corte — out/2023</span><span class="lbl2">mínimo 3 anos de uso</span></div>`;
+let up=false;
+TIMELINE.forEach(t=>{
+  const side=(up=!up)?'up':'dn';
+  const el=document.createElement('div');
+  el.innerHTML=`<div class="tl-dot ${t.s}" style="left:${pct(t.y)}%"></div>
+    <div class="tl-lbl ${side}" style="left:${pct(t.y)}%">${t.n}<span class="yr">${t.y>2024?'':t.y}</span></div>`;
+  [...el.children].forEach(c=>tl.appendChild(c));
+});
+[2010,2013,2016,2019,2022,2025].forEach(y=>{
+  const el=document.createElement('span');el.className='tl-year';el.style.left=pct(y)+'%';el.textContent=y;tl.appendChild(el);
+});
+
+/* ═══════════ STACK ═══════════ */
+document.getElementById('stackList').innerHTML=STACK.map(r=>`
+  <div class="stack-row${r[5]?' newv12':''}"><span class="stack-block">${r[0]}${r[5]?'<span class="v12tag">v1.2</span>':''}</span>
+    <div class="stack-tech">${r[1]}<small>${r[2]}</small></div>
+    <div class="stack-year">${r[3]}<small>${r[4]}</small></div></div>`).join('');
+
+/* ═══════════ RISCOS ═══════════ */
+document.getElementById('riskList').innerHTML=RISKS.map(r=>`
+  <div class="risk-row${r[4]?' newv12':''}"><span class="risk-sev sev-${r[0]}">${r[0]==='h'?'ALTO':'MED'}</span>
+    <span class="risk-name">${r[1]}${r[4]?'<span class="v12tag">v1.2</span>':''}</span><span class="risk-desc">${r[2]}</span>
+    <span class="risk-mit">→ ${r[3]}</span></div>`).join('');
+
+/* ═══════════ ADRs ═══════════ */
+document.getElementById('adrList').innerHTML=ADRS.map((a,i)=>`
+  <div class="adr${a[4]?' newv12':''}" data-i="${i}">
+    <div class="adr-head"><span class="adr-id">ADR-${a[0]}</span><span class="adr-title">${a[1]}${a[4]?'<span class="v12tag">NOVO</span>':''}</span>
+      <span class="adr-status">ACEITO</span><span class="adr-caret">▶</span></div>
+    <div class="adr-body"><div class="adr-inner"><p><b>Decisão:</b> ${a[2]}</p><p class="cut">${a[3]}</p></div></div>
+  </div>`).join('');
+document.querySelectorAll('.adr-head').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('open'));
+
+/* ═══════════ GANTT ═══════════ */
+const g=document.getElementById('gantt');
+g.innerHTML=`<div class="gantt-months"><span></span>${Array.from({length:12},(_,i)=>`<span>M${i+1}</span>`).join('')}</div>`+
+ GANTT.map(r=>`<div class="gantt-row"><span class="gantt-name">${r[0]}</span>
+   <div class="gantt-track"><div class="gantt-bar ${r[3]}" style="grid-column:${r[1]}/${r[2]+1}">M${r[1]}${r[2]>r[1]?'–'+r[2]:''}</div></div></div>`).join('');
+
+/* ═══════════ SCROLL FX ═══════════ */
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('visible');
+    e.target.querySelectorAll('.bar i').forEach(b=>b.style.width=b.dataset.w+'%');}
+}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const secs=document.querySelectorAll('section[id]'),links=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  document.getElementById('backTop').classList.toggle('show',scrollY>700);
+  let cur='';secs.forEach(s=>{if(scrollY>=s.offsetTop-140)cur=s.id});
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+});
+document.getElementById('backTop').onclick=()=>scrollTo({top:0,behavior:'smooth'});
+</script>
+</body>
+</html>

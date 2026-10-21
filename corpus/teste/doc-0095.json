@@ -1,0 +1,91 @@
+{
+  "documento": "doc-0095.txt",
+  "pdf": "doc-0095.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Desembargador",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 35,
+      "preservar": true
+    },
+    {
+      "texto": "BELEM",
+      "tipo": "CIDADE",
+      "inicio": 64,
+      "fim": 69,
+      "preservar": true
+    },
+    {
+      "texto": "3300099-12.2026.8.11.2626",
+      "tipo": "CNJ",
+      "inicio": 83,
+      "fim": 108,
+      "preservar": true
+    },
+    {
+      "texto": "ANTONIO MARCOS PINHEIRO",
+      "tipo": "NOME",
+      "inicio": 110,
+      "fim": 133,
+      "preservar": false
+    },
+    {
+      "texto": "PA 66.970.851",
+      "tipo": "RG",
+      "inicio": 159,
+      "fim": 172,
+      "preservar": false
+    },
+    {
+      "texto": "06956588242",
+      "tipo": "CPF",
+      "inicio": 174,
+      "fim": 185,
+      "preservar": false
+    },
+    {
+      "texto": "Rua Santo Antonio, 297, Batista Campos, Maraba-PA, CEP 67743-748",
+      "tipo": "ENDERECO",
+      "inicio": 203,
+      "fim": 267,
+      "preservar": false
+    },
+    {
+      "texto": "LUCIA.SILVA@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 276,
+      "fim": 297,
+      "preservar": false
+    },
+    {
+      "texto": "93965756452",
+      "tipo": "TELEFONE",
+      "inicio": 308,
+      "fim": 319,
+      "preservar": false
+    },
+    {
+      "texto": "Francisca De Oliveira Lima",
+      "tipo": "NOME",
+      "inicio": 393,
+      "fim": 419,
+      "preservar": false
+    },
+    {
+      "texto": "R$176.725,71",
+      "tipo": "VALOR",
+      "inicio": 461,
+      "fim": 473,
+      "preservar": true
+    },
+    {
+      "texto": "R$163.873,83",
+      "tipo": "VALOR",
+      "inicio": 514,
+      "fim": 526,
+      "preservar": true
+    }
+  ]
+}

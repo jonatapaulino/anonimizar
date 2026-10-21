@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0013.txt",
+  "pdf": "doc-0013.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Secretaria de Estado de Fazenda",
+      "tipo": "ORGAO",
+      "inicio": 11,
+      "fim": 42,
+      "preservar": true
+    },
+    {
+      "texto": "Maria Da Silva",
+      "tipo": "NOME",
+      "inicio": 58,
+      "fim": 72,
+      "preservar": false
+    },
+    {
+      "texto": "PA 67.064.656",
+      "tipo": "RG",
+      "inicio": 77,
+      "fim": 90,
+      "preservar": false
+    },
+    {
+      "texto": "9509760-68.2022.8.13.1875",
+      "tipo": "CNJ",
+      "inicio": 130,
+      "fim": 155,
+      "preservar": true
+    },
+    {
+      "texto": "Santarem",
+      "tipo": "CIDADE",
+      "inicio": 191,
+      "fim": 199,
+      "preservar": true
+    },
+    {
+      "texto": "(93)32627666",
+      "tipo": "TELEFONE",
+      "inicio": 240,
+      "fim": 252,
+      "preservar": false
+    },
+    {
+      "texto": "MARIA.SILVA@HOTMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 263,
+      "fim": 286,
+      "preservar": false
+    }
+  ]
+}

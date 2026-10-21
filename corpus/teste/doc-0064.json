@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0064.txt",
+  "pdf": "doc-0064.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "ANTONIO MARCOS PINHEIRO",
+      "tipo": "NOME",
+      "inicio": 48,
+      "fim": 71,
+      "preservar": false
+    },
+    {
+      "texto": "926.141.589-09",
+      "tipo": "CPF",
+      "inicio": 77,
+      "fim": 91,
+      "preservar": false
+    },
+    {
+      "texto": "MARCOS AURELIO TAVARES",
+      "tipo": "NOME",
+      "inicio": 105,
+      "fim": 127,
+      "preservar": false
+    },
+    {
+      "texto": "35401807295",
+      "tipo": "CPF",
+      "inicio": 133,
+      "fim": 144,
+      "preservar": false
+    },
+    {
+      "texto": "Rua das Flores, 1361, Centro, Castanhal-PA, CEP 69566-533",
+      "tipo": "ENDERECO",
+      "inicio": 155,
+      "fim": 212,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 217.843,48",
+      "tipo": "VALOR",
+      "inicio": 250,
+      "fim": 266,
+      "preservar": true
+    },
+    {
+      "texto": "6401634-27.2020.8.10.5250",
+      "tipo": "CNJ",
+      "inicio": 304,
+      "fim": 329,
+      "preservar": true
+    },
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 340,
+      "fim": 376,
+      "preservar": true
+    }
+  ]
+}

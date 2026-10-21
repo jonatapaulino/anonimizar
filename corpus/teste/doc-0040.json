@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0040.txt",
+  "pdf": "doc-0040.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Camara Municipal de Belem",
+      "tipo": "ORGAO",
+      "inicio": 11,
+      "fim": 36,
+      "preservar": true
+    },
+    {
+      "texto": "Marcos Oliveira",
+      "tipo": "NOME",
+      "inicio": 52,
+      "fim": 67,
+      "preservar": false
+    },
+    {
+      "texto": "58.244.381",
+      "tipo": "RG",
+      "inicio": 72,
+      "fim": 82,
+      "preservar": false
+    },
+    {
+      "texto": "2431407-41.2024.8.13.4103",
+      "tipo": "CNJ",
+      "inicio": 122,
+      "fim": 147,
+      "preservar": true
+    },
+    {
+      "texto": "Ananindeua",
+      "tipo": "CIDADE",
+      "inicio": 183,
+      "fim": 193,
+      "preservar": true
+    },
+    {
+      "texto": "(94) 96580-8673",
+      "tipo": "TELEFONE",
+      "inicio": 234,
+      "fim": 249,
+      "preservar": false
+    },
+    {
+      "texto": "CARLOS.SANTOS@HOTMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 260,
+      "fim": 285,
+      "preservar": false
+    }
+  ]
+}

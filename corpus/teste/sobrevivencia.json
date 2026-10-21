@@ -1,0 +1,4312 @@
+{
+  "doc-0030.txt": {
+    "entidades": [
+      {
+        "texto": "Juiz de Direito",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "BELEM",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "8129816-32.2019.8.10.3902",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Lucia Helena Barbosa",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "174.392.384-86",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Travessa Dom Pedro I, 635, Centro, Ananindeua-PA, CEP 66556-667",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(93)977729344",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CARLOS EDUARDO NASCIMENTO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 202.348,69",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 189.329,14",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0031.txt": {
+    "entidades": [
+      {
+        "texto": "Juiz de Direito",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "SANTAREM",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9254334-40.2019.8.13.1400",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "DENISE PINHEIRO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "448.502.234-00",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua das Flores, 1281, Batista Campos, Ananindeua-PA, CEP 67669-748",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9141857522",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Jose Ribamar Da Costa",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 239.535,71",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$136.611,13",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0032.txt": {
+    "entidades": [
+      {
+        "texto": "Ministerio Publico do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "3042668-34.2025.8.13.6223",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Maria Das Gracas Santana",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIASOUZA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "93 98629-9454",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$8.452,91",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ananindeua",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Procurador da Republica",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0033.txt": {
+    "entidades": [
+      {
+        "texto": "Defensor Publico",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CASTANHAL",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "7186578-91.2020.8.12.9210",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Carlos Eduardo Nascimento",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "54.687.218-X",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "37676434483",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Av. Governador Jose Malcher, 1841, Centro, Castanhal-PA, CEP 69566-631",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Maria Oliveira",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 41.904,05",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 125.881,91",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0034.txt": {
+    "entidades": [
+      {
+        "texto": "SEDUC-PA",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tribunal de Justica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Antonio De Souza",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "05.606.581",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "63137949742",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "DENISESOUZA@MPPA.MP.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(91)43035176",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 190.402,88",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Juiz de Direito",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0035.txt": {
+    "entidades": [
+      {
+        "texto": "Defensoria Publica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "5388545-96.2019.8.11.5590",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PEDRO HENRIQUE ALMEIDA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CARLOSSANTOS@TJPA.JUS.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(94) 4709-7986",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$153.680,78",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Santarem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Escrivao Judicial",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0036.txt": {
+    "entidades": [
+      {
+        "texto": "TJPA",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ministerio Publico do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANA PAULA SANTOS",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PA 56.521.665",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "42844753639",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "LUCIA.SOUZA@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "91984162971",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 230.251,00",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Desembargador",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0037.txt": {
+    "entidades": [
+      {
+        "texto": "TJPA",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tribunal Regional Eleitoral do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Jose Ribamar Da Costa",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "13.624.700-X",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "21252774761",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "LUCIASANTOS@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(93)981206120",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 196.869,72",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Perito Judicial",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0038.txt": {
+    "entidades": [
+      {
+        "texto": "Desembargador",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "SANTAREM",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "2672490-29.2024.8.12.2908",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "IVONETE CRISTINA ROCHA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "39632034120",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "91 98917-3101",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIA JOSE FERREIRA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$232.161,36",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 232.600,18",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0039.txt": {
+    "entidades": [
+      {
+        "texto": "Secretaria de Estado de Fazenda",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "7516177-17.2023.8.10.2851",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIA DAS GRACAS SANTANA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIA.SANTOS@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(91) 98326-7290",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$203.477,55",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Santarem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Desembargador",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0040.txt": {
+    "entidades": [
+      {
+        "texto": "Camara Municipal de Belem",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Marcos Oliveira",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "58.244.381",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "2431407-41.2024.8.13.4103",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ananindeua",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(94) 96580-8673",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CARLOS.SANTOS@HOTMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0041.txt": {
+    "entidades": [
+      {
+        "texto": "JOSE RIBAMAR DA COSTA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "960.133.162-01",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Denise Costa",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "632.577.845-62",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Av. Almirante Barroso, 1858, Cidade Velha, Castanhal-PA, CEP 68943-934",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 75.364,79",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "7861289-38.2022.8.12.7193",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ministerio Publico do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0042.txt": {
+    "entidades": [
+      {
+        "texto": "Juiz de Direito",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CASTANHAL",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "4584289-94.2020.8.13.5267",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Francisca De Oliveira Lima",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "59.798.381-2",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "79995900297",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Travessa Dom Pedro I, 590, Cidade Velha, Ananindeua-PA, CEP 68952-111",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9133319852",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ROSA MARIA CONCEICAO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 205.155,51",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$232.173,21",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0043.txt": {
+    "entidades": [
+      {
+        "texto": "LUCIA HELENA BARBOSA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "18266919950",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Maria Pinheiro",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "582.082.020-70",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Av. Conselheiro Furtado, 442, Cidade Velha, Santarem-PA, CEP 66992-855",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$198.825,16",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "3432644-71.2019.8.10.6846",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tribunal de Justica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0044.txt": {
+    "entidades": [
+      {
+        "texto": "Secretaria de Estado de Fazenda",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ROSA MARIA CONCEICAO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "45252881758",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Av. Governador Jose Malcher, 303, Cidade Velha, Ananindeua-PA, CEP 66722-835",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9892715-18.2023.8.12.2573",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PEDRO.FERREIRA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(93) 3590-2120",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0045.txt": {
+    "entidades": [
+      {
+        "texto": "Camara Municipal de Belem",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOSE RIBAMAR DA COSTA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "417.558.347-56",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua dos Mundurucus, 1064, Batista Campos, Belem-PA, CEP 68820-524",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "3292418-30.2024.8.12.9923",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANTONIO_SOUZA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "93 96774-2843",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0046.txt": {
+    "entidades": [
+      {
+        "texto": "TJPA",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Defensoria Publica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Marcos Ferreira",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "15.479.352-4",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "427.419.088-93",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CARLOS_PINHEIRO@TJPA.JUS.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9334094915",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$70.660,01",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Analista Judiciario",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0047.txt": {
+    "entidades": [
+      {
+        "texto": "Tribunal de Justica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANTONIO MARCOS PINHEIRO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "98518392306",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua Santo Antonio, 2444, Nazare, Belem-PA, CEP 67847-465",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "4270444-93.2020.8.11.1637",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIA.SANTOS@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "91 3884-3601",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0048.txt": {
+    "entidades": [
+      {
+        "texto": "SEFAZ-PA",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Camara Municipal de Belem",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Denise Aparecida Moraes",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "SSP-PA 00.207.848-2",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "195.848.548-95",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CARLOS.SANTOS@TJPA.JUS.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9336225688",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$7.066,28",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Analista Judiciario",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0049.txt": {
+    "entidades": [
+      {
+        "texto": "Carlos Eduardo Nascimento",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "17465402573",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANTONIO MARCOS PINHEIRO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "572.805.292-40",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua Santo Antonio, 1624, Sao Bras, Belem-PA, CEP 66747-274",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 133.172,01",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "3965624-19.2025.8.14.9225",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ministerio Publico Federal",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0050.txt": {
+    "entidades": [
+      {
+        "texto": "Universidade Federal do Para",
+        "tipo": "INSTITUICAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Maria Das Gracas Santana",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "575.544.289-42",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua dos Mundurucus, 2858, Cidade Velha, Belem-PA, CEP 67722-885",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$29.071,22",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "6170925-66.2021.8.10.4176",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ministerio Publico do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0051.txt": {
+    "entidades": [
+      {
+        "texto": "Ministerio Publico Federal",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Pedro Henrique Almeida",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "91555990010",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua das Flores, 1157, Marco, Castanhal-PA, CEP 66288-192",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "7845759-67.2022.8.12.1495",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "FRANCISCA_BARBOSA@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "91 96669-1817",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0052.txt": {
+    "entidades": [
+      {
+        "texto": "Desembargador",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANANINDEUA",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "4822863-19.2022.8.13.5027",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Marcos Costa",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "187.838.324-83",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Av. Almirante Barroso, 2809, Nazare, Belem-PA, CEP 69086-420",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PEDRO_SANTOS@MPPA.MP.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tribunal de Contas dos Municipios",
+        "tipo": "INSTITUICAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$212.664,78",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 30.514,40",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0053.txt": {
+    "entidades": [
+      {
+        "texto": "Defensoria Publica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rosa Santos",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "85571025182",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tv. Castelo Branco, 690, Reduto, Santarem-PA, CEP 67103-772",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "2961237-23.2025.8.12.3458",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANTONIO_BARBOSA@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(91)971528741",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0054.txt": {
+    "entidades": [
+      {
+        "texto": "Ministerio Publico Federal",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARCOS AURELIO TAVARES",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "10175173559",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua das Flores, 2641, Cidade Velha, Ananindeua-PA, CEP 67024-389",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "1027109-32.2021.8.13.4679",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CARLOS.BARBOSA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "93 4289-1261",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0055.txt": {
+    "entidades": [
+      {
+        "texto": "IVONETE CRISTINA ROCHA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "204.306.939-07",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "IVONETE FERREIRA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "734.906.234-60",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua dos Mundurucus, 2580, Centro, Maraba-PA, CEP 68482-331",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 97.265,47",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "5216783-44.2019.8.12.4019",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ministerio Publico Federal",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0056.txt": {
+    "entidades": [
+      {
+        "texto": "SEDUC-PA",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Secretaria de Estado de Fazenda",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Antonio Marcos Pinheiro",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PA 05.031.796",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "835.985.589-70",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "FRANCISCA_SILVA@MPPA.MP.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9342358542",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 104.343,00",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Analista Judiciario",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0057.txt": {
+    "entidades": [
+      {
+        "texto": "Analista Judiciario",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CASTANHAL",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "4366634-46.2026.8.12.3010",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "IVONETE CRISTINA ROCHA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "58.320.829",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "732.590.332-46",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Av. Conselheiro Furtado, 823, Batista Campos, Castanhal-PA, CEP 69131-501",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PEDRO_OLIVEIRA@MPPA.MP.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(93) 4502-8335",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Maria Das Gracas Santana",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$94.812,57",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$10.213,00",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0058.txt": {
+    "entidades": [
+      {
+        "texto": "Tribunal Regional Eleitoral do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CARLOS FERREIRA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "426.013.669-07",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Av. Conselheiro Furtado, 1302, Reduto, Santarem-PA, CEP 69426-208",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "1887216-43.2021.8.10.9682",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "DENISE.PINHEIRO@HOTMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "91 97424-8824",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0059.txt": {
+    "entidades": [
+      {
+        "texto": "SEFAZ-PA",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ministerio Publico do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rosa Maria Conceicao",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PA 84.001.863-X",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "37344737051",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIA_SOUZA@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "94 97148-3240",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$89.134,17",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Promotor de Justica",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0060.txt": {
+    "entidades": [
+      {
+        "texto": "Tribunal Regional Eleitoral do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "5240321-63.2020.8.11.3811",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Denise Aparecida Moraes",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CARLOS.BARBOSA@HOTMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "91 96629-5232",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$210.406,11",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ananindeua",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Perito Judicial",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0061.txt": {
+    "entidades": [
+      {
+        "texto": "Ministerio Publico do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Maria Das Gracas Santana",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "65.015.372-7",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "7641711-33.2019.8.14.3150",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ananindeua",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "94 4831-3679",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "IVONETECOSTA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0062.txt": {
+    "entidades": [
+      {
+        "texto": "Secretaria de Estado de Fazenda",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "4162698-53.2026.8.10.2831",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOSE RIBAMAR DA COSTA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PEDRO.OLIVEIRA@MPPA.MP.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(91)45837826",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 60.843,89",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Castanhal",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Promotor de Justica",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0063.txt": {
+    "entidades": [
+      {
+        "texto": "Tribunal de Contas dos Municipios",
+        "tipo": "INSTITUICAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Antonio Marcos Pinheiro",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "203.425.761-86",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua das Flores, 1038, Batista Campos, Maraba-PA, CEP 69738-789",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 28.475,00",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9983082-45.2019.8.13.7937",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tribunal de Justica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0064.txt": {
+    "entidades": [
+      {
+        "texto": "ANTONIO MARCOS PINHEIRO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "926.141.589-09",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARCOS AURELIO TAVARES",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "35401807295",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua das Flores, 1361, Centro, Castanhal-PA, CEP 69566-533",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 217.843,48",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "6401634-27.2020.8.10.5250",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ministerio Publico do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0065.txt": {
+    "entidades": [
+      {
+        "texto": "Tribunal de Justica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Marcos Aurelio Tavares",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "940.508.925-02",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Av. Almirante Barroso, 2200, Umarizal, Ananindeua-PA, CEP 67074-402",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "1840377-40.2022.8.12.9571",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOAO_SOUZA@MPPA.MP.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "91985229338",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0066.txt": {
+    "entidades": [
+      {
+        "texto": "Defensor Publico",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANANINDEUA",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "7231459-50.2024.8.10.6532",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOAO SANTOS",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PA 95.509.833-X",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "826.248.258-19",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua Santo Antonio, 2754, Reduto, Maraba-PA, CEP 66310-542",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Pedro Henrique Almeida",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 92.311,53",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 167.814,76",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0067.txt": {
+    "entidades": [
+      {
+        "texto": "Procurador da Republica",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARABA",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "3429041-28.2022.8.13.8205",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Pedro Henrique Almeida",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "78241310927",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tv. Castelo Branco, 1462, Cidade Velha, Ananindeua-PA, CEP 67415-179",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOAO_SOUZA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "94 96393-1307",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Pedro Henrique Almeida",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 183.038,52",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 79.022,49",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0068.txt": {
+    "entidades": [
+      {
+        "texto": "Ministerio Publico Federal",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "LUCIA HELENA BARBOSA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "10.644.063-X",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "7147147-10.2026.8.14.4452",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Belem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(93)989644979",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "FRANCISCA.FERREIRA@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0069.txt": {
+    "entidades": [
+      {
+        "texto": "DENISE APARECIDA MORAES",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "152.526.700-05",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "LUCIA HELENA BARBOSA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "118.920.175-55",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua das Flores, 763, Marco, Santarem-PA, CEP 69007-115",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 202.958,65",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "3205865-56.2020.8.12.3442",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ministerio Publico Federal",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0070.txt": {
+    "entidades": [
+      {
+        "texto": "Secretaria de Estado de Fazenda",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Francisca De Oliveira Lima",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "78.321.678",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "2842969-12.2026.8.13.6958",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Santarem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9147406614",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANAFERREIRA@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0071.txt": {
+    "entidades": [
+      {
+        "texto": "TJPA",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tribunal Regional Eleitoral do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Sebastiao Vitor Pereira",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "18.149.880-6",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "16453152070",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIASOUZA@TJPA.JUS.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(91) 3954-5410",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 85.148,42",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Desembargador",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0072.txt": {
+    "entidades": [
+      {
+        "texto": "Ana Paula Santos",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "41895772788",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "DENISE FERREIRA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "56187388569",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua das Flores, 664, Reduto, Belem-PA, CEP 68345-975",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 74.038,12",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "7709748-36.2019.8.12.2794",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Defensoria Publica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0073.txt": {
+    "entidades": [
+      {
+        "texto": "Banco do Brasil S.A.",
+        "tipo": "INSTITUICAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CARLOS EDUARDO NASCIMENTO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "38023037846",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua dos Mundurucus, 2512, Sao Bras, Belem-PA, CEP 69727-397",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$182.964,21",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "5633238-39.2020.8.11.7474",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tribunal Regional Eleitoral do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0074.txt": {
+    "entidades": [
+      {
+        "texto": "Secretaria de Estado de Fazenda",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "IVONETE CRISTINA ROCHA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "79.053.136-1",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9069815-70.2020.8.10.5052",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Belem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9441955217",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "IVONETE_FERREIRA@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0075.txt": {
+    "entidades": [
+      {
+        "texto": "Perito Judicial",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CASTANHAL",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "2497199-40.2020.8.14.9184",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Antonio Marcos Pinheiro",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "65.548.205-X",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "889.215.111-80",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Av. Conselheiro Furtado, 2789, Centro, Ananindeua-PA, CEP 69914-781",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "94963091631",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ordem dos Advogados do Brasil - Secao Para",
+        "tipo": "INSTITUICAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$116.700,07",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$196.747,13",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0076.txt": {
+    "entidades": [
+      {
+        "texto": "Tribunal de Justica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CARLOS EDUARDO NASCIMENTO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "85941098065",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua das Flores, 1807, Centro, Maraba-PA, CEP 67293-163",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "3443605-28.2021.8.12.4109",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIASANTOS@TJPA.JUS.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(91) 96707-9444",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0077.txt": {
+    "entidades": [
+      {
+        "texto": "Ministerio Publico do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "8222550-37.2026.8.12.7051",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Marcos Aurelio Tavares",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "IVONETESILVA@TJPA.JUS.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(93)972796874",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 167.659,64",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Maraba",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Juiz de Direito",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0078.txt": {
+    "entidades": [
+      {
+        "texto": "Perito Judicial",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARABA",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "4499106-28.2026.8.14.1798",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIA JOSE FERREIRA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PA 45.767.173-X",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "80818503092",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tv. Castelo Branco, 1674, Nazare, Castanhal-PA, CEP 66821-617",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(94)988039404",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Pedro Henrique Almeida",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$228.878,83",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 34.700,67",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0079.txt": {
+    "entidades": [
+      {
+        "texto": "Tribunal de Justica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "3069771-62.2019.8.14.9922",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Francisca De Oliveira Lima",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOSE.SANTOS@MPPA.MP.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "91 97283-8206",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 186.101,00",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Santarem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Escrivao Judicial",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0080.txt": {
+    "entidades": [
+      {
+        "texto": "MPPA",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tribunal de Justica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARCOS AURELIO TAVARES",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "43.997.577-8",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "160.055.482-20",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIA_OLIVEIRA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(91)45363808",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 4.216,68",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Desembargador",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0081.txt": {
+    "entidades": [
+      {
+        "texto": "Ministerio Publico Federal",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARCOS AURELIO TAVARES",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "031.244.116-92",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Travessa Dom Pedro I, 2646, Batista Campos, Belem-PA, CEP 66376-835",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "8829872-80.2019.8.11.9395",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PEDRO.OLIVEIRA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(94)33878327",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0082.txt": {
+    "entidades": [
+      {
+        "texto": "Ministerio Publico do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOSE RIBAMAR DA COSTA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PA 95.778.453-5",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9605849-16.2023.8.13.4871",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Maraba",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9449197863",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARCOS.BARBOSA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0083.txt": {
+    "entidades": [
+      {
+        "texto": "Ministerio Publico Federal",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "DENISE BARBOSA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "377.160.883-00",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tv. Castelo Branco, 1943, Marco, Castanhal-PA, CEP 68685-716",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "3038200-68.2023.8.11.2770",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIA_PINHEIRO@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9137318000",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0084.txt": {
+    "entidades": [
+      {
+        "texto": "Ordem dos Advogados do Brasil - Secao Para",
+        "tipo": "INSTITUICAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CARLOS EDUARDO NASCIMENTO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "28063529677",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Travessa Dom Pedro I, 1773, Batista Campos, Belem-PA, CEP 66077-607",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 138.067,31",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "6007987-87.2026.8.11.6687",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tribunal Regional Eleitoral do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0085.txt": {
+    "entidades": [
+      {
+        "texto": "Ministerio Publico do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Jose Ribamar Da Costa",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "264.089.624-59",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tv. Castelo Branco, 1491, Sao Bras, Belem-PA, CEP 66374-900",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "1829809-18.2023.8.12.6644",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "IVONETESILVA@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(94) 98363-9294",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0086.txt": {
+    "entidades": [
+      {
+        "texto": "Ministerio Publico Federal",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PEDRO HENRIQUE ALMEIDA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "46.446.004",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "8060684-10.2021.8.14.7763",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ananindeua",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(91) 98331-8945",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOSEOLIVEIRA@MPPA.MP.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0087.txt": {
+    "entidades": [
+      {
+        "texto": "Ministerio Publico do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "6680085-25.2024.8.12.4093",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Francisca De Oliveira Lima",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOAO_COSTA@HOTMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(94) 96393-1795",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 28.781,41",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Belem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Perito Judicial",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0088.txt": {
+    "entidades": [
+      {
+        "texto": "Escrivao Judicial",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARABA",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "5647260-28.2020.8.14.4738",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Pedro De Souza",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "30.677.315-X",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "765.605.774-90",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua das Flores, 1117, Centro, Ananindeua-PA, CEP 67044-529",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIA_COSTA@MPPA.MP.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Instituto Nacional do Seguro Social",
+        "tipo": "INSTITUICAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 31.343,34",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$173.898,89",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0089.txt": {
+    "entidades": [
+      {
+        "texto": "Defensoria Publica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANA SANTOS",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "374.909.722-48",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Travessa Dom Pedro I, 2463, Nazare, Castanhal-PA, CEP 69107-689",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9369253-53.2023.8.13.6410",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CARLOS_PINHEIRO@HOTMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "94 96512-4451",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0090.txt": {
+    "entidades": [
+      {
+        "texto": "Desembargador",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANANINDEUA",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "5076638-81.2023.8.13.9080",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Pedro Pinheiro",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "64.855.705-1",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "768.145.237-01",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Av. Conselheiro Furtado, 2700, Batista Campos, Santarem-PA, CEP 68277-655",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "SEBASTIAOOLIVEIRA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(94)37362917",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "LUCIA HELENA BARBOSA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$150.949,61",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 145.429,62",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0091.txt": {
+    "entidades": [
+      {
+        "texto": "Defensoria Publica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "4396875-71.2025.8.12.7269",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARCOS AURELIO TAVARES",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANTONIOFERREIRA@TJPA.JUS.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9135154871",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$93.689,53",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Santarem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Escrivao Judicial",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0092.txt": {
+    "entidades": [
+      {
+        "texto": "SEFAZ-PA",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ministerio Publico Federal",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Carlos Eduardo Nascimento",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "SSP-PA 17.156.602-X",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "70959396675",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "DENISESANTOS@HOTMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "91 98272-7314",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$246.036,77",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Analista Judiciario",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0093.txt": {
+    "entidades": [
+      {
+        "texto": "JOAO SANTOS",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "422.925.360-56",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ivonete Pinheiro",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "55261232279",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tv. Castelo Branco, 2391, Sao Bras, Castanhal-PA, CEP 67807-379",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 72.057,11",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "7428686-38.2023.8.13.6037",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ministerio Publico Federal",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0094.txt": {
+    "entidades": [
+      {
+        "texto": "Ministerio Publico Federal",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "LUCIA DE SOUZA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PA 29.267.849-X",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "5412999-95.2023.8.10.8491",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Belem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "93 4467-5462",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "SEBASTIAOOLIVEIRA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0095.txt": {
+    "entidades": [
+      {
+        "texto": "Desembargador",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "BELEM",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "3300099-12.2026.8.11.2626",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANTONIO MARCOS PINHEIRO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "PA 66.970.851",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "06956588242",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua Santo Antonio, 297, Batista Campos, Maraba-PA, CEP 67743-748",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "LUCIA.SILVA@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "93965756452",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Francisca De Oliveira Lima",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$176.725,71",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$163.873,83",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0096.txt": {
+    "entidades": [
+      {
+        "texto": "Secretaria de Estado de Fazenda",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Marcos Barbosa",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "21.157.464-X",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "8290212-83.2020.8.14.4680",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Castanhal",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "93978431215",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOAO_COSTA@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0097.txt": {
+    "entidades": [
+      {
+        "texto": "Secretaria de Estado de Fazenda",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "5243907-92.2019.8.11.2751",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CARLOS EDUARDO NASCIMENTO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANTONIO_FERREIRA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "94 97435-2056",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 110.521,81",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Maraba",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Desembargador",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0098.txt": {
+    "entidades": [
+      {
+        "texto": "Tribunal de Justica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "4997573-46.2019.8.14.9312",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANTONIO MARCOS PINHEIRO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "LUCIAFERREIRA@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "93965067541",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 196.755,19",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Belem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Promotor de Justica",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0099.txt": {
+    "entidades": [
+      {
+        "texto": "Defensoria Publica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Marcos Pinheiro",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "92507528656",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Av. Governador Jose Malcher, 1375, Batista Campos, Ananindeua-PA, CEP 66144-312",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "3194364-35.2024.8.12.5782",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "SEBASTIAO_COSTA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "94975124542",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0100.txt": {
+    "entidades": [
+      {
+        "texto": "Tribunal Regional Eleitoral do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "7506821-53.2026.8.12.8968",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Carlos Eduardo Nascimento",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "SEBASTIAO_SILVA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "91987699746",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 221.460,22",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Belem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Promotor de Justica",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0101.txt": {
+    "entidades": [
+      {
+        "texto": "Tribunal de Justica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANTONIO COSTA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "983.644.252-93",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Travessa Dom Pedro I, 24, Cidade Velha, Maraba-PA, CEP 69046-818",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "1808063-24.2023.8.13.9210",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "DENISECOSTA@MPPA.MP.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(93)43631947",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0102.txt": {
+    "entidades": [
+      {
+        "texto": "Analista Judiciario",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ANANINDEUA",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9973124-29.2023.8.11.2433",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Francisca Ferreira",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "18.338.687-7",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "73358622991",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua dos Mundurucus, 440, Cidade Velha, Maraba-PA, CEP 67258-830",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "IVONETE_COSTA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Instituto Nacional do Seguro Social",
+        "tipo": "INSTITUICAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$32.922,73",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 87.907,35",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0103.txt": {
+    "entidades": [
+      {
+        "texto": "Defensor Publico",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CASTANHAL",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "9871367-18.2019.8.14.1955",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Antonio Marcos Pinheiro",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "89.562.071",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "938.292.467-14",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Travessa Dom Pedro I, 821, Sao Bras, Belem-PA, CEP 66856-296",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOSE.OLIVEIRA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(93)45542333",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Instituto Nacional do Seguro Social",
+        "tipo": "INSTITUICAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 133.006,16",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 77.093,23",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0104.txt": {
+    "entidades": [
+      {
+        "texto": "Ordem dos Advogados do Brasil - Secao Para",
+        "tipo": "INSTITUICAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOAO CARLOS DE SOUZA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "712.192.691-15",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Travessa Dom Pedro I, 2029, Umarizal, Belem-PA, CEP 67668-998",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 10.569,93",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "6448316-79.2024.8.11.4669",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Ministerio Publico Federal",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0105.txt": {
+    "entidades": [
+      {
+        "texto": "Camara Municipal de Belem",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "3819615-89.2022.8.10.5606",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARCOS PINHEIRO",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIA_SILVA@MPPA.MP.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "91 3371-5300",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$4.081,66",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Belem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Defensor Publico",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0106.txt": {
+    "entidades": [
+      {
+        "texto": "Perito Judicial",
+        "tipo": "CARGO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "CASTANHAL",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "2687027-85.2021.8.12.9742",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIA FERREIRA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "009.617.812-46",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(91)46957303",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "MARIA COSTA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "de R$ 215.592,34",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$ 52.605,80",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0107.txt": {
+    "entidades": [
+      {
+        "texto": "MARIA JOSE FERREIRA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "411.280.115-73",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOSE RIBAMAR DA COSTA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "759.436.547-04",
+        "tipo": "CPF",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Rua das Flores, 2777, Cidade Velha, Ananindeua-PA, CEP 66944-913",
+        "tipo": "ENDERECO",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "R$29.025,08",
+        "tipo": "VALOR",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "1687787-70.2021.8.13.2199",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Tribunal de Justica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0108.txt": {
+    "entidades": [
+      {
+        "texto": "Defensoria Publica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "JOAO CARLOS DE SOUZA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "42.468.571-0",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "7331609-15.2019.8.12.9609",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Santarem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(91)985606788",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ROSAOLIVEIRA@SEFAZ.PA.GOV.BR",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  },
+  "doc-0109.txt": {
+    "entidades": [
+      {
+        "texto": "Tribunal de Justica do Estado do Para",
+        "tipo": "ORGAO",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ROSA DE SOUZA",
+        "tipo": "NOME",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "SSP-PA 03.481.814-X",
+        "tipo": "RG",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "8371759-92.2023.8.10.3860",
+        "tipo": "CNJ",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "Belem",
+        "tipo": "CIDADE",
+        "preservar": true,
+        "sobreviveu": true
+      },
+      {
+        "texto": "(93)986715654",
+        "tipo": "TELEFONE",
+        "preservar": false,
+        "sobreviveu": true
+      },
+      {
+        "texto": "ROSA_SOUZA@GMAIL.COM",
+        "tipo": "EMAIL",
+        "preservar": false,
+        "sobreviveu": true
+      }
+    ]
+  }
+}

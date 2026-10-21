@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0074.txt",
+  "pdf": "doc-0074.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Secretaria de Estado de Fazenda",
+      "tipo": "ORGAO",
+      "inicio": 11,
+      "fim": 42,
+      "preservar": true
+    },
+    {
+      "texto": "IVONETE CRISTINA ROCHA",
+      "tipo": "NOME",
+      "inicio": 58,
+      "fim": 80,
+      "preservar": false
+    },
+    {
+      "texto": "79.053.136-1",
+      "tipo": "RG",
+      "inicio": 85,
+      "fim": 97,
+      "preservar": false
+    },
+    {
+      "texto": "9069815-70.2020.8.10.5052",
+      "tipo": "CNJ",
+      "inicio": 137,
+      "fim": 162,
+      "preservar": true
+    },
+    {
+      "texto": "Belem",
+      "tipo": "CIDADE",
+      "inicio": 198,
+      "fim": 203,
+      "preservar": true
+    },
+    {
+      "texto": "9441955217",
+      "tipo": "TELEFONE",
+      "inicio": 244,
+      "fim": 254,
+      "preservar": false
+    },
+    {
+      "texto": "IVONETE_FERREIRA@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 265,
+      "fim": 291,
+      "preservar": false
+    }
+  ]
+}

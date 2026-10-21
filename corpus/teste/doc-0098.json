@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0098.txt",
+  "pdf": "doc-0098.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Tribunal de Justica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 37,
+      "preservar": true
+    },
+    {
+      "texto": "4997573-46.2019.8.14.9312",
+      "tipo": "CNJ",
+      "inicio": 80,
+      "fim": 105,
+      "preservar": true
+    },
+    {
+      "texto": "ANTONIO MARCOS PINHEIRO",
+      "tipo": "NOME",
+      "inicio": 118,
+      "fim": 141,
+      "preservar": false
+    },
+    {
+      "texto": "LUCIAFERREIRA@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 154,
+      "fim": 177,
+      "preservar": false
+    },
+    {
+      "texto": "93965067541",
+      "tipo": "TELEFONE",
+      "inicio": 190,
+      "fim": 201,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 196.755,19",
+      "tipo": "VALOR",
+      "inicio": 243,
+      "fim": 259,
+      "preservar": true
+    },
+    {
+      "texto": "Belem",
+      "tipo": "CIDADE",
+      "inicio": 262,
+      "fim": 267,
+      "preservar": true
+    },
+    {
+      "texto": "Promotor de Justica",
+      "tipo": "CARGO",
+      "inicio": 286,
+      "fim": 305,
+      "preservar": true
+    }
+  ]
+}

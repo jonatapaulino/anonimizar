@@ -1,0 +1,77 @@
+{
+  "documento": "doc-0052.txt",
+  "pdf": "doc-0052.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Desembargador",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 35,
+      "preservar": true
+    },
+    {
+      "texto": "ANANINDEUA",
+      "tipo": "CIDADE",
+      "inicio": 64,
+      "fim": 74,
+      "preservar": true
+    },
+    {
+      "texto": "4822863-19.2022.8.13.5027",
+      "tipo": "CNJ",
+      "inicio": 88,
+      "fim": 113,
+      "preservar": true
+    },
+    {
+      "texto": "Marcos Costa",
+      "tipo": "NOME",
+      "inicio": 119,
+      "fim": 131,
+      "preservar": false
+    },
+    {
+      "texto": "187.838.324-83",
+      "tipo": "CPF",
+      "inicio": 140,
+      "fim": 154,
+      "preservar": false
+    },
+    {
+      "texto": "Av. Almirante Barroso, 2809, Nazare, Belem-PA, CEP 69086-420",
+      "tipo": "ENDERECO",
+      "inicio": 164,
+      "fim": 224,
+      "preservar": false
+    },
+    {
+      "texto": "PEDRO_SANTOS@MPPA.MP.BR",
+      "tipo": "EMAIL",
+      "inicio": 233,
+      "fim": 256,
+      "preservar": false
+    },
+    {
+      "texto": "Tribunal de Contas dos Municipios",
+      "tipo": "INSTITUICAO",
+      "inicio": 330,
+      "fim": 363,
+      "preservar": true
+    },
+    {
+      "texto": "R$212.664,78",
+      "tipo": "VALOR",
+      "inicio": 405,
+      "fim": 417,
+      "preservar": true
+    },
+    {
+      "texto": "de R$ 30.514,40",
+      "tipo": "VALOR",
+      "inicio": 458,
+      "fim": 473,
+      "preservar": true
+    }
+  ]
+}

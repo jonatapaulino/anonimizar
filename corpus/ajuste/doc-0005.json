@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0005.txt",
+  "pdf": "doc-0005.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Defensoria Publica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 11,
+      "fim": 47,
+      "preservar": true
+    },
+    {
+      "texto": "Marcos Aurelio Tavares",
+      "tipo": "NOME",
+      "inicio": 63,
+      "fim": 85,
+      "preservar": false
+    },
+    {
+      "texto": "37.631.746",
+      "tipo": "RG",
+      "inicio": 90,
+      "fim": 100,
+      "preservar": false
+    },
+    {
+      "texto": "1606559-64.2024.8.14.3798",
+      "tipo": "CNJ",
+      "inicio": 140,
+      "fim": 165,
+      "preservar": true
+    },
+    {
+      "texto": "Maraba",
+      "tipo": "CIDADE",
+      "inicio": 201,
+      "fim": 207,
+      "preservar": true
+    },
+    {
+      "texto": "(93) 96164-9481",
+      "tipo": "TELEFONE",
+      "inicio": 248,
+      "fim": 263,
+      "preservar": false
+    },
+    {
+      "texto": "MARIAOLIVEIRA@TJPA.JUS.BR",
+      "tipo": "EMAIL",
+      "inicio": 274,
+      "fim": 299,
+      "preservar": false
+    }
+  ]
+}

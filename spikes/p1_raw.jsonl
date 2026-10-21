@@ -1,0 +1,13 @@
+{"modelo": "rufimelo/Legal-BERTimbau-base", "parametros": 108923136, "cpus_logicos": 24, "torch_threads": 24, "cpu": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel", "python": "3.14.7", "torch": "2.14.1+cpu", "janela": 512}
+{"por_janela_512": {"mediana_ms": 180.7, "p95_ms": 208.0, "min_ms": 168.2, "n": 25}}
+{"tokenizacao_10k_tokens_ms": 16.0}
+{"doc_tokens": 1000, "stride": 256, "overlap": "50% overlap", "n_janelas": 3, "mediana_ms": 579.0, "p95_ms": 588.0, "runs_ms": [574.0, 579.0, 578.0, 586.0, 588.0], "ms_por_janela": 193.0}
+{"doc_tokens": 1000, "stride": 384, "overlap": "25% overlap", "n_janelas": 3, "mediana_ms": 592.0, "p95_ms": 599.0, "runs_ms": [591.0, 597.0, 590.0, 592.0, 599.0], "ms_por_janela": 197.2}
+{"doc_tokens": 5000, "stride": 256, "overlap": "50% overlap", "n_janelas": 19, "mediana_ms": 2352.0, "p95_ms": 3158.0, "runs_ms": [3158.0, 2352.0, 2161.0], "ms_por_janela": 123.8}
+{"doc_tokens": 5000, "stride": 384, "overlap": "25% overlap", "n_janelas": 13, "mediana_ms": 1398.0, "p95_ms": 1404.0, "runs_ms": [1398.0, 1396.0, 1404.0], "ms_por_janela": 107.5}
+{"doc_tokens": 10000, "stride": 256, "overlap": "50% overlap", "n_janelas": 39, "mediana_ms": 4166.0, "p95_ms": 4542.0, "runs_ms": [4158.0, 4166.0, 4542.0], "ms_por_janela": 106.8}
+{"doc_tokens": 10000, "stride": 384, "overlap": "25% overlap", "n_janelas": 26, "mediana_ms": 2846.0, "p95_ms": 2848.0, "runs_ms": [2834.0, 2848.0, 2846.0], "ms_por_janela": 109.5}
+{"doc_tokens": 25000, "stride": 256, "overlap": "50% overlap", "n_janelas": 97, "mediana_ms": 10864.0, "p95_ms": 11164.0, "runs_ms": [10564.0, 11164.0], "ms_por_janela": 112.0}
+{"doc_tokens": 25000, "stride": 384, "overlap": "25% overlap", "n_janelas": 65, "mediana_ms": 7197.0, "p95_ms": 7489.0, "runs_ms": [7489.0, 6905.0], "ms_por_janela": 110.7}
+{"doc_tokens": 50000, "stride": 256, "overlap": "50% overlap", "n_janelas": 195, "mediana_ms": 21281.0, "p95_ms": 21455.0, "runs_ms": [21455.0, 21107.0], "ms_por_janela": 109.1}
+{"doc_tokens": 50000, "stride": 384, "overlap": "25% overlap", "n_janelas": 130, "mediana_ms": 15012.0, "p95_ms": 15405.0, "runs_ms": [15405.0, 14618.0], "ms_por_janela": 115.5}

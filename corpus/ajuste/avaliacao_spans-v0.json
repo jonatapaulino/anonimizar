@@ -1,0 +1,664 @@
+{
+  "contrato": "spans-v0",
+  "modelo": "qwen2.5:7b",
+  "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+  "num_ctx": 1024,
+  "segundos": 33.3,
+  "falhas_json": [],
+  "spans_por_tipo_declarado": {
+    "NOME": {
+      "exato": 12,
+      "parcial_alvo": 1
+    },
+    "RG": {
+      "parcial_alvo": 12
+    },
+    "CPF": {
+      "exato": 11,
+      "parcial_alvo": 12
+    },
+    "EMAIL": {
+      "exato": 19
+    },
+    "TELEFONE": {
+      "exato": 20,
+      "parcial_alvo": 1
+    },
+    "ENDERECO": {
+      "exato": 5,
+      "parcial_alvo": 6
+    },
+    "CEP": {
+      "parcial_alvo": 4
+    },
+    "PROCESSO": {
+      "preservado": 1
+    }
+  },
+  "spans_detalhe": [
+    {
+      "doc": "doc-0000",
+      "tipo": "NOME",
+      "trecho": "MARIA JOSE FERREIRA",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0000",
+      "tipo": "RG",
+      "trecho": "RG PA 12.058.313-6",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0000",
+      "tipo": "CPF",
+      "trecho": "832.002.147-24",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0000",
+      "tipo": "EMAIL",
+      "trecho": "IVONETEPINHEIRO@MPPA.MP.BR",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0000",
+      "tipo": "TELEFONE",
+      "trecho": "(94) 4916-4347",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0001",
+      "tipo": "NOME",
+      "trecho": "Carlos Costa",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0001",
+      "tipo": "CPF",
+      "trecho": "992.105.131-85",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0001",
+      "tipo": "NOME",
+      "trecho": "MARCOS BARBOSA",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0001",
+      "tipo": "CPF",
+      "trecho": "869.226.632-92",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0001",
+      "tipo": "ENDERECO",
+      "trecho": "Rua Santo Antonio, 1883, Cidade Velha, M",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0002",
+      "tipo": "NOME",
+      "trecho": "CARLOS EDUARDO NASCIMENTO",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0002",
+      "tipo": "EMAIL",
+      "trecho": "PEDRO_SILVA@MPPA.MP.BR",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0002",
+      "tipo": "TELEFONE",
+      "trecho": "9443618272",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0003",
+      "tipo": "NOME",
+      "trecho": "Carlos Eduardo Nascimento",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0003",
+      "tipo": "CPF",
+      "trecho": "771.168.696-03",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0003",
+      "tipo": "ENDERECO",
+      "trecho": "Rua das Flores, 1781, Batista Campos, Ma",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0003",
+      "tipo": "CEP",
+      "trecho": "69696-242",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0003",
+      "tipo": "EMAIL",
+      "trecho": "LUCIA.SANTOS@GMAIL.COM",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0003",
+      "tipo": "TELEFONE",
+      "trecho": "(93) 97921-3146",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0004",
+      "tipo": "EMAIL",
+      "trecho": "SEBASTIAOBARBOSA@GMAIL.COM",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0004",
+      "tipo": "TELEFONE",
+      "trecho": "(91)971973449",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0005",
+      "tipo": "RG",
+      "trecho": "RG 37.631.746",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0005",
+      "tipo": "TELEFONE",
+      "trecho": "(93) 96164-9481",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0005",
+      "tipo": "EMAIL",
+      "trecho": "MARIAOLIVEIRA@TJPA.JUS.BR",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0006",
+      "tipo": "EMAIL",
+      "trecho": "MARIA.FERREIRA@GMAIL.COM",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0006",
+      "tipo": "TELEFONE",
+      "trecho": "(91) 96838-6543",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0007",
+      "tipo": "RG",
+      "trecho": "Maria Ferreira, inscrito no RG sob o n. ",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0007",
+      "tipo": "CPF",
+      "trecho": "CPF 115.442.221-65",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0007",
+      "tipo": "ENDERECO",
+      "trecho": "Endereco: Rua Santo Antonio, 1473, Batis",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0007",
+      "tipo": "TELEFONE",
+      "trecho": "telefone 9136165579",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0008",
+      "tipo": "NOME",
+      "trecho": "Marcos Aurelio Tavares",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0008",
+      "tipo": "CPF",
+      "trecho": "62577814348",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0008",
+      "tipo": "ENDERECO",
+      "trecho": "Rua dos Mundurucus, 731, Cidade Velha, S",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0008",
+      "tipo": "EMAIL",
+      "trecho": "DENISEPINHEIRO@SEFAZ.PA.GOV.BR",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0008",
+      "tipo": "TELEFONE",
+      "trecho": "(94) 97626-9520",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0009",
+      "tipo": "NOME",
+      "trecho": "Ana Santos, CPF 718.185.215-98.",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0009",
+      "tipo": "CPF",
+      "trecho": "718.185.215-98",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0009",
+      "tipo": "ENDERECO",
+      "trecho": "Rua Santo Antonio, 1446, Nazare, Ananind",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0009",
+      "tipo": "CPF",
+      "trecho": "74758198411",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0010",
+      "tipo": "EMAIL",
+      "trecho": "MARCOS_SILVA@HOTMAIL.COM",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0010",
+      "tipo": "TELEFONE",
+      "trecho": "91 98446-5477",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0011",
+      "tipo": "NOME",
+      "trecho": "SEBASTIAO VITOR PEREIRA",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0011",
+      "tipo": "CPF",
+      "trecho": "93118531355",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0011",
+      "tipo": "ENDERECO",
+      "trecho": "Travessa Dom Pedro I, 1279, Centro, Bele",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0011",
+      "tipo": "CPF",
+      "trecho": "99604190539",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0012",
+      "tipo": "EMAIL",
+      "trecho": "IVONETE.PINHEIRO@TJPA.JUS.BR",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0012",
+      "tipo": "TELEFONE",
+      "trecho": "91 3444-1896",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0013",
+      "tipo": "NOME",
+      "trecho": "Maria Da Silva",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0013",
+      "tipo": "RG",
+      "trecho": "RG PA 67.064.656",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0013",
+      "tipo": "TELEFONE",
+      "trecho": "(93)32627666",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0013",
+      "tipo": "EMAIL",
+      "trecho": "MARIA.SILVA@HOTMAIL.COM",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0014",
+      "tipo": "CPF",
+      "trecho": "Denise Aparecida Moraes, CPF 611.952.515",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0014",
+      "tipo": "CPF",
+      "trecho": "Marcos Aurelio Tavares, CPF 455.881.300-",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0014",
+      "tipo": "ENDERECO",
+      "trecho": "Av. Governador Jose Malcher, 74, Sao Bra",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0015",
+      "tipo": "NOME",
+      "trecho": "Maria Jose Ferreira",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0015",
+      "tipo": "CPF",
+      "trecho": "69853223953",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0015",
+      "tipo": "ENDERECO",
+      "trecho": "Av. Governador Jose Malcher, 183, Sao Br",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0015",
+      "tipo": "CEP",
+      "trecho": "67561-602",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0016",
+      "tipo": "EMAIL",
+      "trecho": "DENISESANTOS@HOTMAIL.COM",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0016",
+      "tipo": "TELEFONE",
+      "trecho": "(91) 3525-7506",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0017",
+      "tipo": "RG",
+      "trecho": "Rosa Costa, portador(a) do RG 89.547.578",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0017",
+      "tipo": "CPF",
+      "trecho": "CPF n. 168.002.704-23",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0018",
+      "tipo": "NOME",
+      "trecho": "CARLOS SANTOS",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0018",
+      "tipo": "CPF",
+      "trecho": "CPF 039.958.467-69",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0018",
+      "tipo": "ENDERECO",
+      "trecho": "Av. Governador Jose Malcher, 1628, Redut",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0018",
+      "tipo": "CEP",
+      "trecho": "68953-912",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0019",
+      "tipo": "EMAIL",
+      "trecho": "ANTONIOCOSTA@MPPA.MP.BR",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0019",
+      "tipo": "TELEFONE",
+      "trecho": "9342958271",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0020",
+      "tipo": "CPF",
+      "trecho": "Denise Aparecida Moraes, CPF 621.586.323",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0020",
+      "tipo": "CPF",
+      "trecho": "Lucia De Souza, CPF 310.783.525-00",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0020",
+      "tipo": "ENDERECO",
+      "trecho": "Travessa Dom Pedro I, 2341, Sao Bras, Ma",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0021",
+      "tipo": "NOME",
+      "trecho": "MARIA DAS GRACAS SANTANA",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0021",
+      "tipo": "CPF",
+      "trecho": "320.775.575-59",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0021",
+      "tipo": "ENDERECO",
+      "trecho": "Rua dos Mundurucus, 1764, Batista Campos",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0021",
+      "tipo": "CEP",
+      "trecho": "69520-984",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0022",
+      "tipo": "RG",
+      "trecho": "RG 06.584.165-X",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0022",
+      "tipo": "CPF",
+      "trecho": "CPF 552.315.300-18",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0022",
+      "tipo": "EMAIL",
+      "trecho": "MARIA_FERREIRA@TJPA.JUS.BR",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0022",
+      "tipo": "TELEFONE",
+      "trecho": "94975303468",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0023",
+      "tipo": "EMAIL",
+      "trecho": "FRANCISCA.FERREIRA@HOTMAIL.COM",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0023",
+      "tipo": "TELEFONE",
+      "trecho": "93984914634",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0024",
+      "tipo": "RG",
+      "trecho": "RG 16.475.008-X",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0024",
+      "tipo": "TELEFONE",
+      "trecho": "9445141012",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0025",
+      "tipo": "RG",
+      "trecho": "RG SSP-PA 57.931.125-8",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0025",
+      "tipo": "CPF",
+      "trecho": "CPF 562.367.142-07",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0025",
+      "tipo": "EMAIL",
+      "trecho": "ANA.SOUZA@GMAIL.COM",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0025",
+      "tipo": "TELEFONE",
+      "trecho": "9444115491",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0026",
+      "tipo": "NOME",
+      "trecho": "MARIA JOSE FERREIRA",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0026",
+      "tipo": "RG",
+      "trecho": "RG 67.993.718-2",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0026",
+      "tipo": "PROCESSO",
+      "trecho": "9989329-28",
+      "classe": "preservado"
+    },
+    {
+      "doc": "doc-0026",
+      "tipo": "TELEFONE",
+      "trecho": "9133976859",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0026",
+      "tipo": "EMAIL",
+      "trecho": "ROSA.SOUZA@HOTMAIL.COM",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0027",
+      "tipo": "RG",
+      "trecho": "RG SSP-PA 64.704.610",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0027",
+      "tipo": "CPF",
+      "trecho": "CPF 726.518.909-44",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0027",
+      "tipo": "EMAIL",
+      "trecho": "JOSEFERREIRA@GMAIL.COM",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0027",
+      "tipo": "TELEFONE",
+      "trecho": "94984477482",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0028",
+      "tipo": "RG",
+      "trecho": "RG SSP-PA 93.676.526-X",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0028",
+      "tipo": "CPF",
+      "trecho": "CPF 156.416.788-72",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0028",
+      "tipo": "EMAIL",
+      "trecho": "CARLOSSANTOS@TJPA.JUS.BR",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0028",
+      "tipo": "TELEFONE",
+      "trecho": "(91)35666316",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0029",
+      "tipo": "RG",
+      "trecho": "RG 86.893.583-1",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0029",
+      "tipo": "CPF",
+      "trecho": "CPF 99082736470",
+      "classe": "parcial_alvo"
+    },
+    {
+      "doc": "doc-0029",
+      "tipo": "EMAIL",
+      "trecho": "DENISE.FERREIRA@TJPA.JUS.BR",
+      "classe": "exato"
+    },
+    {
+      "doc": "doc-0029",
+      "tipo": "TELEFONE",
+      "trecho": "(94) 98635-6434",
+      "classe": "exato"
+    }
+  ]
+}

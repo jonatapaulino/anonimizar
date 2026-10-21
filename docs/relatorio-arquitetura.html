@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Relatório de Arquitetura — Módulo de Anonimização Jurídica</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm 20mm 18mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", "Calibri", sans-serif; color: #1a1f2b;
+         font-size: 10.5pt; line-height: 1.5; margin: 0; }
+  h1, h2, h3 { color: #16305e; line-height: 1.25; }
+  h1 { font-size: 20pt; border-bottom: 3px solid #16305e; padding-bottom: 6px; }
+  h2 { font-size: 14pt; margin-top: 26px; border-bottom: 1.5px solid #b8c4dc;
+       padding-bottom: 4px; page-break-after: avoid; }
+  h3 { font-size: 11.5pt; margin-top: 16px; page-break-after: avoid; }
+  p { margin: 6px 0; text-align: justify; }
+  code { font-family: "Consolas", monospace; font-size: 9pt;
+         background: #f0f3f9; padding: 1px 4px; border-radius: 3px; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0;
+          page-break-inside: auto; font-size: 9.5pt; }
+  th { background: #16305e; color: #fff; text-align: left; padding: 5px 7px; }
+  td { border: 1px solid #c9d2e4; padding: 5px 7px; vertical-align: top; }
+  tr:nth-child(even) td { background: #f5f7fb; }
+  .capa { page-break-after: always; text-align: center;
+          padding-top: 180px; }
+  .capa .titulo { font-size: 26pt; font-weight: 700; color: #16305e;
+                  line-height: 1.3; }
+  .capa .sub { font-size: 13pt; color: #4a5568; margin-top: 18px; }
+  .capa .meta { margin-top: 120px; font-size: 10pt; color: #4a5568; }
+  .badge { display: inline-block; padding: 1px 8px; border-radius: 9px;
+           font-size: 8.5pt; font-weight: 700; }
+  .ok { background: #def5e3; color: #1a6b34; }
+  .pend { background: #fdf0d5; color: #8a5a00; }
+  .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .callout { border-left: 4px solid #16305e; background: #eef2fa;
+             padding: 10px 14px; margin: 12px 0; }
+  .callout.warn { border-color: #b8860b; background: #fdf8ec; }
+  .callout.good { border-color: #1a6b34; background: #edf7ef; }
+  .muted { color: #5a6478; font-size: 9pt; }
+  .toc td { border: none; border-bottom: 1px dotted #c9d2e4; }
+  .pipeline { font-family: Consolas, monospace; font-size: 8.5pt;
+              background: #0f1729; color: #c9e1ff; padding: 12px 16px;
+              border-radius: 6px; white-space: pre-wrap; line-height: 1.6; }
+  .footer-note { font-size: 8.5pt; color: #5a6478; margin-top: 30px;
+                 border-top: 1px solid #c9d2e4; padding-top: 8px; }
+  ul { margin: 6px 0 6px 18px; padding: 0; }
+  li { margin: 3px 0; }
+</style>
+</head>
+<body>
+
+<!-- ============ CAPA ============ -->
+<div class="capa">
+  <div class="titulo">Relatório de Arquitetura<br>
+    Módulo de Anonimização Jurídica</div>
+  <div class="sub">Preservação de Coerência Processual em Documentos
+    Judiciais<br>Projeto PIDE / FAPESPA — iSACI</div>
+  <div class="meta">
+    <p><b>Versão do relatório:</b> 1.0 — 16 de outubro de 2026</p>
+    <p><b>Base documental:</b> ADRs 0000–0012 (com emendas de 16/10/2026),
+       especificação técnica, arquitetura interativa v1.3</p>
+    <p><b>Status:</b> arquitetura validada no papel + provas N1 executadas</p>
+  </div>
+</div>
+
+<!-- ============ SUMÁRIO ============ -->
+<h1>Sumário</h1>
+<table class="toc">
+  <tr><td>1. Sumário executivo</td></tr>
+  <tr><td>2. Contexto e problema</td></tr>
+  <tr><td>3. Visão geral da arquitetura</td></tr>
+  <tr><td>4. Decisões arquiteturais (ADRs 0000–0012)</td></tr>
+  <tr><td>5. Arquitetura de segurança</td></tr>
+  <tr><td>6. Validação — provas executadas e resultados</td></tr>
+  <tr><td>7. Riscos e limitações honestas</td></tr>
+  <tr><td>8. Trabalho restante e roadmap</td></tr>
+  <tr><td>9. Inventário documental</td></tr>
+</table>
+
+<!-- ============ 1 ============ -->
+<h2>1. Sumário executivo</h2>
+<p>Este relatório consolida o estado da arquitetura do módulo de
+anonimização de documentos judiciais com preservação de coerência
+processual, projetado como <b>nó soberano edge por organização</b> —
+sem dependência de nuvem em runtime — exposto via API REST/OpenAPI,
+com NLP determinístico e localmente hospedado, mapeamentos cifrados
+por caso e trilha de auditoria à prova de adulteração.</p>
+<p>O desenho foi registrado em 13 decisões arquiteturais (ADRs
+0000–0012), passou por revisão de segurança em 16/10/2026 que fechou
+11 lacunas (documentadas como emendas), e teve suas premissas
+mecânicas testadas em <b>7 provas arquiteturais (spikes) — todas
+aprovadas</b>: latência de inferência, isolamento de rede, motor
+simbólico de correferência, trilha de auditoria, esquema criptográfico
+do cofre, normalização anti-evasão e autenticação offline.</p>
+<div class="callout good">
+<b>Veredito:</b> a arquitetura está <b>validada no papel e em
+princípio</b> para todos os mecanismos determinísticos e de
+infraestrutura. O que falta não é desenho nem prova de conceito — é
+execução da trilha científica (corpus → métricas) e validação
+institucional no órgão, ambas previstas no roadmap.
+</div>
+<table>
+  <tr><th>Dimensão</th><th>Estado</th><th>Evidência</th></tr>
+  <tr><td>Coerência do desenho</td><td><span class="badge ok">VALIDADO</span></td>
+      <td>13 ADRs + especificação + v1.3 consistentes</td></tr>
+  <tr><td>Segurança (desenho)</td><td><span class="badge ok">REVISADO</span></td>
+      <td>11 lacunas fechadas por emendas em 16/10</td></tr>
+  <tr><td>Mecanismos (spikes)</td><td><span class="badge ok">7/7 PROVADOS</span></td>
+      <td>relatório em <code>spikes/P1–P7_resultado.md</code></td></tr>
+  <tr><td>Baseline de métricas</td><td><span class="badge ok">MEDIDO</span></td>
+      <td>P8: harness + corpus v0 — §6.1</td></tr>
+  <tr><td>Métricas científicas (corpus real)</td><td><span class="badge pend">PENDENTE</span></td>
+      <td>depende de corpus (Etapa 3+)</td></tr>
+  <tr><td>Validação institucional</td><td><span class="badge pend">PENDENTE</span></td>
+      <td>Etapa 11, no órgão</td></tr>
+</table>
+
+<!-- ============ 2 ============ -->
+<h2>2. Contexto e problema</h2>
+<p>Documentos judiciais contêm dados pessoais e sensíveis cuja
+divulgação irrestrita é vedada (LGPD; art. 189 do CPC — sigilo para
+menores, segredo de justiça; Resolução CNJ 615/2025). Anonimizar
+"na unha" destrói a utilidade: nomes substituídos de forma
+inconsistente quebram a compreensão de quem é parte, quem testemunhou,
+quem é parente de quem e em que ordem os fatos ocorreram.</p>
+<p>O módulo resolve essa tensão com duas propriedades inseparáveis:</p>
+<ul>
+  <li><b>Proteção</b>: anonimização irreversível ou pseudonimização
+      reversível sob chave — nenhum dado em claro persiste fora do
+      documento original.</li>
+  <li><b>Coerência processual</b>: toda menção ao mesmo sujeito recebe
+      o mesmo pseudônimo <i>dentro do mesmo processo</i>; papéis
+      processuais (autor, ré, testemunha), relações (parentesco,
+      hierarquia) e cronologia são preservados.</li>
+</ul>
+<p>Restrições do domínio que moldaram todas as decisões: operação em
+rede isolada do órgão (soberania), auditabilidade verificável
+(evidence-grade), nenhuma IA generativa (determinismo exigido para
+revisão jurídica), e métricas de privacidade/utilidade pré-registradas.</p>
+
+<!-- ============ 3 ============ -->
+<h2>3. Visão geral da arquitetura</h2>
+<h3>3.1 Pipeline (12 estágios)</h3>
+<div class="pipeline">documento
+  → 0. normalização Unicode (NFKC + invisíveis + homoglifos + traços)
+  → 1. idempotência (hash do documento)
+  → 2. guardrails (prompt-injection dual-pass + pseudo-perplexidade)
+  → 3. ingestão/OCR-aware
+  → 4. detecção híbrida de entidades
+       ├─ legal-BERT NER (fine-tunado no tagset próprio)
+       ├─ regex + validadores (CPF, RG, OAB, CNJ…)
+       └─ gazetteers
+  → 5. janelamento (512 tokens, overlap) + merge de spans
+  → 6. correferência — motor simbólico Linked Entities
+  → 7. classificador de papel processual
+  → 8. modelo de relações (parentesco, hierarquia, temporal)
+  → 9. política de pseudônimos por caso
+  → 10. substituição + trilha de auditoria
+  → 11. verificação residual (re-scan detector independente)
+  → saída: documento anonimizado + risk_score + review_flags</div>
+<h3>3.2 Dois modos, um cofre</h3>
+<table>
+  <tr><th></th><th>Anonimização</th><th>Pseudonimização</th></tr>
+  <tr><td>Reversibilidade</td><td><b>Irreversível</b> — destruição
+      cerimonial da chave HMAC do caso (ADR-0012)</td>
+      <td>Reversível — mapeamento cifrado AES-GCM, DEK por caso</td></tr>
+  <tr><td>Pseudônimo</td><td>consistência por caso via
+      <code>HMAC(entidade ∥ case_id)</code></td>
+      <td>idem + mapeamento legível no cofre</td></tr>
+  <tr><td>Caso de uso</td><td>publicidade, dados abertos</td>
+      <td>compartilhamento com reversão autorizada (break-glass)</td></tr>
+</table>
+<h3>3.3 Soberania</h3>
+<p>Nó edge autocontido por organização: imagem OCI única + Docker
+Compose (api, nginx, Postgres, Vault) sobre redes
+<code>internal: true</code> — <b>egress deny-all por ausência de
+rota</b> (provado, §6-P2). A única superfície externa é o nginx com
+TLS 1.3 + mTLS. Modelos de NLP viajam assinados na imagem
+(<code>safetensors</code> only), sem download em runtime.</p>
+
+<!-- ============ 4 ============ -->
+<h2>4. Decisões arquiteturais (ADRs)</h2>
+<table>
+  <tr><th>ADR</th><th>Decisão</th><th>Por quê / alternativa descartada</th></tr>
+  <tr><td class="num">0000</td><td>Regra de maturidade 3 anos</td>
+      <td>stack só com componentes ≥3 anos estáveis — nó do setor
+          público não é lugar de tecnologia quente</td></tr>
+  <tr><td class="num">0001</td><td>Detecção híbrida: BERT-legal NER +
+      regex/validadores + gazetteers</td><td>NER puro falha em
+      identificadores estruturados; regex puro falha em contexto;
+      híbrido cobre os dois modos de falha</td></tr>
+  <tr><td class="num">0002</td><td>Correferência por motor simbólico
+      "Linked Entities"</td><td>determinístico = auditável e
+      explicável (exigência jurídica); redes de correferência neural
+      não são verificáveis item a item. <b>Risco: cobertura do long
+      tail — spike P3 avaliou: plausível</b></td></tr>
+  <tr><td class="num">0003</td><td>FastAPI + OpenAPI gerada de código</td>
+      <td>contrato testável por Schemathesis; async para o batch;
+      sync no path de docs pequenos</td></tr>
+  <tr><td class="num">0004</td><td>Postgres: cofre de mapeamentos +
+      trilha hash-chained <b>com âncora externa</b></td>
+      <td><i>emenda 16/10</i>: HMAC agora <code>HMAC(e∥case_id)</code>
+      — antes correlacionava entidade entre casos; âncora externa
+      obrigatória — sem ela, rewrite total da trilha era
+      indetectável (provado em P4)</td></tr>
+  <tr><td class="num">0005</td><td>Vault Transit: KEK no Vault, DEK por
+      caso (envelope)</td><td>banco sozinho não abre nada; Vault
+      sozinho não tem os dados — separação dados↔chaves</td></tr>
+  <tr><td class="num">0006</td><td>OIDC/JWT validado offline via JWKS
+      cacheado; <b>RFC 8705 + TTL curto obrigatórios</b></td>
+      <td><i>emenda 16/10</i>: sem introspecção possível (isolamento),
+      token vazado só vence por TTL — por isso minutos, e cert-bound
+      para não ser portável</td></tr>
+  <tr><td class="num">0007</td><td>Rede isolada: VLAN + egress deny-all
+      + túneis de suporte</td><td><i>emenda 16/10</i>: deny-all cobre
+      DNS e IPv6 (canais de exfiltração); API não binda host; ciclo
+      de vida de cert mTLS via CA interna</td></tr>
+  <tr><td class="num">0008</td><td>Empacotamento: imagem OCI única +
+      Compose</td><td><i>emenda 16/10</i>: política safetensors-only
+      (peso de modelo não é código executável); hardening baseline —
+      rootfs read-only, cap_drop ALL, no-new-privileges, não-root,
+      seccomp</td></tr>
+  <tr><td class="num">0009</td><td>Toolchain TDD: pytest + hypothesis +
+      schemathesis + syft/grype</td><td><i>emenda 16/10</i>: grype
+      adicionado como gate de CVE sobre o SBOM — inventário sem
+      varredura não é controle</td></tr>
+  <tr><td class="num">0010</td><td>Verificação residual + escore de
+      confiança</td><td>re-scan com detector de erro independente;
+      risco zero é inatingível — mede-se e sinaliza-se o residual
+      (<code>risk_score</code>, <code>review_flags</code>,
+      <code>needs_review</code>)</td></tr>
+  <tr><td class="num">0011</td><td>Zero IA generativa</td>
+      <td>encoders discriminativos apenas; elimina classes inteiras de
+      vulnerabilidade (instrução embutida, memorização regurgitável);
+      pseudo-perplexidade via masked-LM preserva o detector</td></tr>
+  <tr><td class="num">0012</td><td><b>NOVO</b> — Ciclo de vida de chaves</td>
+      <td>unseal Shamir distribuído por papéis (ninguém destranca
+      sozinho); bootstrap secret-zero via arquivo montado; destruição
+      cerimonial de chave HMAC por caso = o evento que materializa a
+      irreversibilidade</td></tr>
+</table>
+
+<!-- ============ 5 ============ -->
+<h2>5. Arquitetura de segurança</h2>
+<h3>5.1 Anéis concêntricos</h3>
+<table>
+  <tr><th>Anel</th><th>Controle</th><th>Estado</th></tr>
+  <tr><td>Rede</td><td>egress deny-all por ausência de rota
+      (<code>internal:true</code>), DNS sem upstream, IPv6, binding
+      restrito — só nginx expõe</td>
+      <td><span class="badge ok">PROVADO (P2)</span></td></tr>
+  <tr><td>Transporte</td><td>TLS 1.3 + mTLS no nginx; CRL/vida-curta
+      para revogação em isolamento</td>
+      <td><span class="badge pend">desenho; implantação</span></td></tr>
+  <tr><td>Identidade</td><td>OIDC offline via JWKS cache; RFC 8705
+      cert-bound; TTL em minutos</td>
+      <td><span class="badge ok">PROVADO (P7, JWT)</span></td></tr>
+  <tr><td>Dados</td><td>AES-GCM por caso (Vault Transit), HMAC por
+      caso, banco não decifra nada</td>
+      <td><span class="badge ok">PROVADO (P5)</span></td></tr>
+  <tr><td>Integridade</td><td>hash-chain + âncora externa assinada;
+      pgaudit; audit devices do Vault</td>
+      <td><span class="badge ok">PROVADO (P4)</span></td></tr>
+  <tr><td>Pipeline</td><td>guardrails + estágio-0 Unicode + supressão
+      conservadora + re-scan independente</td>
+      <td><span class="badge ok">PROVADO (P6, parcial)</span></td></tr>
+</table>
+<h3>5.2 Invariantes de implementação</h3>
+<ul>
+  <li><b>Payload nunca persiste</b>: nem em logs, nem em temporários,
+      core dumps (<code>ulimit -c 0</code>), respostas de erro ou
+      trilha — a trilha guarda hashes, não conteúdo.</li>
+  <li><b>Erros não ecoam documento</b>: validação (Pydantic) sanitizada
+      — um 400 não vaza PII.</li>
+  <li><b>Budget de trabalho</b>: limites de bytes E de tokens/janelas
+      (413 nos dois) — documento gigante não vira DoS por requisição.</li>
+  <li><b>Erro no lado seguro</b>: over-suppression &gt; under-suppression;
+      não-vincular &gt; vincular errado — sistemático em todo o desenho.</li>
+</ul>
+
+<!-- ============ 6 ============ -->
+<h2>6. Validação — provas executadas e resultados</h2>
+<p>Sete spikes N1 foram executados em 16/10/2026 (artefatos em
+<code>spikes/</code>). Cada prova tinha hipótese falsificável e barra
+de aprovação pré-definida.</p>
+<table>
+  <tr><th>#</th><th>Prova</th><th>Método</th><th>Resultado</th></tr>
+  <tr><td>P1</td><td>Latência encoder em CPU</td>
+      <td>Legal-BERTimbau-base 109M, janelas 512, docs 1k–50k tokens,
+          batch=1</td>
+      <td><span class="badge ok">PROVADO</span> ~110–180ms/janela;
+          doc 10k ≈ 3–4s por passe; doc 50k ≈ 15–21s →
+          <b>síncrono ≤~10k, batch DEFINIDO acima</b></td></tr>
+  <tr><td>P1b</td><td>Mesmo em GPU</td>
+      <td>RTX 5090, torch cu128</td>
+      <td><span class="badge ok">PROVADO</span> ~9ms/janela (12–20×);
+          50k = 1,75s → síncrono universal; decisão de hardware do
+          edge vira trade-off institucional</td></tr>
+  <tr><td>P2</td><td>Isolamento <code>internal:true</code></td>
+      <td>Compose mínimo; probe de egress HTTP/DNS/ICMP/IPv6 + intra</td>
+      <td><span class="badge ok">PROVADO</span> zero egress medido;
+          intra-rede ok; DNS embutido resolve containers e recusa
+          upstream (sem túnel DNS)</td></tr>
+  <tr><td>P3</td><td>Motor simbólico de correferência</td>
+      <td>~300 linhas de regras; 30 casos artesanais, 40 asserções</td>
+      <td><span class="badge ok">100%</span> — papel, apositivo,
+          discurso, pronome+genero, possessivo, parentesco,
+          honorífico, anti-merge; ambíguos/catáfora
+          <b>não</b> vinculam (conservador). ≥0,90 plausível, corpus
+          decide</td></tr>
+  <tr><td>P4</td><td>Hash-chain + âncora externa</td>
+      <td>simula adulteração parcial e rewrite total</td>
+      <td><span class="badge ok">PROVADO</span> — rewrite total
+          <b>só</b> é pego pela âncora; emenda justificada por
+          demonstração</td></tr>
+  <tr><td>P5</td><td>HMAC por caso</td>
+      <td>HMAC(e∥c) × HMAC(e); destruição de K</td>
+      <td><span class="badge ok">PROVADO</span> zero correlação
+          transversal; pós-destruição nenhum HMAC reproduzível —
+          oráculo de dicionário morre</td></tr>
+  <tr><td>P6</td><td>Normalização Unicode</td>
+      <td>NFKC + invisíveis + homoglifos + traços; 19 baterias
+          adversariais</td>
+      <td><span class="badge ok">19/19</span> — <b>achado real</b>:
+          NFKC não dobra U+2011→"-"; tabela de traços fechou o
+          bypass de regex</td></tr>
+  <tr><td>P7</td><td>Auth offline (JWKS cache)</td>
+      <td>Keycloak 26.4 dev-mode; client_credentials; JWKS em disco</td>
+      <td><span class="badge ok">PROVADO</span> RS256+iss+exp
+          validados sem IdP; TTL 120s; adulterado e issuer-falso
+          rejeitados</td></tr>
+</table>
+<div class="callout">
+<b>Decisões destravadas pela evidência:</b> batch assíncrono
+(INDEFINIDO → DEFINIDO acima de ~10k tokens em CPU); stride 384
+economiza ~30% (input para a regra de merge); normalização exige
+tabela de traços além do NFKC; regra 1×1 nome-solto×papel-anônimo
+candidata ao motor oficial.
+</div>
+<p style="text-align:center">
+  <img src="img/p1_latencia.png" style="width:88%">
+</p>
+<p style="text-align:center">
+  <img src="img/p1_janela.png" style="width:52%">
+</p>
+<h3>6.1 Baseline de métricas — P8 (corpus sintético v0)</h3>
+<p>O harness <code>spikes/p8_metricas.py</code> implementa as fórmulas
+pré-registradas de <code>docs/metricas.md</code> e mede os três
+componentes reais sobre <code>corpus_v0.jsonl</code> (36 docs por
+template, 252 entidades gold, offsets em caracteres):</p>
+<table>
+  <tr><th>Componente</th><th>Medido</th><th>Gate N2</th><th>Leitura</th></tr>
+  <tr><td>Validadores regex (8 tipos)</td><td class="num">F1 = 1,00</td>
+      <td class="num">~1,00</td>
+      <td>caso limpo resolvido; recall sob ruído OCR é o teste real
+          (E9, corpus degradado)</td></tr>
+  <tr><td>NER stock LeNER-Br — só nomes</td><td class="num">F1 = 0,92
+          (R=1,00)</td><td class="num">≥ 0,85</td>
+      <td>coverage de nomes já total no proxy — fine-tune foca tagset
+          próprio e ruído, não detecção básica</td></tr>
+  <tr><td>Correferência — pairwise F1</td><td class="num">0,88</td>
+      <td class="num">≥ 0,90</td>
+      <td>abaixo do gate por 2 pontos; o corpus expôs falha real
+          (apositivo pós-parentesco) — corrigida, F1 subiu 0,80→0,88</td></tr>
+  <tr><td>Correferência — consistência/entidade</td>
+      <td class="num">0,87</td><td class="num">≥ 0,85</td>
+      <td>acima do gate</td></tr>
+</table>
+<p style="text-align:center">
+  <img src="img/p8_metricas.png" style="width:88%">
+</p>
+<p class="muted">Escopo: proxy de engenharia sobre corpus sintético de
+templates — piso de dificuldade, não validade externa. O que já ficou
+provado estruturalmente: a divisão de trabalho híbrida do ADR-0001
+aparece na medida (NER cobre nomes; papéis/pronomes são domínio do
+motor simbólico), e o gap ao gate de correferência está quantificado
+com classes de falha identificadas.</p>
+
+<!-- ============ 7 ============ -->
+<h2>7. Riscos e limitações honestas</h2>
+<table>
+  <tr><th>Risco</th><th>Severidade</th><th>Mitigação no desenho</th></tr>
+  <tr><td>Correferência no long tail real (anáfora distante, OCR ruim,
+      plural de papel, orações intercaladas)</td><td>Alta</td>
+      <td>P3 mostrou expressividade; corpus adversarial E9 decide;
+      <code>review_flags</code> absorve o residual conservador</td></tr>
+  <tr><td>Validade externa (corpus sintético × documentos reais)</td>
+      <td>Alta</td><td>amostras reais autorizadas — dependência externa,
+      pedir cedo; métricas declaradas com escopo se negadas</td></tr>
+  <tr><td>NER F1 no tagset próprio</td><td>Média</td>
+      <td>ciclo normal de pesquisa; validadores regex cobrem
+      identificadores estruturados independentemente</td></tr>
+  <tr><td>Latência no hardware do edge (24 cores no spike)</td>
+      <td>Média</td><td>re-rodar P1 no alvo; GPU no edge é opção
+      medida (5,3s em 50k ×3 passes)</td></tr>
+  <tr><td>Operação humana de chaves (unseal, cerimônias)</td>
+      <td>Média</td><td>ADR-0012 prescreve quórum distribuído;
+      validação em N3</td></tr>
+  <tr><td>Insider com acesso legítimo (break-glass abusivo)</td>
+      <td>Média</td><td>endpoint ainda INDEFINIDO — exige desenho com
+      jurídico: quatro-olhos, janela curta, justificativa na própria
+      hash-chain</td></tr>
+</table>
+
+<!-- ============ 8 ============ -->
+<h2>8. Trabalho restante e roadmap</h2>
+<h3>A — Decisões de papel (rápido, sem código)</h3>
+<table>
+  <tr><th>Item</th><th>Desbloqueia</th></tr>
+  <tr><td>Tagset + esquema de anotação</td><td>corpus e todas as métricas</td></tr>
+  <tr><td>Regra de merge de spans do janelamento</td><td>corpus avaliável
+      (dado novo: stride 384)</td></tr>
+  <tr><td>Fórmula <code>residual_score</code> + recall de correferência</td>
+      <td>contrato de risco (pré-registro E1)</td></tr>
+  <tr><td>Política de pseudônimos + break-glass</td>
+      <td>utility score, <code>/v1/reversal</code> — <b>com jurídico</b></td></tr>
+  <tr><td>Modelo de relações sujeito↔sujeito</td><td>coerência processual
+      (P3 validou o formato REL)</td></tr>
+  <tr><td>Redis × rate limit em memória</td><td>compose de referência</td></tr>
+  <tr><td>Emendas de registro: batch/limiar/GPU</td><td>ADR-0003/0008</td></tr>
+</table>
+<h3>B — Validação científica N2 (E3–E10)</h3>
+<p>Corpus sintético → fine-tune → gates de CI: F1 NER ≥ 0,85 ·
+correferência ≥ 0,90 + recall · reidentificação ≤ 5% · utility ≥ 0,85
+(TAB adaptado) · latência-alvo pré-registrada.</p>
+<h3>C — Validação institucional N3 (E11)</h3>
+<p>TI do órgão sobe o compose sozinho; cerimônia de unseal por papéis
+distintos; avaliação de utilidade por usuários; medição de validade
+externa nas amostras autorizadas — <b>iniciar o pedido de autorização
+imediatamente</b> (maior lead time do projeto).</p>
+
+<!-- ============ 9 ============ -->
+<h2>9. Inventário documental</h2>
+<table>
+  <tr><th>Arquivo</th><th>Conteúdo</th></tr>
+  <tr><td><code>docs/especificacao-tecnica.md</code></td>
+      <td>especificação v1.x com emendas (12 estágios, RNFs, contrato)</td></tr>
+  <tr><td><code>docs/adr/0000–0012</code></td>
+      <td>13 decisões com contexto, alternativas e emendas datadas</td></tr>
+  <tr><td><code>docs/arquitetura-interativav1.3.html</code></td>
+      <td>visualização interativa — 12 estágios, 13 ADRs, anéis de
+      defesa, stack, riscos</td></tr>
+  <tr><td><code>docs/plano-de-validacao.md</code></td>
+      <td>checklist N1/N2/N3 com barras falsificáveis (4/6 N1
+      fechados ao estado atual)</td></tr>
+  <tr><td><code>docs/relatorio-validacao.md</code></td>
+      <td>consolidado de validação (antecessor deste relatório)</td></tr>
+  <tr><td><code>docs/metricas.md</code></td>
+      <td>pré-registro das métricas: fórmulas, convenções de span,
+      gates N2 — mudança exige emenda datada</td></tr>
+  <tr><td><code>spikes/</code></td>
+      <td>P1–P8: scripts executáveis, dados brutos (.jsonl),
+      resultados (P*_resultado.md), artefatos P2 (compose+probe),
+      corpus_v0.jsonl + gerador</td></tr>
+</table>
+<div class="footer-note">
+Relatório gerado em 16/10/2026 a partir do estado real do
+repositório — documentos e artefatos citados existem e são
+verificáveis. Nenhuma afirmação de métrica científica (F1,
+correferência em corpus, reidentificação, utility) consta como
+atingida; constam como metas pré-registradas com trilha definida.
+</div>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0027.txt",
+  "pdf": "doc-0027.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "TJPA",
+      "tipo": "ORGAO",
+      "inicio": 20,
+      "fim": 24,
+      "preservar": true
+    },
+    {
+      "texto": "Tribunal de Justica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 29,
+      "fim": 66,
+      "preservar": true
+    },
+    {
+      "texto": "Marcos De Souza",
+      "tipo": "NOME",
+      "inicio": 111,
+      "fim": 126,
+      "preservar": false
+    },
+    {
+      "texto": "SSP-PA 64.704.610",
+      "tipo": "RG",
+      "inicio": 131,
+      "fim": 148,
+      "preservar": false
+    },
+    {
+      "texto": "726.518.909-44",
+      "tipo": "CPF",
+      "inicio": 154,
+      "fim": 168,
+      "preservar": false
+    },
+    {
+      "texto": "JOSEFERREIRA@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 191,
+      "fim": 213,
+      "preservar": false
+    },
+    {
+      "texto": "94984477482",
+      "tipo": "TELEFONE",
+      "inicio": 224,
+      "fim": 235,
+      "preservar": false
+    },
+    {
+      "texto": "R$4.778,04",
+      "tipo": "VALOR",
+      "inicio": 258,
+      "fim": 268,
+      "preservar": true
+    },
+    {
+      "texto": "Defensor Publico",
+      "tipo": "CARGO",
+      "inicio": 289,
+      "fim": 305,
+      "preservar": true
+    }
+  ]
+}

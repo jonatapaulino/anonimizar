@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0085.txt",
+  "pdf": "doc-0085.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 12,
+      "fim": 48,
+      "preservar": true
+    },
+    {
+      "texto": "Jose Ribamar Da Costa",
+      "tipo": "NOME",
+      "inicio": 67,
+      "fim": 88,
+      "preservar": false
+    },
+    {
+      "texto": "264.089.624-59",
+      "tipo": "CPF",
+      "inicio": 94,
+      "fim": 108,
+      "preservar": false
+    },
+    {
+      "texto": "Tv. Castelo Branco, 1491, Sao Bras, Belem-PA, CEP 66374-900",
+      "tipo": "ENDERECO",
+      "inicio": 119,
+      "fim": 178,
+      "preservar": false
+    },
+    {
+      "texto": "1829809-18.2023.8.12.6644",
+      "tipo": "CNJ",
+      "inicio": 224,
+      "fim": 249,
+      "preservar": true
+    },
+    {
+      "texto": "IVONETESILVA@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 268,
+      "fim": 290,
+      "preservar": false
+    },
+    {
+      "texto": "(94) 98363-9294",
+      "tipo": "TELEFONE",
+      "inicio": 293,
+      "fim": 308,
+      "preservar": false
+    }
+  ]
+}

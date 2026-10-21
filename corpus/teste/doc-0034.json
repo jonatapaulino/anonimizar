@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0034.txt",
+  "pdf": "doc-0034.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "SEDUC-PA",
+      "tipo": "ORGAO",
+      "inicio": 20,
+      "fim": 28,
+      "preservar": true
+    },
+    {
+      "texto": "Tribunal de Justica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 33,
+      "fim": 70,
+      "preservar": true
+    },
+    {
+      "texto": "Antonio De Souza",
+      "tipo": "NOME",
+      "inicio": 115,
+      "fim": 131,
+      "preservar": false
+    },
+    {
+      "texto": "05.606.581",
+      "tipo": "RG",
+      "inicio": 136,
+      "fim": 146,
+      "preservar": false
+    },
+    {
+      "texto": "63137949742",
+      "tipo": "CPF",
+      "inicio": 152,
+      "fim": 163,
+      "preservar": false
+    },
+    {
+      "texto": "DENISESOUZA@MPPA.MP.BR",
+      "tipo": "EMAIL",
+      "inicio": 186,
+      "fim": 208,
+      "preservar": false
+    },
+    {
+      "texto": "(91)43035176",
+      "tipo": "TELEFONE",
+      "inicio": 219,
+      "fim": 231,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 190.402,88",
+      "tipo": "VALOR",
+      "inicio": 254,
+      "fim": 267,
+      "preservar": true
+    },
+    {
+      "texto": "Juiz de Direito",
+      "tipo": "CARGO",
+      "inicio": 288,
+      "fim": 303,
+      "preservar": true
+    }
+  ]
+}

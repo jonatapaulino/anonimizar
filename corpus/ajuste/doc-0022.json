@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0022.txt",
+  "pdf": "doc-0022.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "MPPA",
+      "tipo": "ORGAO",
+      "inicio": 20,
+      "fim": 24,
+      "preservar": true
+    },
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 29,
+      "fim": 65,
+      "preservar": true
+    },
+    {
+      "texto": "SEBASTIAO VITOR PEREIRA",
+      "tipo": "NOME",
+      "inicio": 110,
+      "fim": 133,
+      "preservar": false
+    },
+    {
+      "texto": "06.584.165-X",
+      "tipo": "RG",
+      "inicio": 138,
+      "fim": 150,
+      "preservar": false
+    },
+    {
+      "texto": "552.315.300-18",
+      "tipo": "CPF",
+      "inicio": 156,
+      "fim": 170,
+      "preservar": false
+    },
+    {
+      "texto": "MARIA_FERREIRA@TJPA.JUS.BR",
+      "tipo": "EMAIL",
+      "inicio": 193,
+      "fim": 219,
+      "preservar": false
+    },
+    {
+      "texto": "94975303468",
+      "tipo": "TELEFONE",
+      "inicio": 230,
+      "fim": 241,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 113.487,04",
+      "tipo": "VALOR",
+      "inicio": 264,
+      "fim": 280,
+      "preservar": true
+    },
+    {
+      "texto": "Juiz de Direito",
+      "tipo": "CARGO",
+      "inicio": 301,
+      "fim": 316,
+      "preservar": true
+    }
+  ]
+}

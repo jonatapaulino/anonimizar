@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0045.txt",
+  "pdf": "doc-0045.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Camara Municipal de Belem",
+      "tipo": "ORGAO",
+      "inicio": 12,
+      "fim": 37,
+      "preservar": true
+    },
+    {
+      "texto": "JOSE RIBAMAR DA COSTA",
+      "tipo": "NOME",
+      "inicio": 56,
+      "fim": 77,
+      "preservar": false
+    },
+    {
+      "texto": "417.558.347-56",
+      "tipo": "CPF",
+      "inicio": 83,
+      "fim": 97,
+      "preservar": false
+    },
+    {
+      "texto": "Rua dos Mundurucus, 1064, Batista Campos, Belem-PA, CEP 68820-524",
+      "tipo": "ENDERECO",
+      "inicio": 108,
+      "fim": 173,
+      "preservar": false
+    },
+    {
+      "texto": "3292418-30.2024.8.12.9923",
+      "tipo": "CNJ",
+      "inicio": 219,
+      "fim": 244,
+      "preservar": true
+    },
+    {
+      "texto": "ANTONIO_SOUZA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 263,
+      "fim": 292,
+      "preservar": false
+    },
+    {
+      "texto": "93 96774-2843",
+      "tipo": "TELEFONE",
+      "inicio": 295,
+      "fim": 308,
+      "preservar": false
+    }
+  ]
+}

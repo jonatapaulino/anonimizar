@@ -1,0 +1,77 @@
+{
+  "documento": "doc-0030.txt",
+  "pdf": "doc-0030.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Juiz de Direito",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 37,
+      "preservar": true
+    },
+    {
+      "texto": "BELEM",
+      "tipo": "CIDADE",
+      "inicio": 66,
+      "fim": 71,
+      "preservar": true
+    },
+    {
+      "texto": "8129816-32.2019.8.10.3902",
+      "tipo": "CNJ",
+      "inicio": 85,
+      "fim": 110,
+      "preservar": true
+    },
+    {
+      "texto": "Lucia Helena Barbosa",
+      "tipo": "NOME",
+      "inicio": 112,
+      "fim": 132,
+      "preservar": false
+    },
+    {
+      "texto": "174.392.384-86",
+      "tipo": "CPF",
+      "inicio": 134,
+      "fim": 148,
+      "preservar": false
+    },
+    {
+      "texto": "Travessa Dom Pedro I, 635, Centro, Ananindeua-PA, CEP 66556-667",
+      "tipo": "ENDERECO",
+      "inicio": 177,
+      "fim": 240,
+      "preservar": false
+    },
+    {
+      "texto": "(93)977729344",
+      "tipo": "TELEFONE",
+      "inicio": 251,
+      "fim": 264,
+      "preservar": false
+    },
+    {
+      "texto": "CARLOS EDUARDO NASCIMENTO",
+      "tipo": "NOME",
+      "inicio": 338,
+      "fim": 363,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 202.348,69",
+      "tipo": "VALOR",
+      "inicio": 405,
+      "fim": 421,
+      "preservar": true
+    },
+    {
+      "texto": "R$ 189.329,14",
+      "tipo": "VALOR",
+      "inicio": 462,
+      "fim": 475,
+      "preservar": true
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0010.txt",
+  "pdf": "doc-0010.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Defensoria Publica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 36,
+      "preservar": true
+    },
+    {
+      "texto": "1943945-13.2024.8.11.7626",
+      "tipo": "CNJ",
+      "inicio": 79,
+      "fim": 104,
+      "preservar": true
+    },
+    {
+      "texto": "ANTONIO OLIVEIRA",
+      "tipo": "NOME",
+      "inicio": 117,
+      "fim": 133,
+      "preservar": false
+    },
+    {
+      "texto": "MARCOS_SILVA@HOTMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 146,
+      "fim": 170,
+      "preservar": false
+    },
+    {
+      "texto": "91 98446-5477",
+      "tipo": "TELEFONE",
+      "inicio": 183,
+      "fim": 196,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 5.426,05",
+      "tipo": "VALOR",
+      "inicio": 238,
+      "fim": 249,
+      "preservar": true
+    },
+    {
+      "texto": "Castanhal",
+      "tipo": "CIDADE",
+      "inicio": 252,
+      "fim": 261,
+      "preservar": true
+    },
+    {
+      "texto": "Defensor Publico",
+      "tipo": "CARGO",
+      "inicio": 280,
+      "fim": 296,
+      "preservar": true
+    }
+  ]
+}

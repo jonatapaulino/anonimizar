@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0014.txt",
+  "pdf": "doc-0014.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Denise Aparecida Moraes",
+      "tipo": "NOME",
+      "inicio": 48,
+      "fim": 71,
+      "preservar": false
+    },
+    {
+      "texto": "611.952.515-72",
+      "tipo": "CPF",
+      "inicio": 77,
+      "fim": 91,
+      "preservar": false
+    },
+    {
+      "texto": "Marcos Aurelio Tavares",
+      "tipo": "NOME",
+      "inicio": 105,
+      "fim": 127,
+      "preservar": false
+    },
+    {
+      "texto": "455.881.300-73",
+      "tipo": "CPF",
+      "inicio": 133,
+      "fim": 147,
+      "preservar": false
+    },
+    {
+      "texto": "Av. Governador Jose Malcher, 74, Sao Bras, Maraba-PA, CEP 69552-864",
+      "tipo": "ENDERECO",
+      "inicio": 158,
+      "fim": 225,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 9.494,60",
+      "tipo": "VALOR",
+      "inicio": 263,
+      "fim": 274,
+      "preservar": true
+    },
+    {
+      "texto": "2828609-18.2019.8.11.8853",
+      "tipo": "CNJ",
+      "inicio": 312,
+      "fim": 337,
+      "preservar": true
+    },
+    {
+      "texto": "Tribunal Regional Eleitoral do Para",
+      "tipo": "ORGAO",
+      "inicio": 348,
+      "fim": 383,
+      "preservar": true
+    }
+  ]
+}

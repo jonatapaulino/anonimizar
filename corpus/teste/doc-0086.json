@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0086.txt",
+  "pdf": "doc-0086.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico Federal",
+      "tipo": "ORGAO",
+      "inicio": 11,
+      "fim": 37,
+      "preservar": true
+    },
+    {
+      "texto": "PEDRO HENRIQUE ALMEIDA",
+      "tipo": "NOME",
+      "inicio": 53,
+      "fim": 75,
+      "preservar": false
+    },
+    {
+      "texto": "46.446.004",
+      "tipo": "RG",
+      "inicio": 80,
+      "fim": 90,
+      "preservar": false
+    },
+    {
+      "texto": "8060684-10.2021.8.14.7763",
+      "tipo": "CNJ",
+      "inicio": 130,
+      "fim": 155,
+      "preservar": true
+    },
+    {
+      "texto": "Ananindeua",
+      "tipo": "CIDADE",
+      "inicio": 191,
+      "fim": 201,
+      "preservar": true
+    },
+    {
+      "texto": "(91) 98331-8945",
+      "tipo": "TELEFONE",
+      "inicio": 242,
+      "fim": 257,
+      "preservar": false
+    },
+    {
+      "texto": "JOSEOLIVEIRA@MPPA.MP.BR",
+      "tipo": "EMAIL",
+      "inicio": 268,
+      "fim": 291,
+      "preservar": false
+    }
+  ]
+}

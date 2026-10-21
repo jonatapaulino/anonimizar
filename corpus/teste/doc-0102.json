@@ -1,0 +1,84 @@
+{
+  "documento": "doc-0102.txt",
+  "pdf": "doc-0102.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Analista Judiciario",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 41,
+      "preservar": true
+    },
+    {
+      "texto": "ANANINDEUA",
+      "tipo": "CIDADE",
+      "inicio": 70,
+      "fim": 80,
+      "preservar": true
+    },
+    {
+      "texto": "9973124-29.2023.8.11.2433",
+      "tipo": "CNJ",
+      "inicio": 94,
+      "fim": 119,
+      "preservar": true
+    },
+    {
+      "texto": "Francisca Ferreira",
+      "tipo": "NOME",
+      "inicio": 121,
+      "fim": 139,
+      "preservar": false
+    },
+    {
+      "texto": "18.338.687-7",
+      "tipo": "RG",
+      "inicio": 147,
+      "fim": 159,
+      "preservar": false
+    },
+    {
+      "texto": "73358622991",
+      "tipo": "CPF",
+      "inicio": 165,
+      "fim": 176,
+      "preservar": false
+    },
+    {
+      "texto": "Rua dos Mundurucus, 440, Cidade Velha, Maraba-PA, CEP 67258-830",
+      "tipo": "ENDERECO",
+      "inicio": 188,
+      "fim": 251,
+      "preservar": false
+    },
+    {
+      "texto": "IVONETE_COSTA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 260,
+      "fim": 289,
+      "preservar": false
+    },
+    {
+      "texto": "Instituto Nacional do Seguro Social",
+      "tipo": "INSTITUICAO",
+      "inicio": 363,
+      "fim": 398,
+      "preservar": true
+    },
+    {
+      "texto": "R$32.922,73",
+      "tipo": "VALOR",
+      "inicio": 440,
+      "fim": 451,
+      "preservar": true
+    },
+    {
+      "texto": "de R$ 87.907,35",
+      "tipo": "VALOR",
+      "inicio": 492,
+      "fim": 507,
+      "preservar": true
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0108.txt",
+  "pdf": "doc-0108.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Defensoria Publica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 11,
+      "fim": 47,
+      "preservar": true
+    },
+    {
+      "texto": "JOAO CARLOS DE SOUZA",
+      "tipo": "NOME",
+      "inicio": 63,
+      "fim": 83,
+      "preservar": false
+    },
+    {
+      "texto": "42.468.571-0",
+      "tipo": "RG",
+      "inicio": 88,
+      "fim": 100,
+      "preservar": false
+    },
+    {
+      "texto": "7331609-15.2019.8.12.9609",
+      "tipo": "CNJ",
+      "inicio": 140,
+      "fim": 165,
+      "preservar": true
+    },
+    {
+      "texto": "Santarem",
+      "tipo": "CIDADE",
+      "inicio": 201,
+      "fim": 209,
+      "preservar": true
+    },
+    {
+      "texto": "(91)985606788",
+      "tipo": "TELEFONE",
+      "inicio": 250,
+      "fim": 263,
+      "preservar": false
+    },
+    {
+      "texto": "ROSAOLIVEIRA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 274,
+      "fim": 302,
+      "preservar": false
+    }
+  ]
+}

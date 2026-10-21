@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0065.txt",
+  "pdf": "doc-0065.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Tribunal de Justica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 12,
+      "fim": 49,
+      "preservar": true
+    },
+    {
+      "texto": "Marcos Aurelio Tavares",
+      "tipo": "NOME",
+      "inicio": 68,
+      "fim": 90,
+      "preservar": false
+    },
+    {
+      "texto": "940.508.925-02",
+      "tipo": "CPF",
+      "inicio": 96,
+      "fim": 110,
+      "preservar": false
+    },
+    {
+      "texto": "Av. Almirante Barroso, 2200, Umarizal, Ananindeua-PA, CEP 67074-402",
+      "tipo": "ENDERECO",
+      "inicio": 121,
+      "fim": 188,
+      "preservar": false
+    },
+    {
+      "texto": "1840377-40.2022.8.12.9571",
+      "tipo": "CNJ",
+      "inicio": 234,
+      "fim": 259,
+      "preservar": true
+    },
+    {
+      "texto": "JOAO_SOUZA@MPPA.MP.BR",
+      "tipo": "EMAIL",
+      "inicio": 278,
+      "fim": 299,
+      "preservar": false
+    },
+    {
+      "texto": "91985229338",
+      "tipo": "TELEFONE",
+      "inicio": 302,
+      "fim": 313,
+      "preservar": false
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0000.txt",
+  "pdf": "doc-0000.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "MPPA",
+      "tipo": "ORGAO",
+      "inicio": 20,
+      "fim": 24,
+      "preservar": true
+    },
+    {
+      "texto": "Defensoria Publica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 29,
+      "fim": 65,
+      "preservar": true
+    },
+    {
+      "texto": "MARIA JOSE FERREIRA",
+      "tipo": "NOME",
+      "inicio": 110,
+      "fim": 129,
+      "preservar": false
+    },
+    {
+      "texto": "PA 12.058.313-6",
+      "tipo": "RG",
+      "inicio": 134,
+      "fim": 149,
+      "preservar": false
+    },
+    {
+      "texto": "832.002.147-24",
+      "tipo": "CPF",
+      "inicio": 155,
+      "fim": 169,
+      "preservar": false
+    },
+    {
+      "texto": "IVONETEPINHEIRO@MPPA.MP.BR",
+      "tipo": "EMAIL",
+      "inicio": 192,
+      "fim": 218,
+      "preservar": false
+    },
+    {
+      "texto": "(94) 4916-4347",
+      "tipo": "TELEFONE",
+      "inicio": 229,
+      "fim": 243,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 187.709,74",
+      "tipo": "VALOR",
+      "inicio": 266,
+      "fim": 282,
+      "preservar": true
+    },
+    {
+      "texto": "Juiz de Direito",
+      "tipo": "CARGO",
+      "inicio": 303,
+      "fim": 318,
+      "preservar": true
+    }
+  ]
+}

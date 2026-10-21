@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0011.txt",
+  "pdf": "doc-0011.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "SEBASTIAO VITOR PEREIRA",
+      "tipo": "NOME",
+      "inicio": 48,
+      "fim": 71,
+      "preservar": false
+    },
+    {
+      "texto": "93118531355",
+      "tipo": "CPF",
+      "inicio": 77,
+      "fim": 88,
+      "preservar": false
+    },
+    {
+      "texto": "CARLOS FERREIRA",
+      "tipo": "NOME",
+      "inicio": 102,
+      "fim": 117,
+      "preservar": false
+    },
+    {
+      "texto": "99604190539",
+      "tipo": "CPF",
+      "inicio": 123,
+      "fim": 134,
+      "preservar": false
+    },
+    {
+      "texto": "Travessa Dom Pedro I, 1279, Centro, Belem-PA, CEP 69343-643",
+      "tipo": "ENDERECO",
+      "inicio": 145,
+      "fim": 204,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 103.695,80",
+      "tipo": "VALOR",
+      "inicio": 242,
+      "fim": 258,
+      "preservar": true
+    },
+    {
+      "texto": "2250994-65.2019.8.11.6929",
+      "tipo": "CNJ",
+      "inicio": 296,
+      "fim": 321,
+      "preservar": true
+    },
+    {
+      "texto": "Tribunal de Justica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 332,
+      "fim": 369,
+      "preservar": true
+    }
+  ]
+}

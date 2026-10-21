@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0012.txt",
+  "pdf": "doc-0012.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 36,
+      "preservar": true
+    },
+    {
+      "texto": "9256063-65.2020.8.12.3313",
+      "tipo": "CNJ",
+      "inicio": 79,
+      "fim": 104,
+      "preservar": true
+    },
+    {
+      "texto": "MARIA JOSE FERREIRA",
+      "tipo": "NOME",
+      "inicio": 117,
+      "fim": 136,
+      "preservar": false
+    },
+    {
+      "texto": "IVONETE.PINHEIRO@TJPA.JUS.BR",
+      "tipo": "EMAIL",
+      "inicio": 149,
+      "fim": 177,
+      "preservar": false
+    },
+    {
+      "texto": "91 3444-1896",
+      "tipo": "TELEFONE",
+      "inicio": 190,
+      "fim": 202,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 58.921,39",
+      "tipo": "VALOR",
+      "inicio": 244,
+      "fim": 256,
+      "preservar": true
+    },
+    {
+      "texto": "Belem",
+      "tipo": "CIDADE",
+      "inicio": 259,
+      "fim": 264,
+      "preservar": true
+    },
+    {
+      "texto": "Procurador da Republica",
+      "tipo": "CARGO",
+      "inicio": 283,
+      "fim": 306,
+      "preservar": true
+    }
+  ]
+}

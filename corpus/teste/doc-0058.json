@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0058.txt",
+  "pdf": "doc-0058.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Tribunal Regional Eleitoral do Para",
+      "tipo": "ORGAO",
+      "inicio": 12,
+      "fim": 47,
+      "preservar": true
+    },
+    {
+      "texto": "CARLOS FERREIRA",
+      "tipo": "NOME",
+      "inicio": 66,
+      "fim": 81,
+      "preservar": false
+    },
+    {
+      "texto": "426.013.669-07",
+      "tipo": "CPF",
+      "inicio": 87,
+      "fim": 101,
+      "preservar": false
+    },
+    {
+      "texto": "Av. Conselheiro Furtado, 1302, Reduto, Santarem-PA, CEP 69426-208",
+      "tipo": "ENDERECO",
+      "inicio": 112,
+      "fim": 177,
+      "preservar": false
+    },
+    {
+      "texto": "1887216-43.2021.8.10.9682",
+      "tipo": "CNJ",
+      "inicio": 223,
+      "fim": 248,
+      "preservar": true
+    },
+    {
+      "texto": "DENISE.PINHEIRO@HOTMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 267,
+      "fim": 294,
+      "preservar": false
+    },
+    {
+      "texto": "91 97424-8824",
+      "tipo": "TELEFONE",
+      "inicio": 297,
+      "fim": 310,
+      "preservar": false
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0003.txt",
+  "pdf": "doc-0003.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 12,
+      "fim": 48,
+      "preservar": true
+    },
+    {
+      "texto": "Carlos Eduardo Nascimento",
+      "tipo": "NOME",
+      "inicio": 67,
+      "fim": 92,
+      "preservar": false
+    },
+    {
+      "texto": "771.168.696-03",
+      "tipo": "CPF",
+      "inicio": 98,
+      "fim": 112,
+      "preservar": false
+    },
+    {
+      "texto": "Rua das Flores, 1781, Batista Campos, Maraba-PA, CEP 69696-242",
+      "tipo": "ENDERECO",
+      "inicio": 123,
+      "fim": 185,
+      "preservar": false
+    },
+    {
+      "texto": "9352824-93.2026.8.13.1739",
+      "tipo": "CNJ",
+      "inicio": 231,
+      "fim": 256,
+      "preservar": true
+    },
+    {
+      "texto": "LUCIA.SANTOS@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 275,
+      "fim": 297,
+      "preservar": false
+    },
+    {
+      "texto": "(93) 97921-3146",
+      "tipo": "TELEFONE",
+      "inicio": 300,
+      "fim": 315,
+      "preservar": false
+    }
+  ]
+}

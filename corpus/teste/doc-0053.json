@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0053.txt",
+  "pdf": "doc-0053.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Defensoria Publica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 12,
+      "fim": 48,
+      "preservar": true
+    },
+    {
+      "texto": "Rosa Santos",
+      "tipo": "NOME",
+      "inicio": 67,
+      "fim": 78,
+      "preservar": false
+    },
+    {
+      "texto": "85571025182",
+      "tipo": "CPF",
+      "inicio": 84,
+      "fim": 95,
+      "preservar": false
+    },
+    {
+      "texto": "Tv. Castelo Branco, 690, Reduto, Santarem-PA, CEP 67103-772",
+      "tipo": "ENDERECO",
+      "inicio": 106,
+      "fim": 165,
+      "preservar": false
+    },
+    {
+      "texto": "2961237-23.2025.8.12.3458",
+      "tipo": "CNJ",
+      "inicio": 211,
+      "fim": 236,
+      "preservar": true
+    },
+    {
+      "texto": "ANTONIO_BARBOSA@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 255,
+      "fim": 280,
+      "preservar": false
+    },
+    {
+      "texto": "(91)971528741",
+      "tipo": "TELEFONE",
+      "inicio": 283,
+      "fim": 296,
+      "preservar": false
+    }
+  ]
+}

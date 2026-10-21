@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0025.txt",
+  "pdf": "doc-0025.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "SEDUC-PA",
+      "tipo": "ORGAO",
+      "inicio": 20,
+      "fim": 28,
+      "preservar": true
+    },
+    {
+      "texto": "Camara Municipal de Belem",
+      "tipo": "ORGAO",
+      "inicio": 33,
+      "fim": 58,
+      "preservar": true
+    },
+    {
+      "texto": "Lucia Helena Barbosa",
+      "tipo": "NOME",
+      "inicio": 103,
+      "fim": 123,
+      "preservar": false
+    },
+    {
+      "texto": "SSP-PA 57.931.125-8",
+      "tipo": "RG",
+      "inicio": 128,
+      "fim": 147,
+      "preservar": false
+    },
+    {
+      "texto": "562.367.142-07",
+      "tipo": "CPF",
+      "inicio": 153,
+      "fim": 167,
+      "preservar": false
+    },
+    {
+      "texto": "ANA.SOUZA@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 190,
+      "fim": 209,
+      "preservar": false
+    },
+    {
+      "texto": "9444115491",
+      "tipo": "TELEFONE",
+      "inicio": 220,
+      "fim": 230,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 52.870,87",
+      "tipo": "VALOR",
+      "inicio": 253,
+      "fim": 265,
+      "preservar": true
+    },
+    {
+      "texto": "Desembargador",
+      "tipo": "CARGO",
+      "inicio": 286,
+      "fim": 299,
+      "preservar": true
+    }
+  ]
+}

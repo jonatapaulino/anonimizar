@@ -1,0 +1,278 @@
+{
+  "modelo": "qwen2.5:7b",
+  "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+  "num_ctx": 1024,
+  "segundos": 44.9,
+  "por_tipo": {
+    "CARGO": {
+      "recall": null,
+      "excesso": 0.0,
+      "alvo": 0,
+      "rem": 0,
+      "pres": 16,
+      "pres_perd": 0
+    },
+    "CIDADE": {
+      "recall": null,
+      "excesso": 0.0,
+      "alvo": 0,
+      "rem": 0,
+      "pres": 14,
+      "pres_perd": 0
+    },
+    "CNJ": {
+      "recall": null,
+      "excesso": 0.0,
+      "alvo": 0,
+      "rem": 0,
+      "pres": 24,
+      "pres_perd": 0
+    },
+    "CPF": {
+      "recall": 1.0,
+      "excesso": null,
+      "alvo": 23,
+      "rem": 23,
+      "pres": 0,
+      "pres_perd": 0
+    },
+    "EMAIL": {
+      "recall": 0.95,
+      "excesso": null,
+      "alvo": 20,
+      "rem": 19,
+      "pres": 0,
+      "pres_perd": 0
+    },
+    "ENDERECO": {
+      "recall": 0.0,
+      "excesso": null,
+      "alvo": 11,
+      "rem": 0,
+      "pres": 0,
+      "pres_perd": 0
+    },
+    "INSTITUICAO": {
+      "recall": null,
+      "excesso": 0.0,
+      "alvo": 0,
+      "rem": 0,
+      "pres": 4,
+      "pres_perd": 0
+    },
+    "NOME": {
+      "recall": 1.0,
+      "excesso": null,
+      "alvo": 36,
+      "rem": 36,
+      "pres": 0,
+      "pres_perd": 0
+    },
+    "ORGAO": {
+      "recall": null,
+      "excesso": 0.0,
+      "alvo": 0,
+      "rem": 0,
+      "pres": 34,
+      "pres_perd": 0
+    },
+    "RG": {
+      "recall": 1.0,
+      "excesso": null,
+      "alvo": 12,
+      "rem": 12,
+      "pres": 0,
+      "pres_perd": 0
+    },
+    "TELEFONE": {
+      "recall": 0.38095238095238093,
+      "excesso": null,
+      "alvo": 21,
+      "rem": 8,
+      "pres": 0,
+      "pres_perd": 0
+    },
+    "VALOR": {
+      "recall": null,
+      "excesso": 0.0,
+      "alvo": 0,
+      "rem": 0,
+      "pres": 26,
+      "pres_perd": 0
+    }
+  },
+  "erros": [
+    {
+      "doc": "doc-0001",
+      "nao_anonimizados": [
+        "Rua Santo Antonio, 1883, Cidade Velha, Maraba-PA, CEP 67461-565"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 4
+    },
+    {
+      "doc": "doc-0003",
+      "nao_anonimizados": [
+        "Rua das Flores, 1781, Batista Campos, Maraba-PA, CEP 69696-242",
+        "(93) 97921-3146"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 3
+    },
+    {
+      "doc": "doc-0005",
+      "nao_anonimizados": [
+        "(93) 96164-9481"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 3
+    },
+    {
+      "doc": "doc-0006",
+      "nao_anonimizados": [
+        "(91) 96838-6543"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 2
+    },
+    {
+      "doc": "doc-0007",
+      "nao_anonimizados": [
+        "Rua Santo Antonio, 1473, Batista Campos, Castanhal-PA, CEP 67191-694",
+        "9136165579"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 4
+    },
+    {
+      "doc": "doc-0008",
+      "nao_anonimizados": [
+        "Rua dos Mundurucus, 731, Cidade Velha, Santarem-PA, CEP 67273-852",
+        "(94) 97626-9520"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 3
+    },
+    {
+      "doc": "doc-0009",
+      "nao_anonimizados": [
+        "Rua Santo Antonio, 1446, Nazare, Ananindeua-PA, CEP 67928-601"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 4
+    },
+    {
+      "doc": "doc-0010",
+      "nao_anonimizados": [
+        "91 98446-5477"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 2
+    },
+    {
+      "doc": "doc-0011",
+      "nao_anonimizados": [
+        "Travessa Dom Pedro I, 1279, Centro, Belem-PA, CEP 69343-643"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 4
+    },
+    {
+      "doc": "doc-0013",
+      "nao_anonimizados": [
+        "(93)32627666"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 3
+    },
+    {
+      "doc": "doc-0014",
+      "nao_anonimizados": [
+        "Av. Governador Jose Malcher, 74, Sao Bras, Maraba-PA, CEP 69552-864"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 4
+    },
+    {
+      "doc": "doc-0015",
+      "nao_anonimizados": [
+        "Av. Governador Jose Malcher, 183, Sao Bras, Maraba-PA, CEP 67561-602"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 2
+    },
+    {
+      "doc": "doc-0016",
+      "nao_anonimizados": [
+        "(91) 3525-7506"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 2
+    },
+    {
+      "doc": "doc-0018",
+      "nao_anonimizados": [
+        "Av. Governador Jose Malcher, 1628, Reduto, Castanhal-PA, CEP 68953-912"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 2
+    },
+    {
+      "doc": "doc-0019",
+      "nao_anonimizados": [
+        "ANTONIOCOSTA@MPPA.MP.BR",
+        "9342958271"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 1
+    },
+    {
+      "doc": "doc-0020",
+      "nao_anonimizados": [
+        "Travessa Dom Pedro I, 2341, Sao Bras, Maraba-PA, CEP 69787-962"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 4
+    },
+    {
+      "doc": "doc-0021",
+      "nao_anonimizados": [
+        "Rua dos Mundurucus, 1764, Batista Campos, Belem-PA, CEP 69520-984"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 2
+    },
+    {
+      "doc": "doc-0023",
+      "nao_anonimizados": [
+        "93984914634"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 2
+    },
+    {
+      "doc": "doc-0027",
+      "nao_anonimizados": [
+        "94984477482"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 4
+    },
+    {
+      "doc": "doc-0028",
+      "nao_anonimizados": [
+        "(91)35666316"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 4
+    },
+    {
+      "doc": "doc-0029",
+      "nao_anonimizados": [
+        "(94) 98635-6434"
+      ],
+      "preservados_removidos": [],
+      "tags_emitidas": 4
+    }
+  ]
+}

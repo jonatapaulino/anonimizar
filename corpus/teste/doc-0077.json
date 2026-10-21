@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0077.txt",
+  "pdf": "doc-0077.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 36,
+      "preservar": true
+    },
+    {
+      "texto": "8222550-37.2026.8.12.7051",
+      "tipo": "CNJ",
+      "inicio": 79,
+      "fim": 104,
+      "preservar": true
+    },
+    {
+      "texto": "Marcos Aurelio Tavares",
+      "tipo": "NOME",
+      "inicio": 117,
+      "fim": 139,
+      "preservar": false
+    },
+    {
+      "texto": "IVONETESILVA@TJPA.JUS.BR",
+      "tipo": "EMAIL",
+      "inicio": 152,
+      "fim": 176,
+      "preservar": false
+    },
+    {
+      "texto": "(93)972796874",
+      "tipo": "TELEFONE",
+      "inicio": 189,
+      "fim": 202,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 167.659,64",
+      "tipo": "VALOR",
+      "inicio": 244,
+      "fim": 260,
+      "preservar": true
+    },
+    {
+      "texto": "Maraba",
+      "tipo": "CIDADE",
+      "inicio": 263,
+      "fim": 269,
+      "preservar": true
+    },
+    {
+      "texto": "Juiz de Direito",
+      "tipo": "CARGO",
+      "inicio": 288,
+      "fim": 303,
+      "preservar": true
+    }
+  ]
+}

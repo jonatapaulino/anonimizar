@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0062.txt",
+  "pdf": "doc-0062.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Secretaria de Estado de Fazenda",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 31,
+      "preservar": true
+    },
+    {
+      "texto": "4162698-53.2026.8.10.2831",
+      "tipo": "CNJ",
+      "inicio": 74,
+      "fim": 99,
+      "preservar": true
+    },
+    {
+      "texto": "JOSE RIBAMAR DA COSTA",
+      "tipo": "NOME",
+      "inicio": 112,
+      "fim": 133,
+      "preservar": false
+    },
+    {
+      "texto": "PEDRO.OLIVEIRA@MPPA.MP.BR",
+      "tipo": "EMAIL",
+      "inicio": 146,
+      "fim": 171,
+      "preservar": false
+    },
+    {
+      "texto": "(91)45837826",
+      "tipo": "TELEFONE",
+      "inicio": 184,
+      "fim": 196,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 60.843,89",
+      "tipo": "VALOR",
+      "inicio": 238,
+      "fim": 253,
+      "preservar": true
+    },
+    {
+      "texto": "Castanhal",
+      "tipo": "CIDADE",
+      "inicio": 256,
+      "fim": 265,
+      "preservar": true
+    },
+    {
+      "texto": "Promotor de Justica",
+      "tipo": "CARGO",
+      "inicio": 284,
+      "fim": 303,
+      "preservar": true
+    }
+  ]
+}

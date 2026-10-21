@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0109.txt",
+  "pdf": "doc-0109.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Tribunal de Justica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 11,
+      "fim": 48,
+      "preservar": true
+    },
+    {
+      "texto": "ROSA DE SOUZA",
+      "tipo": "NOME",
+      "inicio": 64,
+      "fim": 77,
+      "preservar": false
+    },
+    {
+      "texto": "SSP-PA 03.481.814-X",
+      "tipo": "RG",
+      "inicio": 82,
+      "fim": 101,
+      "preservar": false
+    },
+    {
+      "texto": "8371759-92.2023.8.10.3860",
+      "tipo": "CNJ",
+      "inicio": 141,
+      "fim": 166,
+      "preservar": true
+    },
+    {
+      "texto": "Belem",
+      "tipo": "CIDADE",
+      "inicio": 202,
+      "fim": 207,
+      "preservar": true
+    },
+    {
+      "texto": "(93)986715654",
+      "tipo": "TELEFONE",
+      "inicio": 248,
+      "fim": 261,
+      "preservar": false
+    },
+    {
+      "texto": "ROSA_SOUZA@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 272,
+      "fim": 292,
+      "preservar": false
+    }
+  ]
+}

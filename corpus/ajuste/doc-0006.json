@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0006.txt",
+  "pdf": "doc-0006.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Secretaria de Estado de Fazenda",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 31,
+      "preservar": true
+    },
+    {
+      "texto": "5834519-94.2024.8.10.2917",
+      "tipo": "CNJ",
+      "inicio": 74,
+      "fim": 99,
+      "preservar": true
+    },
+    {
+      "texto": "ROSA MARIA CONCEICAO",
+      "tipo": "NOME",
+      "inicio": 112,
+      "fim": 132,
+      "preservar": false
+    },
+    {
+      "texto": "MARIA.FERREIRA@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 145,
+      "fim": 169,
+      "preservar": false
+    },
+    {
+      "texto": "(91) 96838-6543",
+      "tipo": "TELEFONE",
+      "inicio": 182,
+      "fim": 197,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 188.963,85",
+      "tipo": "VALOR",
+      "inicio": 239,
+      "fim": 252,
+      "preservar": true
+    },
+    {
+      "texto": "Ananindeua",
+      "tipo": "CIDADE",
+      "inicio": 255,
+      "fim": 265,
+      "preservar": true
+    },
+    {
+      "texto": "Analista Judiciario",
+      "tipo": "CARGO",
+      "inicio": 284,
+      "fim": 303,
+      "preservar": true
+    }
+  ]
+}

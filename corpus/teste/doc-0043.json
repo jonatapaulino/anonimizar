@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0043.txt",
+  "pdf": "doc-0043.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "LUCIA HELENA BARBOSA",
+      "tipo": "NOME",
+      "inicio": 48,
+      "fim": 68,
+      "preservar": false
+    },
+    {
+      "texto": "18266919950",
+      "tipo": "CPF",
+      "inicio": 74,
+      "fim": 85,
+      "preservar": false
+    },
+    {
+      "texto": "Maria Pinheiro",
+      "tipo": "NOME",
+      "inicio": 99,
+      "fim": 113,
+      "preservar": false
+    },
+    {
+      "texto": "582.082.020-70",
+      "tipo": "CPF",
+      "inicio": 119,
+      "fim": 133,
+      "preservar": false
+    },
+    {
+      "texto": "Av. Conselheiro Furtado, 442, Cidade Velha, Santarem-PA, CEP 66992-855",
+      "tipo": "ENDERECO",
+      "inicio": 144,
+      "fim": 214,
+      "preservar": false
+    },
+    {
+      "texto": "R$198.825,16",
+      "tipo": "VALOR",
+      "inicio": 252,
+      "fim": 264,
+      "preservar": true
+    },
+    {
+      "texto": "3432644-71.2019.8.10.6846",
+      "tipo": "CNJ",
+      "inicio": 302,
+      "fim": 327,
+      "preservar": true
+    },
+    {
+      "texto": "Tribunal de Justica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 338,
+      "fim": 375,
+      "preservar": true
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0036.txt",
+  "pdf": "doc-0036.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "TJPA",
+      "tipo": "ORGAO",
+      "inicio": 20,
+      "fim": 24,
+      "preservar": true
+    },
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 29,
+      "fim": 65,
+      "preservar": true
+    },
+    {
+      "texto": "ANA PAULA SANTOS",
+      "tipo": "NOME",
+      "inicio": 110,
+      "fim": 126,
+      "preservar": false
+    },
+    {
+      "texto": "PA 56.521.665",
+      "tipo": "RG",
+      "inicio": 131,
+      "fim": 144,
+      "preservar": false
+    },
+    {
+      "texto": "42844753639",
+      "tipo": "CPF",
+      "inicio": 150,
+      "fim": 161,
+      "preservar": false
+    },
+    {
+      "texto": "LUCIA.SOUZA@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 184,
+      "fim": 205,
+      "preservar": false
+    },
+    {
+      "texto": "91984162971",
+      "tipo": "TELEFONE",
+      "inicio": 216,
+      "fim": 227,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 230.251,00",
+      "tipo": "VALOR",
+      "inicio": 250,
+      "fim": 263,
+      "preservar": true
+    },
+    {
+      "texto": "Desembargador",
+      "tipo": "CARGO",
+      "inicio": 284,
+      "fim": 297,
+      "preservar": true
+    }
+  ]
+}

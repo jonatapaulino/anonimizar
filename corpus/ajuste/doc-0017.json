@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0017.txt",
+  "pdf": "doc-0017.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Promotor de Justica",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 41,
+      "preservar": true
+    },
+    {
+      "texto": "ANANINDEUA",
+      "tipo": "CIDADE",
+      "inicio": 70,
+      "fim": 80,
+      "preservar": true
+    },
+    {
+      "texto": "7408277-56.2026.8.14.7799",
+      "tipo": "CNJ",
+      "inicio": 94,
+      "fim": 119,
+      "preservar": true
+    },
+    {
+      "texto": "Rosa Costa",
+      "tipo": "NOME",
+      "inicio": 121,
+      "fim": 131,
+      "preservar": false
+    },
+    {
+      "texto": "89.547.578-0",
+      "tipo": "RG",
+      "inicio": 151,
+      "fim": 163,
+      "preservar": false
+    },
+    {
+      "texto": "168.002.704-23",
+      "tipo": "CPF",
+      "inicio": 172,
+      "fim": 186,
+      "preservar": false
+    },
+    {
+      "texto": "Caixa Economica Federal",
+      "tipo": "INSTITUICAO",
+      "inicio": 260,
+      "fim": 283,
+      "preservar": true
+    },
+    {
+      "texto": "R$ 49.115,89",
+      "tipo": "VALOR",
+      "inicio": 325,
+      "fim": 337,
+      "preservar": true
+    },
+    {
+      "texto": "R$171.142,66",
+      "tipo": "VALOR",
+      "inicio": 378,
+      "fim": 390,
+      "preservar": true
+    }
+  ]
+}

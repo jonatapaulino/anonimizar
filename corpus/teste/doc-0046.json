@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0046.txt",
+  "pdf": "doc-0046.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "TJPA",
+      "tipo": "ORGAO",
+      "inicio": 20,
+      "fim": 24,
+      "preservar": true
+    },
+    {
+      "texto": "Defensoria Publica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 29,
+      "fim": 65,
+      "preservar": true
+    },
+    {
+      "texto": "Marcos Ferreira",
+      "tipo": "NOME",
+      "inicio": 110,
+      "fim": 125,
+      "preservar": false
+    },
+    {
+      "texto": "15.479.352-4",
+      "tipo": "RG",
+      "inicio": 130,
+      "fim": 142,
+      "preservar": false
+    },
+    {
+      "texto": "427.419.088-93",
+      "tipo": "CPF",
+      "inicio": 148,
+      "fim": 162,
+      "preservar": false
+    },
+    {
+      "texto": "CARLOS_PINHEIRO@TJPA.JUS.BR",
+      "tipo": "EMAIL",
+      "inicio": 185,
+      "fim": 212,
+      "preservar": false
+    },
+    {
+      "texto": "9334094915",
+      "tipo": "TELEFONE",
+      "inicio": 223,
+      "fim": 233,
+      "preservar": false
+    },
+    {
+      "texto": "R$70.660,01",
+      "tipo": "VALOR",
+      "inicio": 256,
+      "fim": 267,
+      "preservar": true
+    },
+    {
+      "texto": "Analista Judiciario",
+      "tipo": "CARGO",
+      "inicio": 288,
+      "fim": 307,
+      "preservar": true
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0049.txt",
+  "pdf": "doc-0049.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Carlos Eduardo Nascimento",
+      "tipo": "NOME",
+      "inicio": 48,
+      "fim": 73,
+      "preservar": false
+    },
+    {
+      "texto": "17465402573",
+      "tipo": "CPF",
+      "inicio": 79,
+      "fim": 90,
+      "preservar": false
+    },
+    {
+      "texto": "ANTONIO MARCOS PINHEIRO",
+      "tipo": "NOME",
+      "inicio": 104,
+      "fim": 127,
+      "preservar": false
+    },
+    {
+      "texto": "572.805.292-40",
+      "tipo": "CPF",
+      "inicio": 133,
+      "fim": 147,
+      "preservar": false
+    },
+    {
+      "texto": "Rua Santo Antonio, 1624, Sao Bras, Belem-PA, CEP 66747-274",
+      "tipo": "ENDERECO",
+      "inicio": 158,
+      "fim": 216,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 133.172,01",
+      "tipo": "VALOR",
+      "inicio": 254,
+      "fim": 267,
+      "preservar": true
+    },
+    {
+      "texto": "3965624-19.2025.8.14.9225",
+      "tipo": "CNJ",
+      "inicio": 305,
+      "fim": 330,
+      "preservar": true
+    },
+    {
+      "texto": "Ministerio Publico Federal",
+      "tipo": "ORGAO",
+      "inicio": 341,
+      "fim": 367,
+      "preservar": true
+    }
+  ]
+}

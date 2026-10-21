@@ -1,0 +1,84 @@
+{
+  "documento": "doc-0067.txt",
+  "pdf": "doc-0067.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Procurador da Republica",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 45,
+      "preservar": true
+    },
+    {
+      "texto": "MARABA",
+      "tipo": "CIDADE",
+      "inicio": 74,
+      "fim": 80,
+      "preservar": true
+    },
+    {
+      "texto": "3429041-28.2022.8.13.8205",
+      "tipo": "CNJ",
+      "inicio": 94,
+      "fim": 119,
+      "preservar": true
+    },
+    {
+      "texto": "Pedro Henrique Almeida",
+      "tipo": "NOME",
+      "inicio": 121,
+      "fim": 143,
+      "preservar": false
+    },
+    {
+      "texto": "78241310927",
+      "tipo": "CPF",
+      "inicio": 149,
+      "fim": 160,
+      "preservar": false
+    },
+    {
+      "texto": "Tv. Castelo Branco, 1462, Cidade Velha, Ananindeua-PA, CEP 67415-179",
+      "tipo": "ENDERECO",
+      "inicio": 172,
+      "fim": 240,
+      "preservar": false
+    },
+    {
+      "texto": "JOAO_SOUZA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 249,
+      "fim": 275,
+      "preservar": false
+    },
+    {
+      "texto": "94 96393-1307",
+      "tipo": "TELEFONE",
+      "inicio": 286,
+      "fim": 299,
+      "preservar": false
+    },
+    {
+      "texto": "Pedro Henrique Almeida",
+      "tipo": "NOME",
+      "inicio": 373,
+      "fim": 395,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 183.038,52",
+      "tipo": "VALOR",
+      "inicio": 437,
+      "fim": 450,
+      "preservar": true
+    },
+    {
+      "texto": "R$ 79.022,49",
+      "tipo": "VALOR",
+      "inicio": 491,
+      "fim": 503,
+      "preservar": true
+    }
+  ]
+}

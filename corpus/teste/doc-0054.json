@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0054.txt",
+  "pdf": "doc-0054.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico Federal",
+      "tipo": "ORGAO",
+      "inicio": 12,
+      "fim": 38,
+      "preservar": true
+    },
+    {
+      "texto": "MARCOS AURELIO TAVARES",
+      "tipo": "NOME",
+      "inicio": 57,
+      "fim": 79,
+      "preservar": false
+    },
+    {
+      "texto": "10175173559",
+      "tipo": "CPF",
+      "inicio": 85,
+      "fim": 96,
+      "preservar": false
+    },
+    {
+      "texto": "Rua das Flores, 2641, Cidade Velha, Ananindeua-PA, CEP 67024-389",
+      "tipo": "ENDERECO",
+      "inicio": 107,
+      "fim": 171,
+      "preservar": false
+    },
+    {
+      "texto": "1027109-32.2021.8.13.4679",
+      "tipo": "CNJ",
+      "inicio": 217,
+      "fim": 242,
+      "preservar": true
+    },
+    {
+      "texto": "CARLOS.BARBOSA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 261,
+      "fim": 291,
+      "preservar": false
+    },
+    {
+      "texto": "93 4289-1261",
+      "tipo": "TELEFONE",
+      "inicio": 294,
+      "fim": 306,
+      "preservar": false
+    }
+  ]
+}

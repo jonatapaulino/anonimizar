@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0107.txt",
+  "pdf": "doc-0107.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "MARIA JOSE FERREIRA",
+      "tipo": "NOME",
+      "inicio": 48,
+      "fim": 67,
+      "preservar": false
+    },
+    {
+      "texto": "411.280.115-73",
+      "tipo": "CPF",
+      "inicio": 73,
+      "fim": 87,
+      "preservar": false
+    },
+    {
+      "texto": "JOSE RIBAMAR DA COSTA",
+      "tipo": "NOME",
+      "inicio": 101,
+      "fim": 122,
+      "preservar": false
+    },
+    {
+      "texto": "759.436.547-04",
+      "tipo": "CPF",
+      "inicio": 128,
+      "fim": 142,
+      "preservar": false
+    },
+    {
+      "texto": "Rua das Flores, 2777, Cidade Velha, Ananindeua-PA, CEP 66944-913",
+      "tipo": "ENDERECO",
+      "inicio": 153,
+      "fim": 217,
+      "preservar": false
+    },
+    {
+      "texto": "R$29.025,08",
+      "tipo": "VALOR",
+      "inicio": 255,
+      "fim": 266,
+      "preservar": true
+    },
+    {
+      "texto": "1687787-70.2021.8.13.2199",
+      "tipo": "CNJ",
+      "inicio": 304,
+      "fim": 329,
+      "preservar": true
+    },
+    {
+      "texto": "Tribunal de Justica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 340,
+      "fim": 377,
+      "preservar": true
+    }
+  ]
+}

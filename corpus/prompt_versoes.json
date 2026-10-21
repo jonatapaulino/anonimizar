@@ -1,0 +1,27 @@
+{
+  "v0": {
+    "sha256": "644cac431a8c7d9040f15ead6721969606d42396f659dc8a3addb08535e22022",
+    "chars": 1100,
+    "fonte": "app/motor_langchain.py:SYSTEM_PROMPT"
+  },
+  "v1": {
+    "sha256": "cf92a61d99e634a1dd828bc149839ced0664b1e1370b05b065fd4cbef577c3ca",
+    "chars": 2340,
+    "fonte": "corpus/prompt_v1.txt (v0 + bloco ENDERECO/TELEFONE)",
+    "base": "v0 644cac431a8c7d90",
+    "status": "REJEITADA",
+    "motivo": "regressao em NOME (100->89), CPF (100->96) e RG (100->83); mutacao de texto preservado (Santarem->Santarem-com-acento em doc-0013/0026); tag fora do padrao [ANONIMIZADO] em doc-0007/0017"
+  },
+  "contrato-spans-v0": {
+    "sha256": "7d7ac2b2f6f2dfb1afc728ba5a34c3dbdf00776ff1cff722471112f143a6494e",
+    "chars": 1238,
+    "fonte": "corpus/prompt_contrato_spans_v0.txt",
+    "contrato": "JSON {spans:[{trecho,tipo}]} — substituicao por codigo"
+  },
+  "contrato-cascata-nome-v0": {
+    "sha256": "5601b78f545ebfd1a64a0177f1394ff69caafd98f552b35daf70e97474a36214",
+    "chars": 653,
+    "fonte": "scripts/eval_cascata.py:PROMPT_NOME",
+    "contrato": "JSON spans — somente NOME"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0097.txt",
+  "pdf": "doc-0097.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Secretaria de Estado de Fazenda",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 31,
+      "preservar": true
+    },
+    {
+      "texto": "5243907-92.2019.8.11.2751",
+      "tipo": "CNJ",
+      "inicio": 74,
+      "fim": 99,
+      "preservar": true
+    },
+    {
+      "texto": "CARLOS EDUARDO NASCIMENTO",
+      "tipo": "NOME",
+      "inicio": 112,
+      "fim": 137,
+      "preservar": false
+    },
+    {
+      "texto": "ANTONIO_FERREIRA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 150,
+      "fim": 182,
+      "preservar": false
+    },
+    {
+      "texto": "94 97435-2056",
+      "tipo": "TELEFONE",
+      "inicio": 195,
+      "fim": 208,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 110.521,81",
+      "tipo": "VALOR",
+      "inicio": 250,
+      "fim": 263,
+      "preservar": true
+    },
+    {
+      "texto": "Maraba",
+      "tipo": "CIDADE",
+      "inicio": 266,
+      "fim": 272,
+      "preservar": true
+    },
+    {
+      "texto": "Desembargador",
+      "tipo": "CARGO",
+      "inicio": 291,
+      "fim": 304,
+      "preservar": true
+    }
+  ]
+}

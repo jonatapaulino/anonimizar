@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0106.txt",
+  "pdf": "doc-0106.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Perito Judicial",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 37,
+      "preservar": true
+    },
+    {
+      "texto": "CASTANHAL",
+      "tipo": "CIDADE",
+      "inicio": 66,
+      "fim": 75,
+      "preservar": true
+    },
+    {
+      "texto": "2687027-85.2021.8.12.9742",
+      "tipo": "CNJ",
+      "inicio": 89,
+      "fim": 114,
+      "preservar": true
+    },
+    {
+      "texto": "MARIA FERREIRA",
+      "tipo": "NOME",
+      "inicio": 128,
+      "fim": 142,
+      "preservar": false
+    },
+    {
+      "texto": "009.617.812-46",
+      "tipo": "CPF",
+      "inicio": 144,
+      "fim": 158,
+      "preservar": false
+    },
+    {
+      "texto": "(91)46957303",
+      "tipo": "TELEFONE",
+      "inicio": 169,
+      "fim": 181,
+      "preservar": false
+    },
+    {
+      "texto": "MARIA COSTA",
+      "tipo": "NOME",
+      "inicio": 255,
+      "fim": 266,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 215.592,34",
+      "tipo": "VALOR",
+      "inicio": 308,
+      "fim": 324,
+      "preservar": true
+    },
+    {
+      "texto": "R$ 52.605,80",
+      "tipo": "VALOR",
+      "inicio": 365,
+      "fim": 377,
+      "preservar": true
+    }
+  ]
+}

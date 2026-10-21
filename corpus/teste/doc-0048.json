@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0048.txt",
+  "pdf": "doc-0048.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "SEFAZ-PA",
+      "tipo": "ORGAO",
+      "inicio": 20,
+      "fim": 28,
+      "preservar": true
+    },
+    {
+      "texto": "Camara Municipal de Belem",
+      "tipo": "ORGAO",
+      "inicio": 33,
+      "fim": 58,
+      "preservar": true
+    },
+    {
+      "texto": "Denise Aparecida Moraes",
+      "tipo": "NOME",
+      "inicio": 103,
+      "fim": 126,
+      "preservar": false
+    },
+    {
+      "texto": "SSP-PA 00.207.848-2",
+      "tipo": "RG",
+      "inicio": 131,
+      "fim": 150,
+      "preservar": false
+    },
+    {
+      "texto": "195.848.548-95",
+      "tipo": "CPF",
+      "inicio": 156,
+      "fim": 170,
+      "preservar": false
+    },
+    {
+      "texto": "CARLOS.SANTOS@TJPA.JUS.BR",
+      "tipo": "EMAIL",
+      "inicio": 193,
+      "fim": 218,
+      "preservar": false
+    },
+    {
+      "texto": "9336225688",
+      "tipo": "TELEFONE",
+      "inicio": 229,
+      "fim": 239,
+      "preservar": false
+    },
+    {
+      "texto": "R$7.066,28",
+      "tipo": "VALOR",
+      "inicio": 262,
+      "fim": 272,
+      "preservar": true
+    },
+    {
+      "texto": "Analista Judiciario",
+      "tipo": "CARGO",
+      "inicio": 293,
+      "fim": 312,
+      "preservar": true
+    }
+  ]
+}

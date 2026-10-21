@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0050.txt",
+  "pdf": "doc-0050.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Universidade Federal do Para",
+      "tipo": "INSTITUICAO",
+      "inicio": 48,
+      "fim": 76,
+      "preservar": true
+    },
+    {
+      "texto": "Maria Das Gracas Santana",
+      "tipo": "NOME",
+      "inicio": 90,
+      "fim": 114,
+      "preservar": false
+    },
+    {
+      "texto": "575.544.289-42",
+      "tipo": "CPF",
+      "inicio": 120,
+      "fim": 134,
+      "preservar": false
+    },
+    {
+      "texto": "Rua dos Mundurucus, 2858, Cidade Velha, Belem-PA, CEP 67722-885",
+      "tipo": "ENDERECO",
+      "inicio": 145,
+      "fim": 208,
+      "preservar": false
+    },
+    {
+      "texto": "R$29.071,22",
+      "tipo": "VALOR",
+      "inicio": 246,
+      "fim": 257,
+      "preservar": true
+    },
+    {
+      "texto": "6170925-66.2021.8.10.4176",
+      "tipo": "CNJ",
+      "inicio": 295,
+      "fim": 320,
+      "preservar": true
+    },
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 331,
+      "fim": 367,
+      "preservar": true
+    }
+  ]
+}

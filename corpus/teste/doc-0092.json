@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0092.txt",
+  "pdf": "doc-0092.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "SEFAZ-PA",
+      "tipo": "ORGAO",
+      "inicio": 20,
+      "fim": 28,
+      "preservar": true
+    },
+    {
+      "texto": "Ministerio Publico Federal",
+      "tipo": "ORGAO",
+      "inicio": 33,
+      "fim": 59,
+      "preservar": true
+    },
+    {
+      "texto": "Carlos Eduardo Nascimento",
+      "tipo": "NOME",
+      "inicio": 104,
+      "fim": 129,
+      "preservar": false
+    },
+    {
+      "texto": "SSP-PA 17.156.602-X",
+      "tipo": "RG",
+      "inicio": 134,
+      "fim": 153,
+      "preservar": false
+    },
+    {
+      "texto": "70959396675",
+      "tipo": "CPF",
+      "inicio": 159,
+      "fim": 170,
+      "preservar": false
+    },
+    {
+      "texto": "DENISESANTOS@HOTMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 193,
+      "fim": 217,
+      "preservar": false
+    },
+    {
+      "texto": "91 98272-7314",
+      "tipo": "TELEFONE",
+      "inicio": 228,
+      "fim": 241,
+      "preservar": false
+    },
+    {
+      "texto": "R$246.036,77",
+      "tipo": "VALOR",
+      "inicio": 264,
+      "fim": 276,
+      "preservar": true
+    },
+    {
+      "texto": "Analista Judiciario",
+      "tipo": "CARGO",
+      "inicio": 297,
+      "fim": 316,
+      "preservar": true
+    }
+  ]
+}

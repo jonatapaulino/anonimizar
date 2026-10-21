@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0071.txt",
+  "pdf": "doc-0071.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "TJPA",
+      "tipo": "ORGAO",
+      "inicio": 20,
+      "fim": 24,
+      "preservar": true
+    },
+    {
+      "texto": "Tribunal Regional Eleitoral do Para",
+      "tipo": "ORGAO",
+      "inicio": 29,
+      "fim": 64,
+      "preservar": true
+    },
+    {
+      "texto": "Sebastiao Vitor Pereira",
+      "tipo": "NOME",
+      "inicio": 109,
+      "fim": 132,
+      "preservar": false
+    },
+    {
+      "texto": "18.149.880-6",
+      "tipo": "RG",
+      "inicio": 137,
+      "fim": 149,
+      "preservar": false
+    },
+    {
+      "texto": "16453152070",
+      "tipo": "CPF",
+      "inicio": 155,
+      "fim": 166,
+      "preservar": false
+    },
+    {
+      "texto": "MARIASOUZA@TJPA.JUS.BR",
+      "tipo": "EMAIL",
+      "inicio": 189,
+      "fim": 211,
+      "preservar": false
+    },
+    {
+      "texto": "(91) 3954-5410",
+      "tipo": "TELEFONE",
+      "inicio": 222,
+      "fim": 236,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 85.148,42",
+      "tipo": "VALOR",
+      "inicio": 259,
+      "fim": 274,
+      "preservar": true
+    },
+    {
+      "texto": "Desembargador",
+      "tipo": "CARGO",
+      "inicio": 295,
+      "fim": 308,
+      "preservar": true
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0051.txt",
+  "pdf": "doc-0051.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico Federal",
+      "tipo": "ORGAO",
+      "inicio": 12,
+      "fim": 38,
+      "preservar": true
+    },
+    {
+      "texto": "Pedro Henrique Almeida",
+      "tipo": "NOME",
+      "inicio": 57,
+      "fim": 79,
+      "preservar": false
+    },
+    {
+      "texto": "91555990010",
+      "tipo": "CPF",
+      "inicio": 85,
+      "fim": 96,
+      "preservar": false
+    },
+    {
+      "texto": "Rua das Flores, 1157, Marco, Castanhal-PA, CEP 66288-192",
+      "tipo": "ENDERECO",
+      "inicio": 107,
+      "fim": 163,
+      "preservar": false
+    },
+    {
+      "texto": "7845759-67.2022.8.12.1495",
+      "tipo": "CNJ",
+      "inicio": 209,
+      "fim": 234,
+      "preservar": true
+    },
+    {
+      "texto": "FRANCISCA_BARBOSA@GMAIL.COM",
+      "tipo": "EMAIL",
+      "inicio": 253,
+      "fim": 280,
+      "preservar": false
+    },
+    {
+      "texto": "91 96669-1817",
+      "tipo": "TELEFONE",
+      "inicio": 283,
+      "fim": 296,
+      "preservar": false
+    }
+  ]
+}

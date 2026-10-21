@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0024.txt",
+  "pdf": "doc-0024.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Defensoria Publica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 11,
+      "fim": 47,
+      "preservar": true
+    },
+    {
+      "texto": "ROSA MARIA CONCEICAO",
+      "tipo": "NOME",
+      "inicio": 63,
+      "fim": 83,
+      "preservar": false
+    },
+    {
+      "texto": "16.475.008-X",
+      "tipo": "RG",
+      "inicio": 88,
+      "fim": 100,
+      "preservar": false
+    },
+    {
+      "texto": "6412147-78.2023.8.10.1555",
+      "tipo": "CNJ",
+      "inicio": 140,
+      "fim": 165,
+      "preservar": true
+    },
+    {
+      "texto": "Maraba",
+      "tipo": "CIDADE",
+      "inicio": 201,
+      "fim": 207,
+      "preservar": true
+    },
+    {
+      "texto": "9445141012",
+      "tipo": "TELEFONE",
+      "inicio": 248,
+      "fim": 258,
+      "preservar": false
+    },
+    {
+      "texto": "FRANCISCA.SOUZA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 269,
+      "fim": 300,
+      "preservar": false
+    }
+  ]
+}

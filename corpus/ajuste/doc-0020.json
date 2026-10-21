@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0020.txt",
+  "pdf": "doc-0020.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Denise Aparecida Moraes",
+      "tipo": "NOME",
+      "inicio": 48,
+      "fim": 71,
+      "preservar": false
+    },
+    {
+      "texto": "621.586.323-80",
+      "tipo": "CPF",
+      "inicio": 77,
+      "fim": 91,
+      "preservar": false
+    },
+    {
+      "texto": "Lucia De Souza",
+      "tipo": "NOME",
+      "inicio": 105,
+      "fim": 119,
+      "preservar": false
+    },
+    {
+      "texto": "310.783.525-00",
+      "tipo": "CPF",
+      "inicio": 125,
+      "fim": 139,
+      "preservar": false
+    },
+    {
+      "texto": "Travessa Dom Pedro I, 2341, Sao Bras, Maraba-PA, CEP 69787-962",
+      "tipo": "ENDERECO",
+      "inicio": 150,
+      "fim": 212,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 239.410,82",
+      "tipo": "VALOR",
+      "inicio": 250,
+      "fim": 263,
+      "preservar": true
+    },
+    {
+      "texto": "9800824-12.2026.8.12.2850",
+      "tipo": "CNJ",
+      "inicio": 301,
+      "fim": 326,
+      "preservar": true
+    },
+    {
+      "texto": "Tribunal de Justica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 337,
+      "fim": 374,
+      "preservar": true
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "documento": "doc-0038.txt",
+  "pdf": "doc-0038.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Desembargador",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 35,
+      "preservar": true
+    },
+    {
+      "texto": "SANTAREM",
+      "tipo": "CIDADE",
+      "inicio": 64,
+      "fim": 72,
+      "preservar": true
+    },
+    {
+      "texto": "2672490-29.2024.8.12.2908",
+      "tipo": "CNJ",
+      "inicio": 86,
+      "fim": 111,
+      "preservar": true
+    },
+    {
+      "texto": "IVONETE CRISTINA ROCHA",
+      "tipo": "NOME",
+      "inicio": 113,
+      "fim": 135,
+      "preservar": false
+    },
+    {
+      "texto": "39632034120",
+      "tipo": "CPF",
+      "inicio": 141,
+      "fim": 152,
+      "preservar": false
+    },
+    {
+      "texto": "91 98917-3101",
+      "tipo": "TELEFONE",
+      "inicio": 163,
+      "fim": 176,
+      "preservar": false
+    },
+    {
+      "texto": "MARIA JOSE FERREIRA",
+      "tipo": "NOME",
+      "inicio": 250,
+      "fim": 269,
+      "preservar": false
+    },
+    {
+      "texto": "R$232.161,36",
+      "tipo": "VALOR",
+      "inicio": 311,
+      "fim": 323,
+      "preservar": true
+    },
+    {
+      "texto": "R$ 232.600,18",
+      "tipo": "VALOR",
+      "inicio": 364,
+      "fim": 377,
+      "preservar": true
+    }
+  ]
+}

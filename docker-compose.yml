@@ -1,0 +1,66 @@
+# Banco de desenvolvimento/teste do MVP — Postgres 16.
+# NÃO é o compose soberano (deploy/compose.yaml): é a infra de
+# dev para hardening de persistência. Credenciais de dev apenas —
+# em produção o Postgres vive na rede `interna` sem publicação.
+services:
+  postgres:
+    image: postgres:16
+    container_name: edvar-postgres-dev
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-edvar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-edvar_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-tramitacao}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: edvar-rabbitmq-dev
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-edvar}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS:-edvar_dev}
+    ports:
+      - "5672:5672"      # AMQP
+      - "15672:15672"    # console de gestão (dev)
+    volumes:
+      - rmqdata_dev:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  minio:
+    # minio/minio saiu do Docker Hub — bitnamilegacy é o mirror
+    # gratuito das imagens Bitnami após a mudança de licença
+    image: bitnamilegacy/minio:latest
+    container_name: edvar-minio-dev
+    command: server /bitnami/minio/data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER:-edvar}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASS:-edvar_dev_minio}
+    ports:
+      - "9000:9000"      # API S3
+      - "9001:9001"      # console (dev)
+    volumes:
+      - miniodata_dev:/bitnami/minio/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9000/minio/health/live || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 5s
+
+volumes:
+  pgdata_dev:
+  rmqdata_dev:
+  miniodata_dev:

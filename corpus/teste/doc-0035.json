@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0035.txt",
+  "pdf": "doc-0035.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Defensoria Publica do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 36,
+      "preservar": true
+    },
+    {
+      "texto": "5388545-96.2019.8.11.5590",
+      "tipo": "CNJ",
+      "inicio": 79,
+      "fim": 104,
+      "preservar": true
+    },
+    {
+      "texto": "PEDRO HENRIQUE ALMEIDA",
+      "tipo": "NOME",
+      "inicio": 117,
+      "fim": 139,
+      "preservar": false
+    },
+    {
+      "texto": "CARLOSSANTOS@TJPA.JUS.BR",
+      "tipo": "EMAIL",
+      "inicio": 152,
+      "fim": 176,
+      "preservar": false
+    },
+    {
+      "texto": "(94) 4709-7986",
+      "tipo": "TELEFONE",
+      "inicio": 189,
+      "fim": 203,
+      "preservar": false
+    },
+    {
+      "texto": "R$153.680,78",
+      "tipo": "VALOR",
+      "inicio": 245,
+      "fim": 257,
+      "preservar": true
+    },
+    {
+      "texto": "Santarem",
+      "tipo": "CIDADE",
+      "inicio": 260,
+      "fim": 268,
+      "preservar": true
+    },
+    {
+      "texto": "Escrivao Judicial",
+      "tipo": "CARGO",
+      "inicio": 287,
+      "fim": 304,
+      "preservar": true
+    }
+  ]
+}

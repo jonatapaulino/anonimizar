@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0100.txt",
+  "pdf": "doc-0100.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Tribunal Regional Eleitoral do Para",
+      "tipo": "ORGAO",
+      "inicio": 0,
+      "fim": 35,
+      "preservar": true
+    },
+    {
+      "texto": "7506821-53.2026.8.12.8968",
+      "tipo": "CNJ",
+      "inicio": 78,
+      "fim": 103,
+      "preservar": true
+    },
+    {
+      "texto": "Carlos Eduardo Nascimento",
+      "tipo": "NOME",
+      "inicio": 116,
+      "fim": 141,
+      "preservar": false
+    },
+    {
+      "texto": "SEBASTIAO_SILVA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 154,
+      "fim": 185,
+      "preservar": false
+    },
+    {
+      "texto": "91987699746",
+      "tipo": "TELEFONE",
+      "inicio": 198,
+      "fim": 209,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 221.460,22",
+      "tipo": "VALOR",
+      "inicio": 251,
+      "fim": 267,
+      "preservar": true
+    },
+    {
+      "texto": "Belem",
+      "tipo": "CIDADE",
+      "inicio": 270,
+      "fim": 275,
+      "preservar": true
+    },
+    {
+      "texto": "Promotor de Justica",
+      "tipo": "CARGO",
+      "inicio": 294,
+      "fim": 313,
+      "preservar": true
+    }
+  ]
+}

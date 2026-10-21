@@ -1,0 +1,856 @@
+{
+  "prompt": "14b-v0",
+  "sha256_prompt_file": "corpus\\prompt_v0.txt",
+  "modelo": "qwen2.5:14b",
+  "digest": "7cdf5a0187d5c58cc5d369b255592f7841d1c4696d45a8c8a9489440385b22f6",
+  "num_ctx": 1024,
+  "segundos": 75.8,
+  "por_tipo": {
+    "ORGAO": {
+      "alvo": {
+        "intacta": 0,
+        "parcial": 0,
+        "total": 0
+      },
+      "pres": {
+        "intacta": 34,
+        "parcial": 0,
+        "total": 0
+      }
+    },
+    "NOME": {
+      "alvo": {
+        "intacta": 1,
+        "parcial": 0,
+        "total": 35
+      },
+      "pres": {
+        "intacta": 0,
+        "parcial": 0,
+        "total": 0
+      }
+    },
+    "RG": {
+      "alvo": {
+        "intacta": 3,
+        "parcial": 0,
+        "total": 9
+      },
+      "pres": {
+        "intacta": 0,
+        "parcial": 0,
+        "total": 0
+      }
+    },
+    "CPF": {
+      "alvo": {
+        "intacta": 2,
+        "parcial": 0,
+        "total": 21
+      },
+      "pres": {
+        "intacta": 0,
+        "parcial": 0,
+        "total": 0
+      }
+    },
+    "EMAIL": {
+      "alvo": {
+        "intacta": 2,
+        "parcial": 0,
+        "total": 18
+      },
+      "pres": {
+        "intacta": 0,
+        "parcial": 0,
+        "total": 0
+      }
+    },
+    "TELEFONE": {
+      "alvo": {
+        "intacta": 7,
+        "parcial": 0,
+        "total": 14
+      },
+      "pres": {
+        "intacta": 0,
+        "parcial": 0,
+        "total": 0
+      }
+    },
+    "VALOR": {
+      "alvo": {
+        "intacta": 0,
+        "parcial": 0,
+        "total": 0
+      },
+      "pres": {
+        "intacta": 26,
+        "parcial": 0,
+        "total": 0
+      }
+    },
+    "CARGO": {
+      "alvo": {
+        "intacta": 0,
+        "parcial": 0,
+        "total": 0
+      },
+      "pres": {
+        "intacta": 16,
+        "parcial": 0,
+        "total": 0
+      }
+    },
+    "ENDERECO": {
+      "alvo": {
+        "intacta": 1,
+        "parcial": 1,
+        "total": 9
+      },
+      "pres": {
+        "intacta": 0,
+        "parcial": 0,
+        "total": 0
+      }
+    },
+    "CNJ": {
+      "alvo": {
+        "intacta": 0,
+        "parcial": 0,
+        "total": 0
+      },
+      "pres": {
+        "intacta": 24,
+        "parcial": 0,
+        "total": 0
+      }
+    },
+    "CIDADE": {
+      "alvo": {
+        "intacta": 0,
+        "parcial": 0,
+        "total": 0
+      },
+      "pres": {
+        "intacta": 14,
+        "parcial": 0,
+        "total": 0
+      }
+    },
+    "INSTITUICAO": {
+      "alvo": {
+        "intacta": 0,
+        "parcial": 0,
+        "total": 0
+      },
+      "pres": {
+        "intacta": 4,
+        "parcial": 0,
+        "total": 0
+      }
+    }
+  },
+  "erros": [
+    {
+      "doc": "doc-0000",
+      "miss": [
+        [
+          "MARIA JOSE FERREIRA",
+          0.9473684210526316
+        ],
+        [
+          "PA 12.058.313-6",
+          0.8666666666666667
+        ],
+        [
+          "832.002.147-24",
+          0.8571428571428572
+        ],
+        [
+          "IVONETEPINHEIRO@MPPA.MP.BR",
+          0.9615384615384616
+        ],
+        [
+          "(94) 4916-4347",
+          0.8571428571428572
+        ]
+      ],
+      "exc": [],
+      "tags": 5
+    },
+    {
+      "doc": "doc-0001",
+      "miss": [
+        [
+          "Carlos Costa",
+          0.8333333333333334
+        ],
+        [
+          "992.105.131-85",
+          0.7857142857142857
+        ],
+        [
+          "MARCOS BARBOSA",
+          0.9285714285714286
+        ],
+        [
+          "869.226.632-92",
+          0.8571428571428572
+        ],
+        [
+          "Rua Santo Antonio, 1883, Cidade Velha, Maraba-PA, CEP 67461-565",
+          0.9841269841269842
+        ]
+      ],
+      "exc": [],
+      "tags": 5
+    },
+    {
+      "doc": "doc-0002",
+      "miss": [
+        [
+          "CARLOS EDUARDO NASCIMENTO",
+          0.96
+        ],
+        [
+          "PEDRO_SILVA@MPPA.MP.BR",
+          0.9545454545454546
+        ],
+        [
+          "9443618272",
+          0.8
+        ]
+      ],
+      "exc": [],
+      "tags": 3
+    },
+    {
+      "doc": "doc-0003",
+      "miss": [
+        [
+          "Carlos Eduardo Nascimento",
+          0.96
+        ],
+        [
+          "771.168.696-03",
+          0.9285714285714286
+        ],
+        [
+          "Rua das Flores, 1781, Batista Campos, Maraba-PA, CEP 69696-242",
+          0.967741935483871
+        ],
+        [
+          "LUCIA.SANTOS@GMAIL.COM",
+          0.9545454545454546
+        ],
+        [
+          "(93) 97921-3146",
+          0.9333333333333333
+        ]
+      ],
+      "exc": [],
+      "tags": 5
+    },
+    {
+      "doc": "doc-0004",
+      "miss": [
+        [
+          "Ivonete Cristina Rocha",
+          0.9545454545454546
+        ],
+        [
+          "SEBASTIAOBARBOSA@GMAIL.COM",
+          0.9615384615384616
+        ],
+        [
+          "(91)971973449",
+          0.8461538461538461
+        ]
+      ],
+      "exc": [],
+      "tags": 3
+    },
+    {
+      "doc": "doc-0005",
+      "miss": [
+        [
+          "Marcos Aurelio Tavares",
+          0.9545454545454546
+        ],
+        [
+          "37.631.746",
+          0.8
+        ],
+        [
+          "(93) 96164-9481",
+          0.0
+        ],
+        [
+          "MARIAOLIVEIRA@TJPA.JUS.BR",
+          0.96
+        ]
+      ],
+      "exc": [],
+      "tags": 3
+    },
+    {
+      "doc": "doc-0006",
+      "miss": [
+        [
+          "ROSA MARIA CONCEICAO",
+          0.95
+        ],
+        [
+          "MARIA.FERREIRA@GMAIL.COM",
+          0.9166666666666666
+        ],
+        [
+          "(91) 96838-6543",
+          0.0
+        ]
+      ],
+      "exc": [],
+      "tags": 2
+    },
+    {
+      "doc": "doc-0007",
+      "miss": [
+        [
+          "Maria Ferreira",
+          0.9285714285714286
+        ],
+        [
+          "SSP-PA 94.696.398-X",
+          0.0
+        ],
+        [
+          "115.442.221-65",
+          0.0
+        ],
+        [
+          "Rua Santo Antonio, 1473, Batista Campos, Castanhal-PA, CEP 67191-694",
+          0.0
+        ],
+        [
+          "9136165579",
+          0.0
+        ],
+        [
+          "ANA PAULA SANTOS",
+          0.0
+        ]
+      ],
+      "exc": [],
+      "tags": 1
+    },
+    {
+      "doc": "doc-0008",
+      "miss": [
+        [
+          "Marcos Aurelio Tavares",
+          0.9545454545454546
+        ],
+        [
+          "62577814348",
+          0.7272727272727273
+        ],
+        [
+          "Rua dos Mundurucus, 731, Cidade Velha, Santarem-PA, CEP 67273-852",
+          0.9692307692307692
+        ],
+        [
+          "DENISEPINHEIRO@SEFAZ.PA.GOV.BR",
+          0.9666666666666667
+        ],
+        [
+          "(94) 97626-9520",
+          0.9333333333333333
+        ]
+      ],
+      "exc": [],
+      "tags": 5
+    },
+    {
+      "doc": "doc-0009",
+      "miss": [
+        [
+          "Ana Santos",
+          0.9
+        ],
+        [
+          "718.185.215-98",
+          0.9285714285714286
+        ],
+        [
+          "CARLOS EDUARDO NASCIMENTO",
+          0.96
+        ],
+        [
+          "74758198411",
+          0.8181818181818181
+        ],
+        [
+          "Rua Santo Antonio, 1446, Nazare, Ananindeua-PA, CEP 67928-601",
+          0.9672131147540983
+        ]
+      ],
+      "exc": [],
+      "tags": 6
+    },
+    {
+      "doc": "doc-0010",
+      "miss": [
+        [
+          "ANTONIO OLIVEIRA",
+          0.9375
+        ],
+        [
+          "MARCOS_SILVA@HOTMAIL.COM",
+          0.9583333333333334
+        ],
+        [
+          "91 98446-5477",
+          0.9230769230769231
+        ]
+      ],
+      "exc": [],
+      "tags": 3
+    },
+    {
+      "doc": "doc-0011",
+      "miss": [
+        [
+          "SEBASTIAO VITOR PEREIRA",
+          0.9130434782608696
+        ],
+        [
+          "93118531355",
+          0.8181818181818181
+        ],
+        [
+          "CARLOS FERREIRA",
+          0.9333333333333333
+        ],
+        [
+          "99604190539",
+          0.9090909090909091
+        ],
+        [
+          "Travessa Dom Pedro I, 1279, Centro, Belem-PA, CEP 69343-643",
+          0.9661016949152542
+        ]
+      ],
+      "exc": [],
+      "tags": 5
+    },
+    {
+      "doc": "doc-0012",
+      "miss": [
+        [
+          "MARIA JOSE FERREIRA",
+          0.8947368421052632
+        ],
+        [
+          "IVONETE.PINHEIRO@TJPA.JUS.BR",
+          0.9285714285714286
+        ],
+        [
+          "91 3444-1896",
+          0.9166666666666666
+        ]
+      ],
+      "exc": [],
+      "tags": 3
+    },
+    {
+      "doc": "doc-0013",
+      "miss": [
+        [
+          "Maria Da Silva",
+          0.9285714285714286
+        ],
+        [
+          "PA 67.064.656",
+          0.0
+        ],
+        [
+          "(93)32627666",
+          0.0
+        ],
+        [
+          "MARIA.SILVA@HOTMAIL.COM",
+          0.9565217391304348
+        ]
+      ],
+      "exc": [],
+      "tags": 2
+    },
+    {
+      "doc": "doc-0014",
+      "miss": [
+        [
+          "Denise Aparecida Moraes",
+          0.9565217391304348
+        ],
+        [
+          "611.952.515-72",
+          0.7857142857142857
+        ],
+        [
+          "Marcos Aurelio Tavares",
+          0.9090909090909091
+        ],
+        [
+          "455.881.300-73",
+          0.8571428571428572
+        ],
+        [
+          "Av. Governador Jose Malcher, 74, Sao Bras, Maraba-PA, CEP 69552-864",
+          0.4776119402985075
+        ]
+      ],
+      "exc": [],
+      "tags": 5
+    },
+    {
+      "doc": "doc-0015",
+      "miss": [
+        [
+          "Maria Jose Ferreira",
+          0.9473684210526316
+        ],
+        [
+          "69853223953",
+          0.8181818181818181
+        ],
+        [
+          "Av. Governador Jose Malcher, 183, Sao Bras, Maraba-PA, CEP 67561-602",
+          0.9852941176470589
+        ]
+      ],
+      "exc": [],
+      "tags": 4
+    },
+    {
+      "doc": "doc-0016",
+      "miss": [
+        [
+          "Maria Jose Ferreira",
+          0.9473684210526316
+        ],
+        [
+          "DENISESANTOS@HOTMAIL.COM",
+          0.9166666666666666
+        ],
+        [
+          "(91) 3525-7506",
+          0.9285714285714286
+        ]
+      ],
+      "exc": [],
+      "tags": 3
+    },
+    {
+      "doc": "doc-0017",
+      "miss": [
+        [
+          "89.547.578-0",
+          0.8333333333333334
+        ],
+        [
+          "168.002.704-23",
+          0.8571428571428572
+        ]
+      ],
+      "exc": [],
+      "tags": 3
+    },
+    {
+      "doc": "doc-0018",
+      "miss": [
+        [
+          "CARLOS SANTOS",
+          0.9230769230769231
+        ],
+        [
+          "039.958.467-69",
+          0.9285714285714286
+        ],
+        [
+          "Av. Governador Jose Malcher, 1628, Reduto, Castanhal-PA, CEP 68953-912",
+          0.9857142857142858
+        ]
+      ],
+      "exc": [],
+      "tags": 4
+    },
+    {
+      "doc": "doc-0019",
+      "miss": [
+        [
+          "Denise Aparecida Moraes",
+          0.8695652173913043
+        ],
+        [
+          "ANTONIOCOSTA@MPPA.MP.BR",
+          0.9565217391304348
+        ],
+        [
+          "9342958271",
+          0.9
+        ]
+      ],
+      "exc": [],
+      "tags": 3
+    },
+    {
+      "doc": "doc-0020",
+      "miss": [
+        [
+          "Denise Aparecida Moraes",
+          0.9565217391304348
+        ],
+        [
+          "621.586.323-80",
+          0.9285714285714286
+        ],
+        [
+          "Lucia De Souza",
+          0.9285714285714286
+        ],
+        [
+          "310.783.525-00",
+          0.9285714285714286
+        ],
+        [
+          "Travessa Dom Pedro I, 2341, Sao Bras, Maraba-PA, CEP 69787-962",
+          0.967741935483871
+        ]
+      ],
+      "exc": [],
+      "tags": 6
+    },
+    {
+      "doc": "doc-0021",
+      "miss": [
+        [
+          "MARIA DAS GRACAS SANTANA",
+          0.9583333333333334
+        ],
+        [
+          "320.775.575-59",
+          0.8571428571428572
+        ],
+        [
+          "Rua dos Mundurucus, 1764, Batista Campos, Belem-PA, CEP 69520-984",
+          0.9692307692307692
+        ]
+      ],
+      "exc": [],
+      "tags": 3
+    },
+    {
+      "doc": "doc-0022",
+      "miss": [
+        [
+          "SEBASTIAO VITOR PEREIRA",
+          0.9565217391304348
+        ],
+        [
+          "06.584.165-X",
+          0.8333333333333334
+        ],
+        [
+          "552.315.300-18",
+          0.9285714285714286
+        ],
+        [
+          "MARIA_FERREIRA@TJPA.JUS.BR",
+          0.9615384615384616
+        ],
+        [
+          "94975303468",
+          0.9090909090909091
+        ]
+      ],
+      "exc": [],
+      "tags": 5
+    },
+    {
+      "doc": "doc-0023",
+      "miss": [
+        [
+          "JOAO CARLOS DE SOUZA",
+          0.95
+        ],
+        [
+          "FRANCISCA.FERREIRA@HOTMAIL.COM",
+          0.9333333333333333
+        ],
+        [
+          "93984914634",
+          0.8181818181818181
+        ]
+      ],
+      "exc": [],
+      "tags": 3
+    },
+    {
+      "doc": "doc-0024",
+      "miss": [
+        [
+          "ROSA MARIA CONCEICAO",
+          0.9
+        ],
+        [
+          "16.475.008-X",
+          0.9166666666666666
+        ],
+        [
+          "9445141012",
+          0.0
+        ],
+        [
+          "FRANCISCA.SOUZA@SEFAZ.PA.GOV.BR",
+          0.967741935483871
+        ]
+      ],
+      "exc": [],
+      "tags": 3
+    },
+    {
+      "doc": "doc-0025",
+      "miss": [
+        [
+          "Lucia Helena Barbosa",
+          0.9
+        ],
+        [
+          "SSP-PA 57.931.125-8",
+          0.631578947368421
+        ],
+        [
+          "562.367.142-07",
+          0.9285714285714286
+        ],
+        [
+          "ANA.SOUZA@GMAIL.COM",
+          0.9473684210526316
+        ],
+        [
+          "9444115491",
+          0.9
+        ]
+      ],
+      "exc": [],
+      "tags": 5
+    },
+    {
+      "doc": "doc-0026",
+      "miss": [
+        [
+          "MARIA JOSE FERREIRA",
+          0.8947368421052632
+        ],
+        [
+          "67.993.718-2",
+          0.8333333333333334
+        ],
+        [
+          "9133976859",
+          0.8
+        ],
+        [
+          "ROSA.SOUZA@HOTMAIL.COM",
+          0.9545454545454546
+        ]
+      ],
+      "exc": [],
+      "tags": 4
+    },
+    {
+      "doc": "doc-0027",
+      "miss": [
+        [
+          "Marcos De Souza",
+          0.8666666666666667
+        ],
+        [
+          "SSP-PA 64.704.610",
+          0.5882352941176471
+        ],
+        [
+          "726.518.909-44",
+          0.8571428571428572
+        ],
+        [
+          "JOSEFERREIRA@GMAIL.COM",
+          0.9545454545454546
+        ],
+        [
+          "94984477482",
+          0.8181818181818181
+        ]
+      ],
+      "exc": [],
+      "tags": 5
+    },
+    {
+      "doc": "doc-0028",
+      "miss": [
+        [
+          "Antonio Marcos Pinheiro",
+          0.9565217391304348
+        ],
+        [
+          "SSP-PA 93.676.526-X",
+          0.0
+        ],
+        [
+          "156.416.788-72",
+          0.0
+        ],
+        [
+          "CARLOSSANTOS@TJPA.JUS.BR",
+          0.0
+        ],
+        [
+          "(91)35666316",
+          0.0
+        ]
+      ],
+      "exc": [],
+      "tags": 1
+    },
+    {
+      "doc": "doc-0029",
+      "miss": [
+        [
+          "ANTONIO MARCOS PINHEIRO",
+          0.9565217391304348
+        ],
+        [
+          "86.893.583-1",
+          0.8333333333333334
+        ],
+        [
+          "99082736470",
+          0.9090909090909091
+        ],
+        [
+          "DENISE.FERREIRA@TJPA.JUS.BR",
+          0.0
+        ],
+        [
+          "(94) 98635-6434",
+          0.0
+        ]
+      ],
+      "exc": [],
+      "tags": 3
+    }
+  ],
+  "ordem": "3a config avaliada em ajuste: 7B+v0, 7B+v1 (REJEITADA), 14B+v0; baseline regex = DemoMotorIA",
+  "prompt_sha256": "644cac431a8c7d9040f15ead6721969606d42396f659dc8a3addb08535e22022"
+}

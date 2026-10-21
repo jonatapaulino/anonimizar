@@ -1,0 +1,77 @@
+{
+  "documento": "doc-0066.txt",
+  "pdf": "doc-0066.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Defensor Publico",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 38,
+      "preservar": true
+    },
+    {
+      "texto": "ANANINDEUA",
+      "tipo": "CIDADE",
+      "inicio": 67,
+      "fim": 77,
+      "preservar": true
+    },
+    {
+      "texto": "7231459-50.2024.8.10.6532",
+      "tipo": "CNJ",
+      "inicio": 91,
+      "fim": 116,
+      "preservar": true
+    },
+    {
+      "texto": "JOAO SANTOS",
+      "tipo": "NOME",
+      "inicio": 128,
+      "fim": 139,
+      "preservar": false
+    },
+    {
+      "texto": "PA 95.509.833-X",
+      "tipo": "RG",
+      "inicio": 165,
+      "fim": 180,
+      "preservar": false
+    },
+    {
+      "texto": "826.248.258-19",
+      "tipo": "CPF",
+      "inicio": 210,
+      "fim": 224,
+      "preservar": false
+    },
+    {
+      "texto": "Rua Santo Antonio, 2754, Reduto, Maraba-PA, CEP 66310-542",
+      "tipo": "ENDERECO",
+      "inicio": 253,
+      "fim": 310,
+      "preservar": false
+    },
+    {
+      "texto": "Pedro Henrique Almeida",
+      "tipo": "NOME",
+      "inicio": 384,
+      "fim": 406,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 92.311,53",
+      "tipo": "VALOR",
+      "inicio": 448,
+      "fim": 463,
+      "preservar": true
+    },
+    {
+      "texto": "R$ 167.814,76",
+      "tipo": "VALOR",
+      "inicio": 504,
+      "fim": 517,
+      "preservar": true
+    }
+  ]
+}

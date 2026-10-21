@@ -1,0 +1,35 @@
+# P2 — Smoke test de isolamento (ADR-0007, plano-de-validacao.md).
+# Hipótese sob teste: `internal: true` no compose => zero egress
+# (HTTP, DNS, ICMP, IPv6) por ausência de rota, mantendo comunicação
+# intra-rede. Rede "externa" é o controle que prova que o probe funciona.
+
+name: p2-isolamento
+
+networks:
+  interna:
+    internal: true        # a proibição: sem default route
+  externa:
+    internal: false       # controle: rede normal com saída
+
+services:
+
+  # serviço "API" simulado dentro da rede isolada
+  api-sim:
+    image: alpine:3.20
+    networks: [interna]
+    command: sleep 3600
+
+  # probe na rede ISOLADA: egress deve falhar, vizinho deve responder
+  probe-interno:
+    image: alpine:3.20
+    networks: [interna]
+    depends_on: [api-sim]
+    volumes: ["./probe.sh:/probe.sh:ro"]
+    command: sh /probe.sh interna api-sim
+
+  # probe na rede de CONTROLE: tudo deve abrir
+  probe-externo:
+    image: alpine:3.20
+    networks: [externa]
+    volumes: ["./probe.sh:/probe.sh:ro"]
+    command: sh /probe.sh externa

@@ -1,0 +1,63 @@
+{
+  "documento": "doc-0001.txt",
+  "pdf": "doc-0001.pdf",
+  "particao": "ajuste",
+  "entidades": [
+    {
+      "texto": "Carlos Costa",
+      "tipo": "NOME",
+      "inicio": 48,
+      "fim": 60,
+      "preservar": false
+    },
+    {
+      "texto": "992.105.131-85",
+      "tipo": "CPF",
+      "inicio": 66,
+      "fim": 80,
+      "preservar": false
+    },
+    {
+      "texto": "MARCOS BARBOSA",
+      "tipo": "NOME",
+      "inicio": 94,
+      "fim": 108,
+      "preservar": false
+    },
+    {
+      "texto": "869.226.632-92",
+      "tipo": "CPF",
+      "inicio": 114,
+      "fim": 128,
+      "preservar": false
+    },
+    {
+      "texto": "Rua Santo Antonio, 1883, Cidade Velha, Maraba-PA, CEP 67461-565",
+      "tipo": "ENDERECO",
+      "inicio": 139,
+      "fim": 202,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 63.037,27",
+      "tipo": "VALOR",
+      "inicio": 240,
+      "fim": 252,
+      "preservar": true
+    },
+    {
+      "texto": "1299779-76.2022.8.10.9955",
+      "tipo": "CNJ",
+      "inicio": 290,
+      "fim": 315,
+      "preservar": true
+    },
+    {
+      "texto": "Secretaria de Estado de Fazenda",
+      "tipo": "ORGAO",
+      "inicio": 326,
+      "fim": 357,
+      "preservar": true
+    }
+  ]
+}

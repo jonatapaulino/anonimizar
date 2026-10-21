@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0094.txt",
+  "pdf": "doc-0094.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico Federal",
+      "tipo": "ORGAO",
+      "inicio": 11,
+      "fim": 37,
+      "preservar": true
+    },
+    {
+      "texto": "LUCIA DE SOUZA",
+      "tipo": "NOME",
+      "inicio": 53,
+      "fim": 67,
+      "preservar": false
+    },
+    {
+      "texto": "PA 29.267.849-X",
+      "tipo": "RG",
+      "inicio": 72,
+      "fim": 87,
+      "preservar": false
+    },
+    {
+      "texto": "5412999-95.2023.8.10.8491",
+      "tipo": "CNJ",
+      "inicio": 127,
+      "fim": 152,
+      "preservar": true
+    },
+    {
+      "texto": "Belem",
+      "tipo": "CIDADE",
+      "inicio": 188,
+      "fim": 193,
+      "preservar": true
+    },
+    {
+      "texto": "93 4467-5462",
+      "tipo": "TELEFONE",
+      "inicio": 234,
+      "fim": 246,
+      "preservar": false
+    },
+    {
+      "texto": "SEBASTIAOOLIVEIRA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 257,
+      "fim": 290,
+      "preservar": false
+    }
+  ]
+}

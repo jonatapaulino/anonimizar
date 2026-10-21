@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0084.txt",
+  "pdf": "doc-0084.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ordem dos Advogados do Brasil - Secao Para",
+      "tipo": "INSTITUICAO",
+      "inicio": 48,
+      "fim": 90,
+      "preservar": true
+    },
+    {
+      "texto": "CARLOS EDUARDO NASCIMENTO",
+      "tipo": "NOME",
+      "inicio": 104,
+      "fim": 129,
+      "preservar": false
+    },
+    {
+      "texto": "28063529677",
+      "tipo": "CPF",
+      "inicio": 135,
+      "fim": 146,
+      "preservar": false
+    },
+    {
+      "texto": "Travessa Dom Pedro I, 1773, Batista Campos, Belem-PA, CEP 66077-607",
+      "tipo": "ENDERECO",
+      "inicio": 157,
+      "fim": 224,
+      "preservar": false
+    },
+    {
+      "texto": "R$ 138.067,31",
+      "tipo": "VALOR",
+      "inicio": 262,
+      "fim": 275,
+      "preservar": true
+    },
+    {
+      "texto": "6007987-87.2026.8.11.6687",
+      "tipo": "CNJ",
+      "inicio": 313,
+      "fim": 338,
+      "preservar": true
+    },
+    {
+      "texto": "Tribunal Regional Eleitoral do Para",
+      "tipo": "ORGAO",
+      "inicio": 349,
+      "fim": 384,
+      "preservar": true
+    }
+  ]
+}

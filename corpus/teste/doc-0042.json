@@ -1,0 +1,84 @@
+{
+  "documento": "doc-0042.txt",
+  "pdf": "doc-0042.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Juiz de Direito",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 37,
+      "preservar": true
+    },
+    {
+      "texto": "CASTANHAL",
+      "tipo": "CIDADE",
+      "inicio": 66,
+      "fim": 75,
+      "preservar": true
+    },
+    {
+      "texto": "4584289-94.2020.8.13.5267",
+      "tipo": "CNJ",
+      "inicio": 89,
+      "fim": 114,
+      "preservar": true
+    },
+    {
+      "texto": "Francisca De Oliveira Lima",
+      "tipo": "NOME",
+      "inicio": 116,
+      "fim": 142,
+      "preservar": false
+    },
+    {
+      "texto": "59.798.381-2",
+      "tipo": "RG",
+      "inicio": 162,
+      "fim": 174,
+      "preservar": false
+    },
+    {
+      "texto": "79995900297",
+      "tipo": "CPF",
+      "inicio": 176,
+      "fim": 187,
+      "preservar": false
+    },
+    {
+      "texto": "Travessa Dom Pedro I, 590, Cidade Velha, Ananindeua-PA, CEP 68952-111",
+      "tipo": "ENDERECO",
+      "inicio": 189,
+      "fim": 258,
+      "preservar": false
+    },
+    {
+      "texto": "9133319852",
+      "tipo": "TELEFONE",
+      "inicio": 269,
+      "fim": 279,
+      "preservar": false
+    },
+    {
+      "texto": "ROSA MARIA CONCEICAO",
+      "tipo": "NOME",
+      "inicio": 353,
+      "fim": 373,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 205.155,51",
+      "tipo": "VALOR",
+      "inicio": 415,
+      "fim": 431,
+      "preservar": true
+    },
+    {
+      "texto": "R$232.173,21",
+      "tipo": "VALOR",
+      "inicio": 472,
+      "fim": 484,
+      "preservar": true
+    }
+  ]
+}

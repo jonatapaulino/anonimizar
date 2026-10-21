@@ -1,0 +1,56 @@
+{
+  "documento": "doc-0061.txt",
+  "pdf": "doc-0061.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Ministerio Publico do Estado do Para",
+      "tipo": "ORGAO",
+      "inicio": 11,
+      "fim": 47,
+      "preservar": true
+    },
+    {
+      "texto": "Maria Das Gracas Santana",
+      "tipo": "NOME",
+      "inicio": 63,
+      "fim": 87,
+      "preservar": false
+    },
+    {
+      "texto": "65.015.372-7",
+      "tipo": "RG",
+      "inicio": 92,
+      "fim": 104,
+      "preservar": false
+    },
+    {
+      "texto": "7641711-33.2019.8.14.3150",
+      "tipo": "CNJ",
+      "inicio": 144,
+      "fim": 169,
+      "preservar": true
+    },
+    {
+      "texto": "Ananindeua",
+      "tipo": "CIDADE",
+      "inicio": 205,
+      "fim": 215,
+      "preservar": true
+    },
+    {
+      "texto": "94 4831-3679",
+      "tipo": "TELEFONE",
+      "inicio": 256,
+      "fim": 268,
+      "preservar": false
+    },
+    {
+      "texto": "IVONETECOSTA@SEFAZ.PA.GOV.BR",
+      "tipo": "EMAIL",
+      "inicio": 279,
+      "fim": 307,
+      "preservar": false
+    }
+  ]
+}

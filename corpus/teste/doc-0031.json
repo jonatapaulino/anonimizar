@@ -1,0 +1,77 @@
+{
+  "documento": "doc-0031.txt",
+  "pdf": "doc-0031.pdf",
+  "particao": "teste",
+  "entidades": [
+    {
+      "texto": "Juiz de Direito",
+      "tipo": "CARGO",
+      "inicio": 22,
+      "fim": 37,
+      "preservar": true
+    },
+    {
+      "texto": "SANTAREM",
+      "tipo": "CIDADE",
+      "inicio": 66,
+      "fim": 74,
+      "preservar": true
+    },
+    {
+      "texto": "9254334-40.2019.8.13.1400",
+      "tipo": "CNJ",
+      "inicio": 88,
+      "fim": 113,
+      "preservar": true
+    },
+    {
+      "texto": "DENISE PINHEIRO",
+      "tipo": "NOME",
+      "inicio": 115,
+      "fim": 130,
+      "preservar": false
+    },
+    {
+      "texto": "448.502.234-00",
+      "tipo": "CPF",
+      "inicio": 160,
+      "fim": 174,
+      "preservar": false
+    },
+    {
+      "texto": "Rua das Flores, 1281, Batista Campos, Ananindeua-PA, CEP 67669-748",
+      "tipo": "ENDERECO",
+      "inicio": 184,
+      "fim": 250,
+      "preservar": false
+    },
+    {
+      "texto": "9141857522",
+      "tipo": "TELEFONE",
+      "inicio": 261,
+      "fim": 271,
+      "preservar": false
+    },
+    {
+      "texto": "Jose Ribamar Da Costa",
+      "tipo": "NOME",
+      "inicio": 345,
+      "fim": 366,
+      "preservar": false
+    },
+    {
+      "texto": "de R$ 239.535,71",
+      "tipo": "VALOR",
+      "inicio": 408,
+      "fim": 424,
+      "preservar": true
+    },
+    {
+      "texto": "R$136.611,13",
+      "tipo": "VALOR",
+      "inicio": 465,
+      "fim": 477,
+      "preservar": true
+    }
+  ]
+}
