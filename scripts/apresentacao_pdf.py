@@ -305,6 +305,42 @@ def main():
             pdf.ln(4.2)
         pdf.set_y(y0 + h + 4)
 
+    if pdf.get_y() > 200:
+        pdf.add_page()
+    pdf.h3("Quem liga com quem (o diagrama em texto)")
+    conexoes = [
+        "API FastAPI -> PostgreSQL: estado da tramitacao, evento "
+        "de trilha e evento de outbox numa unica transacao.",
+        "PostgreSQL -> MinIO: binario (SHA-256 verificado) vai "
+        "para <org>-docs; a coluna da esquerda encadeia upload -> "
+        "registro -> objeto.",
+        "PostgreSQL -> Relay: o relay le os eventos pendentes da "
+        "tabela outbox.",
+        "Relay -> RabbitMQ: publica o envelope (so metadados + "
+        "hash).",
+        "Relay -> Worker IA: sinaliza o processamento assincrono "
+        "pendente.",
+        "RabbitMQ -> No B: o envelope atravessa a fronteira "
+        "(linha tracejada) - e a unica coisa que sai do no.",
+        "No B -> RabbitMQ: a confirmacao (RECEBIDA/hash_cadeia) "
+        "volta pelo mesmo caminho.",
+        "Worker IA -> API/PostgreSQL (retorno superior): grava "
+        "doc_anonimizado:{id} ou falhas na trilha.",
+        "Worker IA -> MinIO (retorno inferior): baixa o bruto de "
+        "<org>-docs.",
+        "Worker IA -> MotorIA: entrega os bytes para "
+        "anonimizar().",
+        "MotorIA -> Gate residual PII: o texto anonimizado desce "
+        "para validacao.",
+        "Gate residual -> MinIO: se residual=0, grava em "
+        "<org>-docs-anonimizados.",
+        "Gate residual -> PostgreSQL (seta laranja): se "
+        "residual>0, NADA e gravado - a falha falha_anonimizacao:"
+        "{id}:residual_pii vai para a trilha.",
+    ]
+    for c in conexoes:
+        pdf.bullet(c)
+
     glossario = [
         ("PII (Personally Identifiable Information)",
          "dado que identifica uma pessoa (nome, CPF, RG, e-mail, "

@@ -244,6 +244,44 @@ falha (sem gravação).</div>
        <span class="c">// "perdido em transito" nao vira buraco</span>
 </pre>
 
+<h3>2.1 Quem liga com quem (o diagrama em texto)</h3>
+<div class="hint">Cada seta da figura 1, descrita: origem → destino
+e o que passa nela.</div>
+<ul>
+<li><b>API FastAPI</b> → <b>PostgreSQL</b>: registra estado da
+tramitação, evento de trilha e evento de outbox — tudo na mesma
+transação.</li>
+<li><b>PostgreSQL</b> → <b>MinIO</b>: o binário (com SHA-256
+verificado) vai para o bucket <code>&lt;org&gt;-docs</code>; a coluna
+da esquerda mostra o encadeamento upload → registro → objeto.</li>
+<li><b>PostgreSQL</b> → <b>Relay</b>: o relay lê os eventos pendentes
+na tabela <code>outbox</code>.</li>
+<li><b>Relay</b> → <b>RabbitMQ</b>: publica o envelope (só
+metadados + hash).</li>
+<li><b>Relay</b> → <b>Worker IA</b>: sinaliza o processamento
+assíncrono pendente.</li>
+<li><b>RabbitMQ</b> → <b>Nó B</b>: o envelope atravessa a fronteira
+(linha tracejada laranja) — é a única coisa que sai do nó.</li>
+<li><b>Nó B</b> → <b>RabbitMQ</b>: a confirmação (RECEBIDA/
+hash_cadeia) volta pelo mesmo caminho.</li>
+<li><b>Worker IA</b> → <b>API/PostgreSQL</b> (seta de retorno,
+superior): grava eventos na trilha —
+<code>doc_anonimizado:{id}</code> ou falhas.</li>
+<li><b>Worker IA</b> → <b>MinIO</b> (seta de retorno, inferior):
+baixa o bruto de <code>&lt;org&gt;-docs</code> para
+processar.</li>
+<li><b>Worker IA</b> → <b>MotorIA</b>: entrega os bytes para
+<code>anonimizar()</code>.</li>
+<li><b>MotorIA</b> → <b>Gate residual PII</b>: o texto anonimizado
+desce para validação.</li>
+<li><b>Gate residual</b> → <b>MinIO</b>: se residual = 0, grava em
+<code>&lt;org&gt;-docs-anonimizados</code>.</li>
+<li><b>Gate residual</b> ⇢ <b>PostgreSQL</b> (seta laranja): se
+residual &gt; 0, <b>nada é gravado</b> — a falha
+<code>falha_anonimizacao:{id}:residual_pii</code> vai para a trilha
+no banco.</li>
+</ul>
+
 <h2>3. Conceitos-chave (clique para expandir)</h2>
 
 <details class="g"><summary>PII — Personally Identifiable
