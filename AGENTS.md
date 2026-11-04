@@ -133,8 +133,10 @@ revisto, harness `p8_metricas.py`, emenda 04/11-04b em
    pontos de I/O: `app/middleware_e2e.py` (request/response),
    broker (`PublicadorRabbitMQ`/`payload_de_mensagem`) e storage
    (`ArmazenamentoCifrado`). Chave via `E2E_CHAVE` (Vault); API sobe
-   com `E2E_OBRIGATORIO=1` no compose. Aberto: TLS interno nos
+   com `E2E_OBRIGATORIO=1` no compose. Provas: sniffer de socket
+   real + cobertura de todas as rotas + handshake mTLS real
+   (`docs/relatorio_seguranca_e2e.md`). Aberto: TLS interno nos
    clientes (amqps/pg/ssl/s3) é contrato de URL — falta prova
-   dinâmica com os serviços reais.
+   dinâmica com os serviços reais + tcpdump na `interna`.
 5. Corpus real (Etapa 3) — depende das exclusões jurídicas.
 6. Gates não avaliados: utility TAB ≥0,85, latência.
