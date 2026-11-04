@@ -318,7 +318,7 @@ class NoTramitacao:
         """Isolamento por caso: só origem/destino tocam no doc.
         Terceiro -> 404 (existência não vaza), mesma regra de
         `consultar`. `org` é OBRIGATÓRIO: a identidade vem do
-        JWT na fronteira HTTP; chamadas internas declaram o nó."""
+        mTLS na fronteira HTTP; chamadas internas declaram o nó."""
         if org not in (rec["origem"], rec["destino"]):
             raise ErroNaoEncontrado("tramitação desconhecida")
 

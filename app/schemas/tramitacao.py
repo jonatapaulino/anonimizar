@@ -66,7 +66,7 @@ class TramitacaoOut(BaseModel):
     id: uuid.UUID
     caso_cnj: CasoCNJ
     origem: OrgaoID            # origem vem da identidade autenticada
-    destino: OrgaoID           # (JWT/mTLS), nunca do payload
+    destino: OrgaoID           # (identidade mTLS), nunca do payload
     modo: ModoTramitacao
     status: StatusTramitacao
     hash_documento_sha256: HashSHA256

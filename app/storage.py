@@ -74,10 +74,13 @@ class ArmazenamentoMinIO:
                  nome_bucket: str | None = None):
         import aioboto3
         self.bucket = nome_bucket or bucket_para(orgao)
+        # secure=True força https no endpoint — tráfego S3 nunca
+        # legível na rede interna.
+        if secure and endpoint.startswith("http://"):
+            endpoint = "https://" + endpoint[len("http://"):]
         self._sess = aioboto3.Session()
         self._kw = dict(service_name="s3",
-                        endpoint_url=(endpoint if secure else
-                                      endpoint),
+                        endpoint_url=endpoint,
                         aws_access_key_id=access,
                         aws_secret_access_key=secret)
         self._cm = self._s3 = None
@@ -117,3 +120,38 @@ class ArmazenamentoMinIO:
         if self._cm:
             await self._cm.__aexit__(None, None, None)
             self._s3 = self._cm = None
+
+
+class ArmazenamentoCifrado:
+    """Envelope AEAD sobre qualquer ArmazenamentoPort — blindagem
+    de repouso+trânsito no objeto: o backend (MinIO/memória) só
+    persiste quadros E2E; o claro existe só dentro do processo que
+    selou/abriu. Streaming preservado: guardar cifra bloco a bloco
+    para spool; abrir decifra quadro a quadro do stream."""
+    def __init__(self, inner: ArmazenamentoPort, chave: bytes):
+        self._inner, self._chave = inner, chave
+        self.bucket = inner.bucket
+
+    async def garantir(self):
+        await self._inner.garantir()
+
+    async def guardar(self, chave: str, fonte):
+        import tempfile
+        from app.crypto_e2e import selar_stream
+        spool = tempfile.SpooledTemporaryFile(max_size=CHUNK * 8)
+        for q in selar_stream(self._chave, fonte):
+            spool.write(q)
+        spool.seek(0)
+        await self._inner.guardar(chave, spool)
+
+    async def abrir(self, chave: str):
+        from app.crypto_e2e import abrir_stream_async
+        async for b in abrir_stream_async(
+                self._chave, self._inner.abrir(chave)):
+            yield b
+
+    async def existe(self, chave: str) -> bool:
+        return await self._inner.existe(chave)
+
+    async def fechar(self):
+        await self._inner.fechar()

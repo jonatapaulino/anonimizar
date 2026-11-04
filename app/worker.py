@@ -116,8 +116,20 @@ class FabricaStorages:
 
 
 def fabrica_minio(endpoint: str, user: str, pw: str):
-    return lambda orgao, bucket: ArmazenamentoMinIO(
-        orgao, endpoint, user, pw, nome_bucket=bucket)
+    """Storage MinIO do worker — com E2E_CHAVE, envelopa em
+    ArmazenamentoCifrado: objeto sai do motor em claro e só
+    toca a rede/disco do MinIO como quadro AEAD."""
+    from app.crypto_e2e import chave_de_env
+    from app.storage import ArmazenamentoCifrado
+    chave = chave_de_env()
+
+    def _f(orgao, bucket):
+        st = ArmazenamentoMinIO(
+            orgao, endpoint, user, pw,
+            secure=endpoint.startswith("https"),
+            nome_bucket=bucket)
+        return ArmazenamentoCifrado(st, chave) if chave else st
+    return _f
 
 
 async def processar_evento(payload: dict, st_origem, st_dest,
@@ -167,11 +179,29 @@ async def processar_evento(payload: dict, st_origem, st_dest,
     return doc
 
 
+def payload_de_mensagem(m) -> dict:
+    """Decodifica o corpo da mensagem. Com E2E ativo
+    (`content-type: application/x-e2e` ou magia no primeiro byte)
+    o corpo é quadro AEAD — decifra ANTES do parse. O broker só
+    carrega ciphertext; o claro existe só neste processo."""
+    from app.crypto_e2e import (CT_E2E, chave_de_env, eh_e2e,
+                                abrir)
+    dados = m.body
+    ct = getattr(m, "content_type", "") or ""
+    if ct == CT_E2E or eh_e2e(dados):
+        chave = chave_de_env()
+        if chave is None:
+            raise RuntimeError(
+                "mensagem E2E sem E2E_CHAVE — fail closed")
+        dados = abrir(chave, dados)
+    return json.loads(dados)
+
+
 async def processar_mensagem(m, fabrica: FabricaStorages,
                              motor, repo=None) -> None:
     """ack/nack em torno do pipeline — usado pelo loop infinito
     e pelo ciclo único dos testes."""
-    payload = json.loads(m.body)
+    payload = payload_de_mensagem(m)
     st_org, st_dest = await fabrica.par(payload["orgao_origem"])
     await processar_evento(payload, st_org, st_dest, motor, repo)
 
@@ -212,7 +242,7 @@ async def um_ciclo_dlq(dlq, repo) -> bool:
     m = await dlq.get(fail=False)
     if m is None:
         return False
-    payload = json.loads(m.body)
+    payload = payload_de_mensagem(m)
     try:
         await registrar_falha(payload, repo)
     except Exception as e:
@@ -261,10 +291,11 @@ async def main():
         async with dlq.iterator() as it:
             async for m in it:
                 try:
-                    await registrar_falha(json.loads(m.body), repo)
+                    payload = payload_de_mensagem(m)
+                    await registrar_falha(payload, repo)
                     await m.ack()
                     log.warning("dlq: falha_anonimizacao -> %s",
-                                json.loads(m.body)["id_documento"])
+                                payload["id_documento"])
                 except Exception as e:
                     log.error("dlq: %s — drop (sem requeue)", e)
                     await m.nack(requeue=False)

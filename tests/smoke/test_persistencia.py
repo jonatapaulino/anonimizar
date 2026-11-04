@@ -14,7 +14,7 @@ from app.errors import ErroConflitoIdempotencia
 from app.main import create_app
 from app.repository import RepositorioSQL
 from app.service import NoTramitacao
-from tests.jwthelper import hdr
+from tests.identidade import hdr
 from tests.smoke.dbutil import mk_repo
 
 

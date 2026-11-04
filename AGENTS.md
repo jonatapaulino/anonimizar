@@ -126,6 +126,15 @@ revisto, harness `p8_metricas.py`, emenda 04/11-04b em
    pairwise/consistência exige docs com menções repetidas.
 3. Cofre de chaves (Etapa 4/5) — decisão jurídica de reidentificação
    pendente (ver ata em `docs/atas/`).
-4. mTLS na fronteira A↔B (JWT offline já existe).
+4. ~~mTLS na fronteira A↔B~~ **feito** (04/11/2026): JWT removido
+   (reprovado — XSS); identidade = certificado de cliente verificado
+   no nginx (`deploy/nginx.conf`, `scripts/gerar_certs_mtls.py`) →
+   `X-Cliente-Orgao`. Blindagem E2E (AEAD ChaCha20-Poly1305) nos 3
+   pontos de I/O: `app/middleware_e2e.py` (request/response),
+   broker (`PublicadorRabbitMQ`/`payload_de_mensagem`) e storage
+   (`ArmazenamentoCifrado`). Chave via `E2E_CHAVE` (Vault); API sobe
+   com `E2E_OBRIGATORIO=1` no compose. Aberto: TLS interno nos
+   clientes (amqps/pg/ssl/s3) é contrato de URL — falta prova
+   dinâmica com os serviços reais.
 5. Corpus real (Etapa 3) — depende das exclusões jurídicas.
 6. Gates não avaliados: utility TAB ≥0,85, latência.

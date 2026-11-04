@@ -89,9 +89,16 @@ class PublicadorRabbitMQ:
         "x-dead-letter-routing-key": FILA_DLQ,
     }
 
-    def __init__(self, url: str):
+    def __init__(self, url: str, chave: bytes | None = ...):
         self.url = url
         self._conn = self._ex = None
+        # `...` = resolve da env (E2E_CHAVE). Com chave, o corpo da
+        # mensagem vira quadro AEAD — o broker só armazena/entrega
+        # ciphertext; o claro nunca sai do contêiner que selou.
+        if chave is ...:
+            from app.crypto_e2e import chave_de_env
+            chave = chave_de_env()
+        self._chave = chave
 
     async def conectar(self):
         import aio_pika
@@ -103,10 +110,15 @@ class PublicadorRabbitMQ:
         """evento: dict (payload da linha outbox) ou dataclass."""
         import aio_pika
         body = evento if isinstance(evento, dict) else asdict(evento)
+        dados = json.dumps(body, default=str).encode()
+        ct = "application/json"
+        if self._chave is not None:
+            from app.crypto_e2e import CT_E2E, selar
+            dados, ct = selar(self._chave, dados), CT_E2E
         msg = aio_pika.Message(
-            json.dumps(body, default=str).encode(),
+            dados,
             delivery_mode=aio_pika.DeliveryMode.PERSISTENT,
-            content_type="application/json",
+            content_type=ct,
             message_id=str(body.get("id_documento")))
         await self._ex.publish(msg, routing_key=self.RK_ANON)
 

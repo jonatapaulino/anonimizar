@@ -1,23 +1,29 @@
-"""Identidade do órgão — Bearer JWT validado OFFLINE (RS256).
+"""Identidade do órgão — derivada de mTLS na borda (sem JWT).
 
-A API é apenas Resource Server: valida, nunca emite. A chave
-pública vem de JWT_PUBLIC_KEY (PEM) — nenhuma chamada de rede na
-validação (sem /jwks em tempo real; a prova offline é o P7).
-Zero trust: sem chave configurada => rejeita tudo (fail closed).
+Reprovado: Bearer JWT vive no cliente e pode ser exfiltrado —
+token roubado = identidade roubada, de qualquer máquina. Em seu
+lugar, a identidade vem do **certificado de cliente** verificado
+pelo nginx na única superfície exposta (`borda`); o certificado
+fica no SO/HSM do órgão — um script XSS não o copia para fora.
 
-A identidade sai da claim `orgao_id` (fallback `sub`). O motivo
-fino da recusa fica em log interno; ao cliente vai sempre a mesma
-mensagem opaca — oráculo de enumeração não se constrói aqui.
+Contrato com o terminador TLS (deploy/nginx.conf):
+  ssl_client_certificate + ssl_verify_client on
+  => proxy_set_header X-Cliente-Orgao $ssl_client_s_dn  (CN)
+
+A API confia no header porque o compose garante que SÓ o nginx
+alcança a rede `interna` — a API não publica porta e forjaria do
+header exigiria já estar dentro do perímetro. Zero trust fica na
+borda; dentro do nó o header é a identidade autenticada. Ausente
+ou vazio => 401 opaco (mesma mensagem para todo motivo — oráculo
+de enumeração fechado).
 """
 import logging
-import os
 
-import jwt
 from fastapi import Request
 
 log = logging.getLogger("tramitacao.auth")
 
-_ALGS = ["RS256"]
+HDR_IDENTIDADE = "x-cliente-orgao"
 MSG_OPACA = "credenciais ausentes ou inválidas"
 
 
@@ -30,25 +36,8 @@ class ErroAuth(RuntimeError):
 
 
 def orgao_atual(req: Request) -> str:
-    auth = req.headers.get("authorization", "")
-    if not auth.lower().startswith("bearer "):
-        raise ErroAuth("sem bearer token")
-    tok = auth[7:].strip()
-
-    pub = os.environ.get("JWT_PUBLIC_KEY")
-    if not pub:
-        log.error("JWT_PUBLIC_KEY não configurada — fail closed")
-        raise ErroAuth("chave pública ausente")
-
-    try:
-        p = jwt.decode(tok, pub, algorithms=_ALGS,
-                       options={"require": ["exp"]})
-    except jwt.ExpiredSignatureError:
-        raise ErroAuth("token expirado")
-    except jwt.PyJWTError as e:
-        raise ErroAuth(f"token inválido ({type(e).__name__})")
-
-    orgao = p.get("orgao_id") or p.get("sub")
-    if not orgao or not isinstance(orgao, str):
-        raise ErroAuth("sem claim de identidade do órgão")
+    orgao = (req.headers.get(HDR_IDENTIDADE) or "").strip()
+    if not orgao:
+        log.warning("sem identidade mTLS em %s", req.url.path)
+        raise ErroAuth("header de identidade ausente")
     return orgao

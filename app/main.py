@@ -56,13 +56,20 @@ def _storage_de_env(orgao: str, anonimizados: bool = False):
     url = os.environ.get("MINIO_URL")
     if not url:
         return None
-    from app.storage import ArmazenamentoMinIO, bucket_para
-    return ArmazenamentoMinIO(
+    from app.storage import (ArmazenamentoCifrado,
+                             ArmazenamentoMinIO, bucket_para)
+    st = ArmazenamentoMinIO(
         orgao, url, os.environ.get("MINIO_USER", "edvar"),
         os.environ.get("MINIO_PASS", ""),
+        secure=url.startswith("https"),
         nome_bucket=bucket_para(
             orgao, "docs-anonimizados" if anonimizados
             else "docs"))
+    # E2E no objeto: com E2E_CHAVE, o bucket só guarda quadros
+    # AEAD — claro jamais toca o disco do MinIO nem a rede S3.
+    from app.crypto_e2e import chave_de_env
+    chave = chave_de_env()
+    return ArmazenamentoCifrado(st, chave) if chave else st
 
 
 def create_app(orgao: str, repo: Repositorio = None,
@@ -144,6 +151,16 @@ def create_app(orgao: str, repo: Repositorio = None,
 
     app = FastAPI(title=f"API de Tramitação — {orgao}",
                   version="0.1.0-mvp", lifespan=lifespan)
+    # Blindagem E2E na fronteira do contêiner: request cifrado é
+    # aberto ANTES do roteador; resposta sai sempre cifrada quando
+    # o canal exige E2E. Chave via E2E_CHAVE (Vault em produção);
+    # ausente => bypass (dev/teste injetam storage/memória).
+    from app.crypto_e2e import chave_de_env
+    from app.middleware_e2e import MiddlewareE2E
+    chave_e2e = chave_de_env()
+    app.add_middleware(
+        MiddlewareE2E, chave=chave_e2e,
+        obrigatorio=os.environ.get("E2E_OBRIGATORIO") == "1")
     app.state.no = (NoTramitacao(orgao, repo, storage,
                                  storage_anon,
                                  ttl_reenvio_s=ttl_reenvio)
@@ -169,8 +186,7 @@ def create_app(orgao: str, repo: Repositorio = None,
         # motivo fino (exc.motivo) fica interno — resposta opaca
         log = logging.getLogger("tramitacao.auth")
         log.info("401 %s %s", exc.motivo, req.url.path)
-        return _erro(401, "nao_autenticado", str(exc),
-                     headers={"WWW-Authenticate": "Bearer"})
+        return _erro(401, "nao_autenticado", str(exc))
 
     @app.exception_handler(ErroNaoEncontrado)
     async def _404(req: Request, exc: ErroNaoEncontrado):

@@ -18,7 +18,7 @@ from app.models import StatusOutbox
 from app.relay import relay_pass
 from app.service import NoTramitacao
 from app.storage import ArmazenamentoMemoria
-from tests.jwthelper import hdr
+from tests.identidade import hdr
 from tests.smoke.dbutil import FakeUpload, mk_repo
 from tests.smoke.test_persistencia import RepoBomba
 

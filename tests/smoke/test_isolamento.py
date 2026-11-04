@@ -70,3 +70,24 @@ def test_cap_add_so_excecao_documentada(comp):
             assert adds == {"IPC_LOCK"}
         else:
             assert not adds, f"{nome}: cap_add não permitido"
+
+
+def test_e2e_obrigatorio_na_api(comp):
+    """Blindagem E2E é contrato, não opção: a API do nó soberano
+    sobe com E2E_OBRIGATORIO=1 (plaintext em /v1/ => 415)."""
+    env = comp["services"]["api"].get("environment", {})
+    assert env.get("E2E_OBRIGATORIO") == "1"
+    # E2E_CHAVE declarada vazia = passthrough do Vault em runtime;
+    # valor literal aqui seria chave versionada — proibido.
+    assert "E2E_CHAVE" in env and env["E2E_CHAVE"] is None
+
+
+def test_nginx_monta_terminador_mtls(comp):
+    """O terminador TLS/mTLS só funciona com conf + certs montados
+    (identidade do cliente -> X-Cliente-Orgao)."""
+    vols = comp["services"]["nginx"].get("volumes", [])
+    alvo = {v.split(":")[1] for v in vols}
+    assert "/etc/nginx/conf.d/default.conf" in alvo
+    assert "/etc/nginx/certs" in alvo
+    assert all(v.endswith(":ro") for v in vols), \
+        "conf/certs do nginx são somente-leitura"

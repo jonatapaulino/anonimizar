@@ -12,7 +12,7 @@ from app.main import create_app
 from app.service import ErroFluxo, ErroNaoEncontrado, NoTramitacao
 from app.storage import (ArmazenamentoMemoria, ArmazenamentoMinIO,
                          bucket_para)
-from tests.jwthelper import hdr
+from tests.identidade import hdr
 from tests.smoke.dbutil import mk_repo
 
 DOC = b"EXCELENTISSIMO SENHOR DOUTOR JUIZ - processo de teste."

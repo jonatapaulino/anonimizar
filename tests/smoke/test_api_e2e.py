@@ -13,7 +13,7 @@ from fastapi.testclient import TestClient
 
 from app.main import create_app
 from app.storage import ArmazenamentoMemoria
-from tests.jwthelper import hdr
+from tests.identidade import hdr
 from tests.smoke.dbutil import mk_repo
 
 DOC = b"EXCELENTISSIMO SENHOR DOUTOR JUIZ - processo via HTTP."

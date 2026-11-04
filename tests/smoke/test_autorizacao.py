@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 
 from app.main import create_app
 from app.storage import ArmazenamentoMemoria
-from tests.jwthelper import hdr
+from tests.identidade import hdr
 from tests.smoke.conftest import DOC, HASH_DOC
 from tests.smoke.dbutil import mk_repo
 
