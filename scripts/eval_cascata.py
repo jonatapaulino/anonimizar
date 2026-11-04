@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import app.motor_ollama as mo                        # noqa: E402
 from app.motor_ollama import MotorOllama, TAG        # noqa: E402
-from poda_fronteira import podar                    # noqa: E402
+from poda_fronteira import podar, cpf_valido        # noqa: E402
 
 # ---- camada deterministica ----
 PRESERVADOS = [
@@ -42,6 +42,49 @@ DET = [
                  r"|\b\d{2}\s?\d{4,5}-?\d{4}\b"
                  r"|\b\d{2}\d{4,5}\d{4}\b"),
 ]
+# tagset ouro v0: tipos declarados pelo LLM fora dele sao FPs
+# mortos (ex.: CEP standalone — no ouro so existe dentro de
+# ENDERECO). Registrado em emenda de docs/metricas.md.
+TAGSET_ALVO = {"NOME", "CPF", "RG", "TELEFONE", "EMAIL", "ENDERECO"}
+
+# ---- camada residual deterministica de nomes (res:NOME) ----
+# Papel juridico seguido de sequencia capitalizada >=2 tokens;
+# trunca em token de lexico de orgao/cargo (cobre 'em face de
+# Caixa Economica Federal' sem comer a instituicao).
+RES_PAPEIS = re.compile(
+    r"(?i)\b(?:intimad[oa]s?|em face d[aeo]s?|servidor(?:a)?|"
+    r"citad[oa]s?|notificad[oa]s?|requerente|requerid[oa]s?|r[ée]u|"
+    r"autor(?:a)?|testemunhas?|outorgante|outorgad[oa]s?|"
+    r"representad[oa]s?|interessad[oa]s?|exequente|executad[oa]s?|"
+    r"apelante|apelad[oa]s?|agravante|agrad(?:a|o)?|impugnante|"
+    r"impugnad[oa]s?|embargante|embargad[oa]s?|querelante|"
+    r"querelad[oa]s?)(?:\s*\((?:a|o)\))?[,:]?\s+")
+SEQ_NOME = re.compile(
+    r"[A-ZÀ-ÖØ-Þ][A-Za-zÀ-ÖØ-öø-ÿ]*(?:\s+"
+    r"(?:de|da|do|dos|das|e|DE|DA|DO|DOS|DAS|E)\s+|\s+)"
+    r"[A-ZÀ-ÖØ-Þ][A-Za-zÀ-ÖØ-öø-ÿ]*(?:(?:\s+"
+    r"(?:de|da|do|dos|das|e|DE|DA|DO|DOS|DAS|E)\s+|\s+)"
+    r"[A-ZÀ-ÖØ-Þ][A-Za-zÀ-ÖØ-öø-ÿ]*)*")
+LEX_ORG = {
+    "caixa", "economica", "econômica", "federal", "tribunal",
+    "contas", "municipios", "municípios", "ordem", "advogados",
+    "brasil", "secao", "seção", "instituto", "nacional", "seguro",
+    "social", "ministerio", "ministério", "publico", "público",
+    "publica", "pública", "defensoria", "comarca", "foro", "fórum",
+    "juizado", "juí­zado", "prefeitura", "camara", "câmara",
+    "secretaria", "estado", "justica", "justiça", "mpf", "mppa",
+    "tjpa", "municipal", "fazenda", "regional", "fiscal", "sefaz",
+}
+LEX_TITULO = {
+    "juiz", "juiza", "juí­za", "promotor", "promotora", "defensor",
+    "defensora", "desembargador", "desembargadora", "escrivao",
+    "escrivão", "escriva", "escrivã", "dr", "dra", "doutor",
+    "doutora", "excelentissimo", "excelentíssimo", "meritissimo",
+    "meritíssimo", "delegado", "delegada", "procurador",
+    "procuradora", "advogado", "advogada", "oficial",
+}
+TOK = re.compile(r"[A-ZÀ-ÖØ-Þ][A-Za-zÀ-ÖØ-öø-ÿ]*|"
+                 r"de|da|do|dos|das|e|DE|DA|DO|DOS|DAS|E")
 
 PROMPT_NOME = """Você é um extrator NER jurídico especializado na LGPD.
 
@@ -70,8 +113,36 @@ def spans_det(txt):
             i, f = m.span()
             if any(i < pf and pi < f for pi, pf in prot):
                 continue
+            # validador mod-11: celular 11d solto imita CPF e
+            # ganhava o desempate por posicao na lista DET
+            if tipo == "CPF" and not cpf_valido(m.group(0)):
+                continue
             out.append((i, f, f"det:{tipo}"))
     return out, prot
+
+
+def spans_res(txt):
+    """Camada residual: nome proprio (>=2 tokens) apos papel
+    juridico. Trunca no primeiro token de orgao/cargo."""
+    out = []
+    for m in RES_PAPEIS.finditer(txt):
+        seq = SEQ_NOME.match(txt, m.end())
+        if not seq:
+            continue
+        fim = None
+        ini = seq.start()
+        n_nome = 0
+        for t in TOK.finditer(seq.group(0)):
+            w = t.group(0)
+            low = w.lower().rstrip(".")
+            if low in LEX_ORG or low in LEX_TITULO:
+                break
+            if low not in ("de", "da", "do", "dos", "das", "e"):
+                fim = ini + t.end()
+                n_nome += 1
+        if fim and n_nome >= 2:
+            out.append((ini, fim, "res:NOME"))
+    return out
 
 
 def mesclar(cands, prot):
@@ -123,6 +194,7 @@ async def main(base: Path, particao: str = "ajuste",
         mo.SYSTEM_PROMPT = PROMPT_NOME
         r2 = await motor.anonimizar_texto(txt)
         det, prot = spans_det(txt)
+        res = spans_res(txt)
         llm = []
         for j, resp in ((1, r1), (2, r2)):
             try:
@@ -131,18 +203,22 @@ async def main(base: Path, particao: str = "ajuste",
                 data = json.loads(limpo)
                 for s in data.get("spans", []):
                     tr = s.get("trecho", "")
+                    tipo = s.get("tipo", "?")
+                    if tipo not in TAGSET_ALVO:
+                        continue      # tipo morto (ex.: CEP solo)
                     start = 0
                     while tr:
                         i = txt.find(tr, start)
                         if i < 0:
                             break
                         llm.append((i, i + len(tr),
-                                    f"llm{j}:{s.get('tipo','?')}"))
+                                    f"llm{j}:{tipo}"))
                         start = i + 1
             except Exception as ex:
                 falhas.append((nome, j, str(ex)[:60]))
-        # poda de borda nos candidatos llm* antes do merge
-        cands = list(det)
+        # poda de borda nos candidatos llm* antes do merge;
+        # det/res ja sao exatos por construcao
+        cands = det + res
         for i, f, o in llm:
             if o.startswith("llm"):
                 for pi, pf in podar(txt, i, f, o.split(":")[-1]):

@@ -20,50 +20,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent
                      / "scripts"))
 from poda_fronteira import podar                       # noqa: E402
+from eval_cascata import (mesclar, spans_det, spans_res,   # noqa: E402
+                         TAGSET_ALVO)
 
 MAPA = {"NOME": "PESSOA", "CNJ": "PROCESSO_CNJ"}
-
-# ---- camada deterministica (mesma de scripts/eval_cascata.py) ----
-PRESERVADOS = [
-    r"\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4}",      # CNJ
-    r"(?:de\s+)?R\$\s?[\d.]+,\d{2}",              # VALOR
-]
-DET = [
-    ("EMAIL", r"\b[\w.+-]+@[\w-]+(?:\.[\w-]+)+\b"),
-    ("CPF", r"\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b"),
-    ("ENDERECO", r"(?:Rua|Avenida|Av\.|Travessa|Passagem|Alameda"
-                 r"|Estrada|Rodovia)[^.\n]*?CEP\s*\d{5}-?\d{3}"),
-    ("RG", r"\b(?:SSP-)?[A-Z]{2}\s+\d{2}\.\d{3}\.\d{3}(?:-[0-9Xx])?"
-           r"\b|\b\d{2}\.\d{3}\.\d{3}(?:-[0-9Xx])?\b"),
-    ("TELEFONE", r"\(\d{2}\)\s?\d{4,5}-?\d{4}\b"
-                 r"|\b\d{2}\s?\d{4,5}-?\d{4}\b"
-                 r"|\b\d{2}\d{4,5}\d{4}\b"),
-]
-
-# ---- avaliacao pre-registrada (mesma definicao de metricas) ----
-def spans_det(txt):
-    prot = [(m.start(), m.end()) for p in PRESERVADOS
-            for m in re.finditer(p, txt)]
-    out = []
-    for tipo, pat in DET:
-        for m in re.finditer(pat, txt):
-            i, f = m.span()
-            if any(i < pf and pi < f for pi, pf in prot):
-                continue
-            out.append((i, f, f"det:{tipo}"))
-    return out, prot
-
-
-def mesclar(cands, prot):
-    cands = sorted(cands, key=lambda s: (s[0], -(s[1] - s[0])))
-    ok = []
-    for i, f, o in cands:
-        if any(i < pf and pi < f for pi, pf in prot):
-            continue
-        if any(i < of and oi < f for oi, of, _ in ok):
-            continue
-        ok.append((i, f, o))
-    return ok
 
 
 def maptipo(t):
@@ -119,22 +79,30 @@ def medir(docs):
         por_tipo, (tp_e, fp_e, fn_e)
 
 
-def replay(com_poda=True):
-    pasta = Path("corpus/ajuste")
-    out = pasta / "saidas_ollama_cascata"
+def replay(part="ajuste", tag="poda", com_poda=True):
+    """Replay fiel sobre .cands.json (pos-poda pre-merge) quando
+    existe; fallback .spans.json (aceitos, aproximado). det e res
+    sao regenerados deterministicamente."""
+    pasta = Path("corpus") / part
+    out = pasta / f"saidas_ollama_cascata_{tag}" \
+        if tag else pasta / "saidas_ollama_cascata"
     docs = []
     for g in sorted(pasta.glob("doc-*.json")):
         gab = json.loads(g.read_text(encoding="utf-8"))
         txt = (pasta / gab["documento"]).read_text("utf-8")
-        pred = json.loads(
-            (out / f"{g.stem}.spans.json").read_text("utf-8"))
+        fc = out / f"{g.stem}.cands.json"
+        fs = out / f"{g.stem}.spans.json"
+        pred = json.loads((fc if fc.exists() else fs)
+                          .read_text("utf-8"))
         det, prot = spans_det(txt)
-        cands = list(det)
+        cands = det + spans_res(txt)
         for p in pred:
             i, f, o = p["ini"], p["fim"], p["fonte"]
             if o.startswith("det"):
                 continue                    # det vem regenerado
             tipo = o.split(":")[-1]
+            if tipo not in TAGSET_ALVO:
+                continue                    # tipo morto (CEP...)
             if com_poda:
                 for pi, pf in podar(txt, i, f, tipo):
                     cands.append((pi, pf, o))
@@ -240,10 +208,13 @@ def main():
     if len(sys.argv) > 1 and sys.argv[1] == "diag":
         diag()
         return
-    print("== replay offline — ajuste (spans gravados + det regen.) ==")
+    part = sys.argv[1] if len(sys.argv) > 1 else "ajuste"
+    tag = sys.argv[2] if len(sys.argv) > 2 else "poda"
+    print(f"== replay offline — {part}/{tag} "
+          f"(cands gravados + det/res regen.) ==")
     for rotulo, flag in (("sem poda (baseline)", False),
-                         ("com poda", True)):
-        docs = replay(com_poda=flag)
+                         ("com poda+cpf+res+tagset", True)):
+        docs = replay(part, tag, com_poda=flag)
         (pe, re_, fe), (po, ro, fo), por_tipo, (tp, fp, fn) = \
             medir(docs)
         print(f"\n[{rotulo}]")

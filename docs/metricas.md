@@ -115,3 +115,30 @@ com `a+b+c=1`, default `a=b=c=⅓` até calibração em corpus.
 gerado por template) são *proxies de engenharia* — medem o gap dos
 componentes, não validade externa. Gates só se declaram atingidos
 sobre corpus anotado com amostras reais autorizadas.
+
+---
+
+## Emenda 2026-11-04 — cascata v2 (poda + validador + residual)
+
+Medição `saidas_ollama_cascata_v2` (mesmo modelo/digest). Mudanças
+de **pipeline** (não de definição de métrica), registradas por
+transparência conforme a regra de emenda:
+
+1. **Poda de fronteira** (`scripts/poda_fronteira.py`): candidatos
+   `llm*` encolhem ao núcleo por tipo antes do merge. ENDERECO
+   admite completar a borda direita até `CEP` próximo (o ouro
+   inclui CEP dentro de ENDERECO).
+2. **Validador determinístico de CPF (mod-11)**: instância da
+   classe "validadores" já prevista na sec. 2 — elimina celulares
+   de 11 dígitos soltos que o regex confundia com CPF.
+3. **Tipos declarados fora do tagset ouro v0** (`CEP`, `PROCESSO`,
+   `OAB`…) são descartados na cascata: o ouro v0 não anota esses
+   tipos como entidade própria (CEP existe só dentro de ENDERECO),
+   logo preditos desses tipos seriam FP estruturais.
+4. **Camada residual `res:NOME`**: nome próprio (≥2 tokens
+   capitalizados) após papel jurídico (`intimado(a)`, `em face de`,
+   `servidor`, `réu`…), com truncamento em léxico de órgão/cargo.
+   Cobre a omissão de enumeração observada da passada só-NOME.
+
+Gate por tipo: com o item 3, `CEP` deixa de aparecer como tipo
+predito; o gate ≥0,70 segue aplicado a tipos com suporte no ouro.

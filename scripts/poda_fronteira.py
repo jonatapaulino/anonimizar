@@ -35,7 +35,24 @@ NUCLEO = {
 }
 CEP = re.compile(r"CEP\s*\d{5}-?\d{3}")
 LOGRADOURO = re.compile(
-    r"(?:Rua|Avenida|Av\.|Travessa|Passagem|Alameda|Estrada|Rodovia)")
+    r"(?:Rua|Avenida|Av\.|Travessa|Tv\.|Passagem|Alameda|Estrada|"
+    r"Rodovia)")
+SEP_CEP = re.compile(r"[\s,.:;–\-]*$")
+
+
+def cpf_valido(s):
+    """Validador deterministico de CPF (mod-11, digitos verific.).
+
+    Rejeita formatos que imitam CPF (11 digitos soltos de celular,
+    sequencias repetidas). Ouro do corpus: 88/88 validos."""
+    d = [int(c) for c in re.sub(r"\D", "", s)]
+    if len(d) != 11 or len(set(d)) == 1:
+        return False
+    for t in (9, 10):
+        v = (sum(d[i] * (t + 1 - i) for i in range(t)) * 10) % 11 % 10
+        if v != d[t]:
+            return False
+    return True
 
 # rotulos, conectivos e pontuacao que nunca fazem parte do dado
 LEX_BORDA = re.compile(
@@ -75,6 +92,11 @@ def podar(txt, i, f, tipo):
     dividido em varios nucleos. Cega ao gabarito."""
     if tipo in NUCLEO:
         hits = [m.span() for m in NUCLEO[tipo].finditer(txt[i:f])]
+        if tipo == "CPF":
+            hits = [h for h in hits
+                    if cpf_valido(txt[i + h[0]:i + h[1]])]
+            if not hits:
+                return []            # CPF declarado sem valido: fora
         if hits:
             return [(i + a, i + b) for a, b in hits]
     elif tipo == "ENDERECO":
@@ -86,6 +108,17 @@ def podar(txt, i, f, tipo):
             if log:
                 a, b = _trim_borda(txt, log.start(), cep.end())
                 return [(a, b)] if b > a else []
+        else:
+            # span termina antes do CEP: completa a borda direita
+            # se so houver separadores ate o proximo 'CEP nnnnn-nnn'
+            cep = CEP.search(txt, f, min(len(txt), f + 25))
+            if cep and SEP_CEP.match(txt[f:cep.start()]):
+                log = None
+                for m in LOGRADOURO.finditer(txt, i, cep.end()):
+                    log = m
+                if log:
+                    a, b = _trim_borda(txt, log.start(), cep.end())
+                    return [(a, b)] if b > a else []
     elif tipo in ("NOME", "PESSOA"):
         m = CORTE_NOME.search(txt, i, f)
         if m:

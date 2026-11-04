@@ -81,6 +81,19 @@ mesmo modelo/digest, `eval_cascata.py` + `poda_fronteira.py`):
 - Residual: TELEFONE FN=8 overlap (mesmos 8 da v0 — formato que
   nem det nem LLM cobrem); CPF FP=8 (det dispara em não-CPF)
 
+Medição 04/11/2026 — cascata v2 (`saidas_ollama_cascata_v2`:
+poda + validador CPF mod-11 + res:NOME + drop tipos-mortos;
+emenda datada em `docs/metricas.md`):
+
+- NER exact F1 **0,953**; overlap F1 **1,000**; por tipo tudo 1,00
+- Recall alvo **360/360 (100%)**; excesso preservado 0
+- Reident: **0/360 = 0,0000** — res:NOME cobre os 3 leaks de
+  enumeração ('Pedro Henrique Almeida'); validador mod-11 zera
+  CPF FP=8/TEL FN=8 (mesmo span, causa única)
+- Ajuste: exact F1 0,943; reident 0/123
+- Residual: 17 FP + 17 FN exact (fronteira residual — ajuste fino
+  ou discriminativo); prosa comida 45c rótulo + 8c conteúdo
+
 ## Próximos passos (ordem de dependência)
 
 1. ~~Fechar NER exact ≥0,85~~ **feito na POC sintética**
