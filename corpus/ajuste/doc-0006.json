@@ -8,56 +8,64 @@
       "tipo": "ORGAO",
       "inicio": 0,
       "fim": 31,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "5834519-94.2024.8.10.2917",
       "tipo": "CNJ",
       "inicio": 74,
       "fim": 99,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "ROSA MARIA CONCEICAO",
       "tipo": "NOME",
       "inicio": 112,
       "fim": 132,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0006:p1"
     },
     {
       "texto": "MARIA.FERREIRA@GMAIL.COM",
       "tipo": "EMAIL",
       "inicio": 145,
       "fim": 169,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0006:p1"
     },
     {
       "texto": "(91) 96838-6543",
       "tipo": "TELEFONE",
       "inicio": 182,
       "fim": 197,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0006:p1"
     },
     {
       "texto": "R$ 188.963,85",
       "tipo": "VALOR",
       "inicio": 239,
       "fim": 252,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Ananindeua",
       "tipo": "CIDADE",
       "inicio": 255,
       "fim": 265,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Analista Judiciario",
       "tipo": "CARGO",
       "inicio": 284,
       "fim": 303,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

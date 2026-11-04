@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 12,
       "fim": 49,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "CARLOS EDUARDO NASCIMENTO",
       "tipo": "NOME",
       "inicio": 68,
       "fim": 93,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0076:p1"
     },
     {
       "texto": "85941098065",
       "tipo": "CPF",
       "inicio": 99,
       "fim": 110,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0076:p1"
     },
     {
       "texto": "Rua das Flores, 1807, Centro, Maraba-PA, CEP 67293-163",
       "tipo": "ENDERECO",
       "inicio": 121,
       "fim": 175,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0076:p1"
     },
     {
       "texto": "3443605-28.2021.8.12.4109",
       "tipo": "CNJ",
       "inicio": 221,
       "fim": 246,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "MARIASANTOS@TJPA.JUS.BR",
       "tipo": "EMAIL",
       "inicio": 265,
       "fim": 288,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0076:p1"
     },
     {
       "texto": "(91) 96707-9444",
       "tipo": "TELEFONE",
       "inicio": 291,
       "fim": 306,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0076:p1"
     }
   ]
 }

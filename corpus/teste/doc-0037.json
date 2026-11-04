@@ -8,63 +8,72 @@
       "tipo": "ORGAO",
       "inicio": 20,
       "fim": 24,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Tribunal Regional Eleitoral do Para",
       "tipo": "ORGAO",
       "inicio": 29,
       "fim": 64,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Jose Ribamar Da Costa",
       "tipo": "NOME",
       "inicio": 109,
       "fim": 130,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0037:p1"
     },
     {
       "texto": "13.624.700-X",
       "tipo": "RG",
       "inicio": 135,
       "fim": 147,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0037:p1"
     },
     {
       "texto": "21252774761",
       "tipo": "CPF",
       "inicio": 153,
       "fim": 164,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0037:p1"
     },
     {
       "texto": "LUCIASANTOS@GMAIL.COM",
       "tipo": "EMAIL",
       "inicio": 187,
       "fim": 208,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0037:p1"
     },
     {
       "texto": "(93)981206120",
       "tipo": "TELEFONE",
       "inicio": 219,
       "fim": 232,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0037:p1"
     },
     {
       "texto": "de R$ 196.869,72",
       "tipo": "VALOR",
       "inicio": 255,
       "fim": 271,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Perito Judicial",
       "tipo": "CARGO",
       "inicio": 292,
       "fim": 307,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

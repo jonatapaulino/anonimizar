@@ -8,56 +8,64 @@
       "tipo": "NOME",
       "inicio": 48,
       "fim": 71,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0069:p1"
     },
     {
       "texto": "152.526.700-05",
       "tipo": "CPF",
       "inicio": 77,
       "fim": 91,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0069:p1"
     },
     {
       "texto": "LUCIA HELENA BARBOSA",
       "tipo": "NOME",
       "inicio": 105,
       "fim": 125,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0069:p2"
     },
     {
       "texto": "118.920.175-55",
       "tipo": "CPF",
       "inicio": 131,
       "fim": 145,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0069:p2"
     },
     {
       "texto": "Rua das Flores, 763, Marco, Santarem-PA, CEP 69007-115",
       "tipo": "ENDERECO",
       "inicio": 156,
       "fim": 210,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0069:p2"
     },
     {
       "texto": "de R$ 202.958,65",
       "tipo": "VALOR",
       "inicio": 248,
       "fim": 264,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "3205865-56.2020.8.12.3442",
       "tipo": "CNJ",
       "inicio": 302,
       "fim": 327,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Ministerio Publico Federal",
       "tipo": "ORGAO",
       "inicio": 338,
       "fim": 364,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

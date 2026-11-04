@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 12,
       "fim": 48,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "ANA SANTOS",
       "tipo": "NOME",
       "inicio": 67,
       "fim": 77,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0089:p1"
     },
     {
       "texto": "374.909.722-48",
       "tipo": "CPF",
       "inicio": 83,
       "fim": 97,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0089:p1"
     },
     {
       "texto": "Travessa Dom Pedro I, 2463, Nazare, Castanhal-PA, CEP 69107-689",
       "tipo": "ENDERECO",
       "inicio": 108,
       "fim": 171,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0089:p1"
     },
     {
       "texto": "9369253-53.2023.8.13.6410",
       "tipo": "CNJ",
       "inicio": 217,
       "fim": 242,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "CARLOS_PINHEIRO@HOTMAIL.COM",
       "tipo": "EMAIL",
       "inicio": 261,
       "fim": 288,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0089:p1"
     },
     {
       "texto": "94 96512-4451",
       "tipo": "TELEFONE",
       "inicio": 291,
       "fim": 304,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0089:p1"
     }
   ]
 }

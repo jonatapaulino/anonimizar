@@ -63,7 +63,7 @@ def aval_corref(doc):
         return best
     aligned = [(g["ent"], ent_pred(g)) for g in gold]
     # pairwise
-    tp = fp = fn = 0
+    tp = fp = fn = tn = 0
     for i in range(len(aligned)):
         for j in range(i+1, len(aligned)):
             g1, p1 = aligned[i]; g2, p2 = aligned[j]
@@ -72,12 +72,13 @@ def aval_corref(doc):
             if same_g and same_p: tp += 1
             elif same_p and not same_g: fp += 1
             elif same_g and not same_p: fn += 1
+            else: tn += 1
     # consistência por entidade gold: todas as menções na mesma predita
     grupos = defaultdict(set)
     for g, p in aligned:
         grupos[g].add(id(p) if p else f"none{g}")
     ok_cons = sum(1 for s in grupos.values() if len(s) == 1)
-    return tp, fp, fn, ok_cons, len(grupos), len(gold)
+    return tp, fp, fn, tn, ok_cons, len(grupos), len(gold)
 
 # ---------- main ----------
 docs = [json.loads(l) for l in open(CORPUS, encoding="utf-8")]
@@ -136,13 +137,16 @@ except Exception as e:
     print(f"  NER indisponível: {e}")
 
 print("\n== C) CORREFERÊNCIA (motor simbólico) ==")
-TP = FP = FN = 0; cons_ok = cons_tot = ment = 0
+TP = FP = FN = TN = 0; cons_ok = cons_tot = ment = 0
 for d in docs:
-    tp, fp, fn, ok, totg, n = aval_corref(d)
-    TP += tp; FP += fp; FN += fn; cons_ok += ok; cons_tot += totg; ment += n
+    tp, fp, fn, tn, ok, totg, n = aval_corref(d)
+    TP += tp; FP += fp; FN += fn; TN += tn
+    cons_ok += ok; cons_tot += totg; ment += n
 P, R, F = prf(TP, FP, FN)
 print(f"  pairwise  P={P:.2f} R={R:.2f} F1={F:.2f}  (tp{TP} fp{FP} fn{FN})")
 print(f"  consistência/entidade: {cons_ok}/{cons_tot} = {cons_ok/cons_tot:.2f}")
+print(f"  anti-merge: {FP}/{FP+TN} = {FP/(FP+TN):.4f}"
+      if FP + TN else "  anti-merge: n/a")
 print(f"  menções PESSOA alinhadas: {ment}")
 json.dump(dict(regex=dict(P=P, R=R, F1=F)),
           open("spikes/p8_raw.json", "w"), indent=1)

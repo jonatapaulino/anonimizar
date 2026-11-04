@@ -8,56 +8,64 @@
       "tipo": "ORGAO",
       "inicio": 0,
       "fim": 25,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "1986842-34.2022.8.12.6854",
       "tipo": "CNJ",
       "inicio": 68,
       "fim": 93,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Ivonete Cristina Rocha",
       "tipo": "NOME",
       "inicio": 106,
       "fim": 128,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0004:p1"
     },
     {
       "texto": "SEBASTIAOBARBOSA@GMAIL.COM",
       "tipo": "EMAIL",
       "inicio": 141,
       "fim": 167,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0004:p1"
     },
     {
       "texto": "(91)971973449",
       "tipo": "TELEFONE",
       "inicio": 180,
       "fim": 193,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0004:p1"
     },
     {
       "texto": "R$224.094,83",
       "tipo": "VALOR",
       "inicio": 235,
       "fim": 247,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Ananindeua",
       "tipo": "CIDADE",
       "inicio": 250,
       "fim": 260,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Analista Judiciario",
       "tipo": "CARGO",
       "inicio": 279,
       "fim": 298,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

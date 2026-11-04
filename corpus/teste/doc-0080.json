@@ -8,63 +8,72 @@
       "tipo": "ORGAO",
       "inicio": 20,
       "fim": 24,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Tribunal de Justica do Estado do Para",
       "tipo": "ORGAO",
       "inicio": 29,
       "fim": 66,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "MARCOS AURELIO TAVARES",
       "tipo": "NOME",
       "inicio": 111,
       "fim": 133,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0080:p1"
     },
     {
       "texto": "43.997.577-8",
       "tipo": "RG",
       "inicio": 138,
       "fim": 150,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0080:p1"
     },
     {
       "texto": "160.055.482-20",
       "tipo": "CPF",
       "inicio": 156,
       "fim": 170,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0080:p1"
     },
     {
       "texto": "MARIA_OLIVEIRA@SEFAZ.PA.GOV.BR",
       "tipo": "EMAIL",
       "inicio": 193,
       "fim": 223,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0080:p1"
     },
     {
       "texto": "(91)45363808",
       "tipo": "TELEFONE",
       "inicio": 234,
       "fim": 246,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0080:p1"
     },
     {
       "texto": "R$ 4.216,68",
       "tipo": "VALOR",
       "inicio": 269,
       "fim": 280,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Desembargador",
       "tipo": "CARGO",
       "inicio": 301,
       "fim": 314,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

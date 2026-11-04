@@ -8,63 +8,72 @@
       "tipo": "ORGAO",
       "inicio": 20,
       "fim": 28,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Ministerio Publico do Estado do Para",
       "tipo": "ORGAO",
       "inicio": 33,
       "fim": 69,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Rosa Maria Conceicao",
       "tipo": "NOME",
       "inicio": 114,
       "fim": 134,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0059:p1"
     },
     {
       "texto": "PA 84.001.863-X",
       "tipo": "RG",
       "inicio": 139,
       "fim": 154,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0059:p1"
     },
     {
       "texto": "37344737051",
       "tipo": "CPF",
       "inicio": 160,
       "fim": 171,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0059:p1"
     },
     {
       "texto": "MARIA_SOUZA@GMAIL.COM",
       "tipo": "EMAIL",
       "inicio": 194,
       "fim": 215,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0059:p1"
     },
     {
       "texto": "94 97148-3240",
       "tipo": "TELEFONE",
       "inicio": 226,
       "fim": 239,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0059:p1"
     },
     {
       "texto": "R$89.134,17",
       "tipo": "VALOR",
       "inicio": 262,
       "fim": 273,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Promotor de Justica",
       "tipo": "CARGO",
       "inicio": 294,
       "fim": 313,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

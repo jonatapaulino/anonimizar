@@ -8,63 +8,72 @@
       "tipo": "ORGAO",
       "inicio": 20,
       "fim": 28,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Tribunal Regional Eleitoral do Para",
       "tipo": "ORGAO",
       "inicio": 33,
       "fim": 68,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "ANTONIO MARCOS PINHEIRO",
       "tipo": "NOME",
       "inicio": 113,
       "fim": 136,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0029:p1"
     },
     {
       "texto": "86.893.583-1",
       "tipo": "RG",
       "inicio": 141,
       "fim": 153,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0029:p1"
     },
     {
       "texto": "99082736470",
       "tipo": "CPF",
       "inicio": 159,
       "fim": 170,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0029:p1"
     },
     {
       "texto": "DENISE.FERREIRA@TJPA.JUS.BR",
       "tipo": "EMAIL",
       "inicio": 193,
       "fim": 220,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0029:p1"
     },
     {
       "texto": "(94) 98635-6434",
       "tipo": "TELEFONE",
       "inicio": 231,
       "fim": 246,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0029:p1"
     },
     {
       "texto": "de R$ 168.225,96",
       "tipo": "VALOR",
       "inicio": 269,
       "fim": 285,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Procurador da Republica",
       "tipo": "CARGO",
       "inicio": 306,
       "fim": 329,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

@@ -8,63 +8,72 @@
       "tipo": "CARGO",
       "inicio": 22,
       "fim": 35,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "SANTAREM",
       "tipo": "CIDADE",
       "inicio": 64,
       "fim": 72,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "2672490-29.2024.8.12.2908",
       "tipo": "CNJ",
       "inicio": 86,
       "fim": 111,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "IVONETE CRISTINA ROCHA",
       "tipo": "NOME",
       "inicio": 113,
       "fim": 135,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0038:p1"
     },
     {
       "texto": "39632034120",
       "tipo": "CPF",
       "inicio": 141,
       "fim": 152,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0038:p1"
     },
     {
       "texto": "91 98917-3101",
       "tipo": "TELEFONE",
       "inicio": 163,
       "fim": 176,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0038:p1"
     },
     {
       "texto": "MARIA JOSE FERREIRA",
       "tipo": "NOME",
       "inicio": 250,
       "fim": 269,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0038:p2"
     },
     {
       "texto": "R$232.161,36",
       "tipo": "VALOR",
       "inicio": 311,
       "fim": 323,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "R$ 232.600,18",
       "tipo": "VALOR",
       "inicio": 364,
       "fim": 377,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

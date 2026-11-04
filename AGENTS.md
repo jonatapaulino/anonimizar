@@ -94,6 +94,25 @@ emenda datada em `docs/metricas.md`):
 - Residual: 17 FP + 17 FN exact (fronteira residual — ajuste fino
   ou discriminativo); prosa comida 45c rótulo + 8c conteúdo
 
+Medição 04/11/2026 — correferência (`spikes/p3_correferencia.py`
+revisto, harness `p8_metricas.py`, emenda 04/11-04b em
+`docs/metricas.md`):
+
+- `corpus_v0` (36 docs): pairwise **F1 1,000** (0,88→1,00),
+  consistência **90/90 = 1,000**, anti-merge **0/270 = 0%** —
+  os 3 gates PASS no proxy de template
+- `ent_id` anotado nos 110 gabaritos (`scripts/anotar_ent_id.py`,
+  regra de bloco `_pessoa`): 906 ents → 137 clusters, manifestos
+  emendados; offsets/tipos inalterados
+- Corpus gerado: pairwise/consistência degenerados por
+  construção (cada pessoa plantada 1×); anti-merge 1/27 = 3,7%
+  PASS (homônimo de template doc-0067)
+- Aberto: partição com menções repetidas (multi-menção real)
+  para exercer pairwise/consistência fora do corpus_v0; e o
+  link de correferência ainda não está na saída do pipeline —
+  TAG uniforme não carrega identidade (pseudonimização é modo
+  separado da arquitetura)
+
 ## Próximos passos (ordem de dependência)
 
 1. ~~Fechar NER exact ≥0,85~~ **feito na POC sintética**
@@ -101,8 +120,10 @@ emenda datada em `docs/metricas.md`):
    Segue em aberto o caminho longo: NER discriminativo
    (LeNER-Br/UlyssesNER-Br) na porta MotorIA — necessário para
    sair do desvio ADR-0011 e validar em corpus real.
-2. `ent_id` no corpus → destrava gates de correferência (pairwise
-   ≥0,90, anti-merge ≤5%, consistência ≥0,85).
+2. ~~`ent_id` no corpus~~ **feito** (04/11/2026): 137 clusters;
+   gates de correferência mensuráveis; motor simbólico passa
+   1,000/1,000/0% no proxy corpus_v0. Aberto: exercício real de
+   pairwise/consistência exige docs com menções repetidas.
 3. Cofre de chaves (Etapa 4/5) — decisão jurídica de reidentificação
    pendente (ver ata em `docs/atas/`).
 4. mTLS na fronteira A↔B (JWT offline já existe).

@@ -8,49 +8,56 @@
       "tipo": "INSTITUICAO",
       "inicio": 48,
       "fim": 68,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "CARLOS EDUARDO NASCIMENTO",
       "tipo": "NOME",
       "inicio": 82,
       "fim": 107,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0073:p1"
     },
     {
       "texto": "38023037846",
       "tipo": "CPF",
       "inicio": 113,
       "fim": 124,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0073:p1"
     },
     {
       "texto": "Rua dos Mundurucus, 2512, Sao Bras, Belem-PA, CEP 69727-397",
       "tipo": "ENDERECO",
       "inicio": 135,
       "fim": 194,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0073:p1"
     },
     {
       "texto": "R$182.964,21",
       "tipo": "VALOR",
       "inicio": 232,
       "fim": 244,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "5633238-39.2020.8.11.7474",
       "tipo": "CNJ",
       "inicio": 282,
       "fim": 307,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Tribunal Regional Eleitoral do Para",
       "tipo": "ORGAO",
       "inicio": 318,
       "fim": 353,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

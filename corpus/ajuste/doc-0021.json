@@ -8,49 +8,56 @@
       "tipo": "INSTITUICAO",
       "inicio": 48,
       "fim": 71,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "MARIA DAS GRACAS SANTANA",
       "tipo": "NOME",
       "inicio": 85,
       "fim": 109,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0021:p1"
     },
     {
       "texto": "320.775.575-59",
       "tipo": "CPF",
       "inicio": 115,
       "fim": 129,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0021:p1"
     },
     {
       "texto": "Rua dos Mundurucus, 1764, Batista Campos, Belem-PA, CEP 69520-984",
       "tipo": "ENDERECO",
       "inicio": 140,
       "fim": 205,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0021:p1"
     },
     {
       "texto": "R$37.868,86",
       "tipo": "VALOR",
       "inicio": 243,
       "fim": 254,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "4502154-17.2025.8.12.1561",
       "tipo": "CNJ",
       "inicio": 292,
       "fim": 317,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Defensoria Publica do Estado do Para",
       "tipo": "ORGAO",
       "inicio": 328,
       "fim": 364,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

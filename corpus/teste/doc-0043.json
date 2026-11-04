@@ -8,56 +8,64 @@
       "tipo": "NOME",
       "inicio": 48,
       "fim": 68,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0043:p1"
     },
     {
       "texto": "18266919950",
       "tipo": "CPF",
       "inicio": 74,
       "fim": 85,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0043:p1"
     },
     {
       "texto": "Maria Pinheiro",
       "tipo": "NOME",
       "inicio": 99,
       "fim": 113,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0043:p2"
     },
     {
       "texto": "582.082.020-70",
       "tipo": "CPF",
       "inicio": 119,
       "fim": 133,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0043:p2"
     },
     {
       "texto": "Av. Conselheiro Furtado, 442, Cidade Velha, Santarem-PA, CEP 66992-855",
       "tipo": "ENDERECO",
       "inicio": 144,
       "fim": 214,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0043:p2"
     },
     {
       "texto": "R$198.825,16",
       "tipo": "VALOR",
       "inicio": 252,
       "fim": 264,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "3432644-71.2019.8.10.6846",
       "tipo": "CNJ",
       "inicio": 302,
       "fim": 327,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Tribunal de Justica do Estado do Para",
       "tipo": "ORGAO",
       "inicio": 338,
       "fim": 375,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

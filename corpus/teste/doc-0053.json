@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 12,
       "fim": 48,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Rosa Santos",
       "tipo": "NOME",
       "inicio": 67,
       "fim": 78,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0053:p1"
     },
     {
       "texto": "85571025182",
       "tipo": "CPF",
       "inicio": 84,
       "fim": 95,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0053:p1"
     },
     {
       "texto": "Tv. Castelo Branco, 690, Reduto, Santarem-PA, CEP 67103-772",
       "tipo": "ENDERECO",
       "inicio": 106,
       "fim": 165,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0053:p1"
     },
     {
       "texto": "2961237-23.2025.8.12.3458",
       "tipo": "CNJ",
       "inicio": 211,
       "fim": 236,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "ANTONIO_BARBOSA@GMAIL.COM",
       "tipo": "EMAIL",
       "inicio": 255,
       "fim": 280,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0053:p1"
     },
     {
       "texto": "(91)971528741",
       "tipo": "TELEFONE",
       "inicio": 283,
       "fim": 296,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0053:p1"
     }
   ]
 }

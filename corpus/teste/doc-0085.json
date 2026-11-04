@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 12,
       "fim": 48,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Jose Ribamar Da Costa",
       "tipo": "NOME",
       "inicio": 67,
       "fim": 88,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0085:p1"
     },
     {
       "texto": "264.089.624-59",
       "tipo": "CPF",
       "inicio": 94,
       "fim": 108,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0085:p1"
     },
     {
       "texto": "Tv. Castelo Branco, 1491, Sao Bras, Belem-PA, CEP 66374-900",
       "tipo": "ENDERECO",
       "inicio": 119,
       "fim": 178,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0085:p1"
     },
     {
       "texto": "1829809-18.2023.8.12.6644",
       "tipo": "CNJ",
       "inicio": 224,
       "fim": 249,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "IVONETESILVA@GMAIL.COM",
       "tipo": "EMAIL",
       "inicio": 268,
       "fim": 290,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0085:p1"
     },
     {
       "texto": "(94) 98363-9294",
       "tipo": "TELEFONE",
       "inicio": 293,
       "fim": 308,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0085:p1"
     }
   ]
 }

@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 12,
       "fim": 38,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "DENISE BARBOSA",
       "tipo": "NOME",
       "inicio": 57,
       "fim": 71,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0083:p1"
     },
     {
       "texto": "377.160.883-00",
       "tipo": "CPF",
       "inicio": 77,
       "fim": 91,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0083:p1"
     },
     {
       "texto": "Tv. Castelo Branco, 1943, Marco, Castanhal-PA, CEP 68685-716",
       "tipo": "ENDERECO",
       "inicio": 102,
       "fim": 162,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0083:p1"
     },
     {
       "texto": "3038200-68.2023.8.11.2770",
       "tipo": "CNJ",
       "inicio": 208,
       "fim": 233,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "MARIA_PINHEIRO@SEFAZ.PA.GOV.BR",
       "tipo": "EMAIL",
       "inicio": 252,
       "fim": 282,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0083:p1"
     },
     {
       "texto": "9137318000",
       "tipo": "TELEFONE",
       "inicio": 285,
       "fim": 295,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0083:p1"
     }
   ]
 }

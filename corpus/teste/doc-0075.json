@@ -8,77 +8,88 @@
       "tipo": "CARGO",
       "inicio": 22,
       "fim": 37,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "CASTANHAL",
       "tipo": "CIDADE",
       "inicio": 66,
       "fim": 75,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "2497199-40.2020.8.14.9184",
       "tipo": "CNJ",
       "inicio": 89,
       "fim": 114,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Antonio Marcos Pinheiro",
       "tipo": "NOME",
       "inicio": 116,
       "fim": 139,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0075:p1"
     },
     {
       "texto": "65.548.205-X",
       "tipo": "RG",
       "inicio": 147,
       "fim": 159,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0075:p1"
     },
     {
       "texto": "889.215.111-80",
       "tipo": "CPF",
       "inicio": 165,
       "fim": 179,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0075:p1"
     },
     {
       "texto": "Av. Conselheiro Furtado, 2789, Centro, Ananindeua-PA, CEP 69914-781",
       "tipo": "ENDERECO",
       "inicio": 197,
       "fim": 264,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0075:p1"
     },
     {
       "texto": "94963091631",
       "tipo": "TELEFONE",
       "inicio": 275,
       "fim": 286,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0075:p1"
     },
     {
       "texto": "Ordem dos Advogados do Brasil - Secao Para",
       "tipo": "INSTITUICAO",
       "inicio": 360,
       "fim": 402,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "R$116.700,07",
       "tipo": "VALOR",
       "inicio": 444,
       "fim": 456,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "R$196.747,13",
       "tipo": "VALOR",
       "inicio": 497,
       "fim": 509,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

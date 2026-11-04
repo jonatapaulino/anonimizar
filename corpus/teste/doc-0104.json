@@ -8,49 +8,56 @@
       "tipo": "INSTITUICAO",
       "inicio": 48,
       "fim": 90,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "JOAO CARLOS DE SOUZA",
       "tipo": "NOME",
       "inicio": 104,
       "fim": 124,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0104:p1"
     },
     {
       "texto": "712.192.691-15",
       "tipo": "CPF",
       "inicio": 130,
       "fim": 144,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0104:p1"
     },
     {
       "texto": "Travessa Dom Pedro I, 2029, Umarizal, Belem-PA, CEP 67668-998",
       "tipo": "ENDERECO",
       "inicio": 155,
       "fim": 216,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0104:p1"
     },
     {
       "texto": "R$ 10.569,93",
       "tipo": "VALOR",
       "inicio": 254,
       "fim": 266,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "6448316-79.2024.8.11.4669",
       "tipo": "CNJ",
       "inicio": 304,
       "fim": 329,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Ministerio Publico Federal",
       "tipo": "ORGAO",
       "inicio": 340,
       "fim": 366,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

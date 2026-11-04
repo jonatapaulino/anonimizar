@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 11,
       "fim": 47,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "JOSE RIBAMAR DA COSTA",
       "tipo": "NOME",
       "inicio": 63,
       "fim": 84,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0082:p1"
     },
     {
       "texto": "PA 95.778.453-5",
       "tipo": "RG",
       "inicio": 89,
       "fim": 104,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0082:p1"
     },
     {
       "texto": "9605849-16.2023.8.13.4871",
       "tipo": "CNJ",
       "inicio": 144,
       "fim": 169,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Maraba",
       "tipo": "CIDADE",
       "inicio": 205,
       "fim": 211,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "9449197863",
       "tipo": "TELEFONE",
       "inicio": 252,
       "fim": 262,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0082:p1"
     },
     {
       "texto": "MARCOS.BARBOSA@SEFAZ.PA.GOV.BR",
       "tipo": "EMAIL",
       "inicio": 273,
       "fim": 303,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0082:p1"
     }
   ]
 }

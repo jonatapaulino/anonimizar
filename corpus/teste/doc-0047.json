@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 12,
       "fim": 49,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "ANTONIO MARCOS PINHEIRO",
       "tipo": "NOME",
       "inicio": 68,
       "fim": 91,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0047:p1"
     },
     {
       "texto": "98518392306",
       "tipo": "CPF",
       "inicio": 97,
       "fim": 108,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0047:p1"
     },
     {
       "texto": "Rua Santo Antonio, 2444, Nazare, Belem-PA, CEP 67847-465",
       "tipo": "ENDERECO",
       "inicio": 119,
       "fim": 175,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0047:p1"
     },
     {
       "texto": "4270444-93.2020.8.11.1637",
       "tipo": "CNJ",
       "inicio": 221,
       "fim": 246,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "MARIA.SANTOS@GMAIL.COM",
       "tipo": "EMAIL",
       "inicio": 265,
       "fim": 287,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0047:p1"
     },
     {
       "texto": "91 3884-3601",
       "tipo": "TELEFONE",
       "inicio": 290,
       "fim": 302,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0047:p1"
     }
   ]
 }

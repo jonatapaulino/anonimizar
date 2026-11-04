@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 12,
       "fim": 48,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Carlos Eduardo Nascimento",
       "tipo": "NOME",
       "inicio": 67,
       "fim": 92,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0003:p1"
     },
     {
       "texto": "771.168.696-03",
       "tipo": "CPF",
       "inicio": 98,
       "fim": 112,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0003:p1"
     },
     {
       "texto": "Rua das Flores, 1781, Batista Campos, Maraba-PA, CEP 69696-242",
       "tipo": "ENDERECO",
       "inicio": 123,
       "fim": 185,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0003:p1"
     },
     {
       "texto": "9352824-93.2026.8.13.1739",
       "tipo": "CNJ",
       "inicio": 231,
       "fim": 256,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "LUCIA.SANTOS@GMAIL.COM",
       "tipo": "EMAIL",
       "inicio": 275,
       "fim": 297,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0003:p1"
     },
     {
       "texto": "(93) 97921-3146",
       "tipo": "TELEFONE",
       "inicio": 300,
       "fim": 315,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0003:p1"
     }
   ]
 }

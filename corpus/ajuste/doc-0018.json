@@ -8,49 +8,56 @@
       "tipo": "INSTITUICAO",
       "inicio": 48,
       "fim": 83,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "CARLOS SANTOS",
       "tipo": "NOME",
       "inicio": 97,
       "fim": 110,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0018:p1"
     },
     {
       "texto": "039.958.467-69",
       "tipo": "CPF",
       "inicio": 116,
       "fim": 130,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0018:p1"
     },
     {
       "texto": "Av. Governador Jose Malcher, 1628, Reduto, Castanhal-PA, CEP 68953-912",
       "tipo": "ENDERECO",
       "inicio": 141,
       "fim": 211,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0018:p1"
     },
     {
       "texto": "R$ 32.474,97",
       "tipo": "VALOR",
       "inicio": 249,
       "fim": 261,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "3490051-86.2026.8.10.2299",
       "tipo": "CNJ",
       "inicio": 299,
       "fim": 324,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Tribunal de Justica do Estado do Para",
       "tipo": "ORGAO",
       "inicio": 335,
       "fim": 372,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

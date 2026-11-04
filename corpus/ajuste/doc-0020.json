@@ -8,56 +8,64 @@
       "tipo": "NOME",
       "inicio": 48,
       "fim": 71,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0020:p1"
     },
     {
       "texto": "621.586.323-80",
       "tipo": "CPF",
       "inicio": 77,
       "fim": 91,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0020:p1"
     },
     {
       "texto": "Lucia De Souza",
       "tipo": "NOME",
       "inicio": 105,
       "fim": 119,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0020:p2"
     },
     {
       "texto": "310.783.525-00",
       "tipo": "CPF",
       "inicio": 125,
       "fim": 139,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0020:p2"
     },
     {
       "texto": "Travessa Dom Pedro I, 2341, Sao Bras, Maraba-PA, CEP 69787-962",
       "tipo": "ENDERECO",
       "inicio": 150,
       "fim": 212,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0020:p2"
     },
     {
       "texto": "R$ 239.410,82",
       "tipo": "VALOR",
       "inicio": 250,
       "fim": 263,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "9800824-12.2026.8.12.2850",
       "tipo": "CNJ",
       "inicio": 301,
       "fim": 326,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Tribunal de Justica do Estado do Para",
       "tipo": "ORGAO",
       "inicio": 337,
       "fim": 374,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

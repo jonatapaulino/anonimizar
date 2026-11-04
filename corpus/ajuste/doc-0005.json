@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 11,
       "fim": 47,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Marcos Aurelio Tavares",
       "tipo": "NOME",
       "inicio": 63,
       "fim": 85,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0005:p1"
     },
     {
       "texto": "37.631.746",
       "tipo": "RG",
       "inicio": 90,
       "fim": 100,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0005:p1"
     },
     {
       "texto": "1606559-64.2024.8.14.3798",
       "tipo": "CNJ",
       "inicio": 140,
       "fim": 165,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Maraba",
       "tipo": "CIDADE",
       "inicio": 201,
       "fim": 207,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "(93) 96164-9481",
       "tipo": "TELEFONE",
       "inicio": 248,
       "fim": 263,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0005:p1"
     },
     {
       "texto": "MARIAOLIVEIRA@TJPA.JUS.BR",
       "tipo": "EMAIL",
       "inicio": 274,
       "fim": 299,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0005:p1"
     }
   ]
 }

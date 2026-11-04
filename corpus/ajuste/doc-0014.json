@@ -8,56 +8,64 @@
       "tipo": "NOME",
       "inicio": 48,
       "fim": 71,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0014:p1"
     },
     {
       "texto": "611.952.515-72",
       "tipo": "CPF",
       "inicio": 77,
       "fim": 91,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0014:p1"
     },
     {
       "texto": "Marcos Aurelio Tavares",
       "tipo": "NOME",
       "inicio": 105,
       "fim": 127,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0014:p2"
     },
     {
       "texto": "455.881.300-73",
       "tipo": "CPF",
       "inicio": 133,
       "fim": 147,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0014:p2"
     },
     {
       "texto": "Av. Governador Jose Malcher, 74, Sao Bras, Maraba-PA, CEP 69552-864",
       "tipo": "ENDERECO",
       "inicio": 158,
       "fim": 225,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0014:p2"
     },
     {
       "texto": "R$ 9.494,60",
       "tipo": "VALOR",
       "inicio": 263,
       "fim": 274,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "2828609-18.2019.8.11.8853",
       "tipo": "CNJ",
       "inicio": 312,
       "fim": 337,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Tribunal Regional Eleitoral do Para",
       "tipo": "ORGAO",
       "inicio": 348,
       "fim": 383,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

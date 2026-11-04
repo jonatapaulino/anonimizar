@@ -8,56 +8,64 @@
       "tipo": "ORGAO",
       "inicio": 0,
       "fim": 35,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "5397055-86.2022.8.14.2596",
       "tipo": "CNJ",
       "inicio": 78,
       "fim": 103,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Maria Jose Ferreira",
       "tipo": "NOME",
       "inicio": 116,
       "fim": 135,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0016:p1"
     },
     {
       "texto": "DENISESANTOS@HOTMAIL.COM",
       "tipo": "EMAIL",
       "inicio": 148,
       "fim": 172,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0016:p1"
     },
     {
       "texto": "(91) 3525-7506",
       "tipo": "TELEFONE",
       "inicio": 185,
       "fim": 199,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0016:p1"
     },
     {
       "texto": "R$ 51.202,37",
       "tipo": "VALOR",
       "inicio": 241,
       "fim": 253,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Santarem",
       "tipo": "CIDADE",
       "inicio": 256,
       "fim": 264,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Desembargador",
       "tipo": "CARGO",
       "inicio": 283,
       "fim": 296,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

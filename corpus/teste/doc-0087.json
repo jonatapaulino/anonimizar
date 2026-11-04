@@ -8,56 +8,64 @@
       "tipo": "ORGAO",
       "inicio": 0,
       "fim": 36,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "6680085-25.2024.8.12.4093",
       "tipo": "CNJ",
       "inicio": 79,
       "fim": 104,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Francisca De Oliveira Lima",
       "tipo": "NOME",
       "inicio": 117,
       "fim": 143,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0087:p1"
     },
     {
       "texto": "JOAO_COSTA@HOTMAIL.COM",
       "tipo": "EMAIL",
       "inicio": 156,
       "fim": 178,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0087:p1"
     },
     {
       "texto": "(94) 96393-1795",
       "tipo": "TELEFONE",
       "inicio": 191,
       "fim": 206,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0087:p1"
     },
     {
       "texto": "de R$ 28.781,41",
       "tipo": "VALOR",
       "inicio": 248,
       "fim": 263,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Belem",
       "tipo": "CIDADE",
       "inicio": 266,
       "fim": 271,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Perito Judicial",
       "tipo": "CARGO",
       "inicio": 290,
       "fim": 305,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

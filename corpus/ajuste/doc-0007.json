@@ -8,77 +8,88 @@
       "tipo": "CARGO",
       "inicio": 22,
       "fim": 39,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "SANTAREM",
       "tipo": "CIDADE",
       "inicio": 68,
       "fim": 76,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "2228697-60.2025.8.10.8146",
       "tipo": "CNJ",
       "inicio": 90,
       "fim": 115,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Maria Ferreira",
       "tipo": "NOME",
       "inicio": 117,
       "fim": 131,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0007:p1"
     },
     {
       "texto": "SSP-PA 94.696.398-X",
       "tipo": "RG",
       "inicio": 157,
       "fim": 176,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0007:p1"
     },
     {
       "texto": "115.442.221-65",
       "tipo": "CPF",
       "inicio": 182,
       "fim": 196,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0007:p1"
     },
     {
       "texto": "Rua Santo Antonio, 1473, Batista Campos, Castanhal-PA, CEP 67191-694",
       "tipo": "ENDERECO",
       "inicio": 208,
       "fim": 276,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0007:p1"
     },
     {
       "texto": "9136165579",
       "tipo": "TELEFONE",
       "inicio": 287,
       "fim": 297,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0007:p1"
     },
     {
       "texto": "ANA PAULA SANTOS",
       "tipo": "NOME",
       "inicio": 371,
       "fim": 387,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0007:p2"
     },
     {
       "texto": "de R$ 95.977,92",
       "tipo": "VALOR",
       "inicio": 429,
       "fim": 444,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "de R$ 127.402,23",
       "tipo": "VALOR",
       "inicio": 485,
       "fim": 501,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

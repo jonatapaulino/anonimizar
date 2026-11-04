@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 12,
       "fim": 48,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Marcos Pinheiro",
       "tipo": "NOME",
       "inicio": 67,
       "fim": 82,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0099:p1"
     },
     {
       "texto": "92507528656",
       "tipo": "CPF",
       "inicio": 88,
       "fim": 99,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0099:p1"
     },
     {
       "texto": "Av. Governador Jose Malcher, 1375, Batista Campos, Ananindeua-PA, CEP 66144-312",
       "tipo": "ENDERECO",
       "inicio": 110,
       "fim": 189,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0099:p1"
     },
     {
       "texto": "3194364-35.2024.8.12.5782",
       "tipo": "CNJ",
       "inicio": 235,
       "fim": 260,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "SEBASTIAO_COSTA@SEFAZ.PA.GOV.BR",
       "tipo": "EMAIL",
       "inicio": 279,
       "fim": 310,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0099:p1"
     },
     {
       "texto": "94975124542",
       "tipo": "TELEFONE",
       "inicio": 313,
       "fim": 324,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0099:p1"
     }
   ]
 }

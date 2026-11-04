@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 12,
       "fim": 49,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "ANTONIO COSTA",
       "tipo": "NOME",
       "inicio": 68,
       "fim": 81,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0101:p1"
     },
     {
       "texto": "983.644.252-93",
       "tipo": "CPF",
       "inicio": 87,
       "fim": 101,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0101:p1"
     },
     {
       "texto": "Travessa Dom Pedro I, 24, Cidade Velha, Maraba-PA, CEP 69046-818",
       "tipo": "ENDERECO",
       "inicio": 112,
       "fim": 176,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0101:p1"
     },
     {
       "texto": "1808063-24.2023.8.13.9210",
       "tipo": "CNJ",
       "inicio": 222,
       "fim": 247,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "DENISECOSTA@MPPA.MP.BR",
       "tipo": "EMAIL",
       "inicio": 266,
       "fim": 288,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0101:p1"
     },
     {
       "texto": "(93)43631947",
       "tipo": "TELEFONE",
       "inicio": 291,
       "fim": 303,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0101:p1"
     }
   ]
 }

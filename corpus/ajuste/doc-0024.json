@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 11,
       "fim": 47,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "ROSA MARIA CONCEICAO",
       "tipo": "NOME",
       "inicio": 63,
       "fim": 83,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0024:p1"
     },
     {
       "texto": "16.475.008-X",
       "tipo": "RG",
       "inicio": 88,
       "fim": 100,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0024:p1"
     },
     {
       "texto": "6412147-78.2023.8.10.1555",
       "tipo": "CNJ",
       "inicio": 140,
       "fim": 165,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Maraba",
       "tipo": "CIDADE",
       "inicio": 201,
       "fim": 207,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "9445141012",
       "tipo": "TELEFONE",
       "inicio": 248,
       "fim": 258,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0024:p1"
     },
     {
       "texto": "FRANCISCA.SOUZA@SEFAZ.PA.GOV.BR",
       "tipo": "EMAIL",
       "inicio": 269,
       "fim": 300,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0024:p1"
     }
   ]
 }

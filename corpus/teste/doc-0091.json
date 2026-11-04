@@ -8,56 +8,64 @@
       "tipo": "ORGAO",
       "inicio": 0,
       "fim": 36,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "4396875-71.2025.8.12.7269",
       "tipo": "CNJ",
       "inicio": 79,
       "fim": 104,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "MARCOS AURELIO TAVARES",
       "tipo": "NOME",
       "inicio": 117,
       "fim": 139,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0091:p1"
     },
     {
       "texto": "ANTONIOFERREIRA@TJPA.JUS.BR",
       "tipo": "EMAIL",
       "inicio": 152,
       "fim": 179,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0091:p1"
     },
     {
       "texto": "9135154871",
       "tipo": "TELEFONE",
       "inicio": 192,
       "fim": 202,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0091:p1"
     },
     {
       "texto": "R$93.689,53",
       "tipo": "VALOR",
       "inicio": 244,
       "fim": 255,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Santarem",
       "tipo": "CIDADE",
       "inicio": 258,
       "fim": 266,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Escrivao Judicial",
       "tipo": "CARGO",
       "inicio": 285,
       "fim": 302,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

@@ -8,84 +8,96 @@
       "tipo": "CARGO",
       "inicio": 22,
       "fim": 41,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "CASTANHAL",
       "tipo": "CIDADE",
       "inicio": 70,
       "fim": 79,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "4366634-46.2026.8.12.3010",
       "tipo": "CNJ",
       "inicio": 93,
       "fim": 118,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "IVONETE CRISTINA ROCHA",
       "tipo": "NOME",
       "inicio": 120,
       "fim": 142,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0057:p1"
     },
     {
       "texto": "58.320.829",
       "tipo": "RG",
       "inicio": 168,
       "fim": 178,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0057:p1"
     },
     {
       "texto": "732.590.332-46",
       "tipo": "CPF",
       "inicio": 208,
       "fim": 222,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0057:p1"
     },
     {
       "texto": "Av. Conselheiro Furtado, 823, Batista Campos, Castanhal-PA, CEP 69131-501",
       "tipo": "ENDERECO",
       "inicio": 250,
       "fim": 323,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0057:p1"
     },
     {
       "texto": "PEDRO_OLIVEIRA@MPPA.MP.BR",
       "tipo": "EMAIL",
       "inicio": 332,
       "fim": 357,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0057:p1"
     },
     {
       "texto": "(93) 4502-8335",
       "tipo": "TELEFONE",
       "inicio": 368,
       "fim": 382,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0057:p1"
     },
     {
       "texto": "Maria Das Gracas Santana",
       "tipo": "NOME",
       "inicio": 456,
       "fim": 480,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0057:p2"
     },
     {
       "texto": "R$94.812,57",
       "tipo": "VALOR",
       "inicio": 522,
       "fim": 533,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "R$10.213,00",
       "tipo": "VALOR",
       "inicio": 574,
       "fim": 585,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

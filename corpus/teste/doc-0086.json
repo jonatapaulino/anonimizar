@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 11,
       "fim": 37,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "PEDRO HENRIQUE ALMEIDA",
       "tipo": "NOME",
       "inicio": 53,
       "fim": 75,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0086:p1"
     },
     {
       "texto": "46.446.004",
       "tipo": "RG",
       "inicio": 80,
       "fim": 90,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0086:p1"
     },
     {
       "texto": "8060684-10.2021.8.14.7763",
       "tipo": "CNJ",
       "inicio": 130,
       "fim": 155,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Ananindeua",
       "tipo": "CIDADE",
       "inicio": 191,
       "fim": 201,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "(91) 98331-8945",
       "tipo": "TELEFONE",
       "inicio": 242,
       "fim": 257,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0086:p1"
     },
     {
       "texto": "JOSEOLIVEIRA@MPPA.MP.BR",
       "tipo": "EMAIL",
       "inicio": 268,
       "fim": 291,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0086:p1"
     }
   ]
 }

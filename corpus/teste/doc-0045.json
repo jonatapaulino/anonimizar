@@ -8,49 +8,56 @@
       "tipo": "ORGAO",
       "inicio": 12,
       "fim": 37,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "JOSE RIBAMAR DA COSTA",
       "tipo": "NOME",
       "inicio": 56,
       "fim": 77,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0045:p1"
     },
     {
       "texto": "417.558.347-56",
       "tipo": "CPF",
       "inicio": 83,
       "fim": 97,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0045:p1"
     },
     {
       "texto": "Rua dos Mundurucus, 1064, Batista Campos, Belem-PA, CEP 68820-524",
       "tipo": "ENDERECO",
       "inicio": 108,
       "fim": 173,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0045:p1"
     },
     {
       "texto": "3292418-30.2024.8.12.9923",
       "tipo": "CNJ",
       "inicio": 219,
       "fim": 244,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "ANTONIO_SOUZA@SEFAZ.PA.GOV.BR",
       "tipo": "EMAIL",
       "inicio": 263,
       "fim": 292,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0045:p1"
     },
     {
       "texto": "93 96774-2843",
       "tipo": "TELEFONE",
       "inicio": 295,
       "fim": 308,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0045:p1"
     }
   ]
 }

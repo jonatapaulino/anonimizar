@@ -75,3 +75,32 @@ arquitetural.
 - Overlap matching favorece NER; exact matching é a barra do gate.
 - Sem medida de reidentificação/utility — exigem pipeline de saída
   e decisão jurídica de pseudônimos.
+
+---
+
+## Adendo 2026-11-04 — motor P3 revisto: 3 gates de correferência PASS
+
+Medição nova do componente C (mesmo corpus_v0, mesmo harness —
+anti-merge agora impresso). Mudanças no motor
+(`spikes/p3_correferencia.py`), não nas definições:
+
+| Métrica | antes | agora | Gate N2 |
+|---|---|---|---|
+| Pairwise P/R/F1 | 0,86/0,90/0,88 | **1,00/1,00/1,00** (tp126 fp0 fn0) | ≥0,90 ✓ |
+| Consistência/entidade | 78/90 = 0,87 | **90/90 = 1,00** | ≥0,85 ✓ |
+| Anti-merge | não reportado | **0/270 = 0,0%** | ≤5% ✓ |
+| Bateria artesanal | 40/40 | 40/40 | — |
+
+Correções: âncora de parentesco com artigo contraído + ordem antes
+de ART+PAPEL; KIN nu vincula ao titular; anti-merge por papel
+adversarial (homônimo exequente/executado); nome via-parentesco não
+recebe papel de parte (pai/filho homônimos em kin04); desempate por
+entidade nomeada em `_link_role`. As duas classes residuais do P8
+original (parentesco genitivo, pronomes mesmo-gênero) foram
+cobertas — os 30 erros concentravam-se em 7 docs (kin00–05, exe00).
+
+Ressalva mantida: proxy de template; validade externa continua
+pendente de corpus real. `ent_id` foi anotado também no corpus
+gerado (110 docs → 137 clusters) — lá pairwise/consistência são
+estruturalmente degenerados (cada pessoa plantada uma vez);
+anti-merge mediu 1/27 = 3,7% (homônimo de template doc-0067).

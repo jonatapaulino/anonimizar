@@ -8,77 +8,88 @@
       "tipo": "CARGO",
       "inicio": 22,
       "fim": 45,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "MARABA",
       "tipo": "CIDADE",
       "inicio": 74,
       "fim": 80,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "3429041-28.2022.8.13.8205",
       "tipo": "CNJ",
       "inicio": 94,
       "fim": 119,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Pedro Henrique Almeida",
       "tipo": "NOME",
       "inicio": 121,
       "fim": 143,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0067:p1"
     },
     {
       "texto": "78241310927",
       "tipo": "CPF",
       "inicio": 149,
       "fim": 160,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0067:p1"
     },
     {
       "texto": "Tv. Castelo Branco, 1462, Cidade Velha, Ananindeua-PA, CEP 67415-179",
       "tipo": "ENDERECO",
       "inicio": 172,
       "fim": 240,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0067:p1"
     },
     {
       "texto": "JOAO_SOUZA@SEFAZ.PA.GOV.BR",
       "tipo": "EMAIL",
       "inicio": 249,
       "fim": 275,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0067:p1"
     },
     {
       "texto": "94 96393-1307",
       "tipo": "TELEFONE",
       "inicio": 286,
       "fim": 299,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0067:p1"
     },
     {
       "texto": "Pedro Henrique Almeida",
       "tipo": "NOME",
       "inicio": 373,
       "fim": 395,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0067:p2"
     },
     {
       "texto": "R$ 183.038,52",
       "tipo": "VALOR",
       "inicio": 437,
       "fim": 450,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "R$ 79.022,49",
       "tipo": "VALOR",
       "inicio": 491,
       "fim": 503,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

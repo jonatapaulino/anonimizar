@@ -142,3 +142,42 @@ transparência conforme a regra de emenda:
 
 Gate por tipo: com o item 3, `CEP` deixa de aparecer como tipo
 predito; o gate ≥0,70 segue aplicado a tipos com suporte no ouro.
+
+---
+
+## Emenda 2026-11-04b — `ent_id` no corpus + motor simbólico revisto
+
+1. **`ent_id` anotado** nos gabaritos de `corpus/ajuste` e
+   `corpus/teste` por `scripts/anotar_ent_id.py` (regra de bloco
+   `_pessoa`: NOME privado abre cluster; CPF/RG/ENDERECO/EMAIL/
+   TELEFONE subsequentes herdam; preservados recebem `None`).
+   906 entidades → 137 clusters; homônimos de template ficam em
+   clusters distintos (caso anti-merge). Manifestos SHA256SUMS
+   emendados; texto/tipo/offsets/preservar inalterados.
+2. **Medição nos 110 docs** (motor simbólico P3 como predito,
+   menções tipo NOME): pairwise é **degenerado** — TP+FN=0 porque
+   o gerador planta cada pessoa uma só vez (não existem pares de
+   mesmo cluster); consistência 137/137 (vacuosa: um nome por
+   cluster); **anti-merge 1/27 = 3,7% ≤5% PASS** — o único par
+   fundido é o homônimo de template doc-0067 (autor e réu com o
+   mesmo nome sorteado; ambiguidade genuína do corpus).
+   Conclusão: `ent_id` tornou os gates mensuráveis, mas o corpus
+   v0 só exerce anti-merge — pairwise/consistência continuam
+   sendo medidos no `corpus_v0` (item 4) até existir partição
+   com menções repetidas.
+3. **Motor P3 revisto** (`spikes/p3_correferencia.py`):
+   (a) âncora de parentesco aceita papel com artigo contraído
+   ("esposa do autor") e roda antes do passo ART+PAPEL, que antes
+   comia "do autor"; (b) KIN nu ("seu filho presenciou") vincula
+   ao titular único do papel de parentesco; (c) anti-merge por
+   papel adversarial — mesmo nome com papéis opostos (exequente
+   ≠ executado) não funde; (d) nome introduzido por menção de
+   parentesco não recebe papel de parte (pai/filho homônimos);
+   (e) desempate por entidade nomeada em `_link_role`. Bateria
+   artesanal segue 40/40.
+4. **`corpus_v0` reavaliado** (mesmo harness p8): pairwise
+   0,88 → **F1 1,000** (tp126 fp0 fn0), consistência
+   0,87 → **1,000** (90/90), **anti-merge 0/270 = 0,000%**
+   (primeira vez reportado). Os 3 gates de correferência passam
+   no proxy — segue corpus de template: piso de plausibilidade,
+   não validade externa.

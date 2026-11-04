@@ -8,63 +8,72 @@
       "tipo": "ORGAO",
       "inicio": 20,
       "fim": 24,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Defensoria Publica do Estado do Para",
       "tipo": "ORGAO",
       "inicio": 29,
       "fim": 65,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Marcos Ferreira",
       "tipo": "NOME",
       "inicio": 110,
       "fim": 125,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0046:p1"
     },
     {
       "texto": "15.479.352-4",
       "tipo": "RG",
       "inicio": 130,
       "fim": 142,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0046:p1"
     },
     {
       "texto": "427.419.088-93",
       "tipo": "CPF",
       "inicio": 148,
       "fim": 162,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0046:p1"
     },
     {
       "texto": "CARLOS_PINHEIRO@TJPA.JUS.BR",
       "tipo": "EMAIL",
       "inicio": 185,
       "fim": 212,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0046:p1"
     },
     {
       "texto": "9334094915",
       "tipo": "TELEFONE",
       "inicio": 223,
       "fim": 233,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0046:p1"
     },
     {
       "texto": "R$70.660,01",
       "tipo": "VALOR",
       "inicio": 256,
       "fim": 267,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Analista Judiciario",
       "tipo": "CARGO",
       "inicio": 288,
       "fim": 307,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }

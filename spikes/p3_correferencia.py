@@ -54,7 +54,17 @@ ROLES = {
     "comerciante": ("comerciante", "N"), "empregador": ("empregador", "M"),
     "segurado": ("segurado", "M"), "segurada": ("segurado", "F"),
     "paciente": ("paciente", "N"),
+    "embargado": ("embargado", "M"), "embargada": ("embargado", "F"),
+    "impetrado": ("impetrado", "M"), "impetrada": ("impetrado", "F"),
+    "querelante": ("querelante", "N"),
+    "querelado": ("querelado", "M"), "querelada": ("querelado", "F"),
 }
+# pares processuais adversariais: mesmo nome + papéis opostos =>
+# NÃO fundir (homônimo: "o exequente Pedro X" vs "o executado Pedro X")
+OPOSTOS = (("autor", "reu"), ("requerente", "requerido"),
+           ("reclamante", "reclamado"), ("exequente", "executado"),
+           ("apelante", "apelado"), ("embargante", "embargado"),
+           ("impetrante", "impetrado"), ("querelante", "querelado"))
 KIN = {"filho": ("filho", "M"), "filha": ("filho", "F"),
        "esposo": ("esposo", "M"), "esposa": ("esposa", "F"),
        "pai": ("pai", "M"), "mãe": ("mae", "F"),
@@ -82,10 +92,19 @@ def canon_role(rsurf):
     if r.endswith("es") and r[:-2] in ROLES: return ROLES[r[:-2]][0]  # pl -es
     return None
 
+# papéis de parte processual — para a regra anti-merge por papel
+# adversarial (OPOSTOS) e para o filtro "nome via-parentesco não
+# recebe papel de parte"
+PARTE = {"autor", "reu", "requerente", "requerido",
+         "reclamante", "reclamado", "exequente", "executado",
+         "impetrante", "impetrado", "embargante", "embargado",
+         "apelante", "apelado", "querelante", "querelado"}
+
 class Ent:
     def __init__(self, eid):
         self.id, self.name, self.roles = eid, None, set()
         self.gender, self.kin = None, []
+        self.named_by_kin = False   # nome veio de menção de parentesco
 
 class Mention:
     def __init__(self, text, start, kind, ent):
@@ -133,19 +152,44 @@ class Engine:
         return None
 
     def _link_role(self, rcanon, gender=None):
-        """Vincula menção de papel à entidade titular (única) ou cria."""
+        """Vincula menção de papel ao titular do papel. Com vários
+        candidatos, prefere o nomeado (referente saliente do
+        discurso); sem desempate único, cria (conservador)."""
         cand = [e for e in self._by_role(rcanon)]
         if len(cand) == 1:
             return cand[0]
+        nomeados = [e for e in cand if e.name]
+        if len(nomeados) == 1:
+            return nomeados[0]
         e = self._new(role=rcanon, gender=gender)
         return e
+
+    def _papeis_opostos(self, roles, role):
+        return any((a in roles and b == role) or
+                   (b in roles and a == role) for a, b in OPOSTOS)
 
     def _link_name(self, name, role=None, gender=None):
         full = self._by_name(name)
         if full:
+            # anti-merge: mesma forma nominal com papel adversarial
+            # já ocupado por outra parte => homônimo, entidade nova
+            livres = [e for e in full
+                      if not role or not self._papeis_opostos(
+                          e.roles, role)]
+            # homônimo pai/filho: nome plantado por menção de
+            # parentesco não vincula a papel de parte ("o autor
+            # André" ≠ "seu filho André") — evidência mais fraca
+            if role in PARTE:
+                livres = [e for e in livres
+                          if not e.named_by_kin or role in e.roles]
+            if len(livres) == 1:
+                e = livres[0]
+                if role: e.roles.add(role)
+                if gender and not e.gender: e.gender = gender
+                return e
+            if role or not livres:
+                return self._new(name=name, role=role, gender=gender)
             e = full[0]
-            if role: e.roles.add(role)
-            if gender and not e.gender: e.gender = gender
             return e
         # entidade de papel sem nome que "casa" com esta menção?
         if role:
@@ -215,9 +259,68 @@ class Engine:
             self._mention(name, m.start(1), "name", e)
             take(m.end(1), m.end())   # NAME fica livre p/ "a ré Maria é..."
 
+        # 2) parentesco: "KIND (de|do|da|d') ANCHOR?" onde ANCHOR é
+        #    "ART ROLE" (filho do autor — artigo pode vir contraído
+        #    na preposição) ou NAME (filho de Maria — a não ser
+        #    precedido de possessivo, aí NAME é o parente). Roda ANTES
+        #    do ART+ROLE genérico, senão "do autor" é comido por ele.
+        for m in re.finditer(
+            rf"\b({CI(KIN_RE)})\s+((?i:d[oea]s?|d')\s+"
+            rf"({CI(ART)}\s+{CI(ROLE_RE)}|{CI(ROLE_RE)}|{NAME})"
+            rf"|({NAME}))?", text):
+            if busy(m.start(), m.end()): continue
+            ksurf = fold(m.group(1))
+            kcanon, kg = KIN[ksurf]
+            anchor_txt = m.group(3)    # com preposição
+            child_name = m.group(4)    # NAME direto (possessivo implícito)
+            anchor = None
+            if anchor_txt:
+                # menção de papel cobre preposição+âncora ("da autora",
+                # não só "autora") — ouro/bateria anotam a forma cheia
+                anc_full = m.group(2)
+                astart = m.start(2)
+                rm = re.match(rf"{CI(ART)}\s+({CI(ROLE_RE)})", anchor_txt)
+                rbare = canon_role(anchor_txt)  # "do autor"→"autor"
+                if rm:
+                    rsurf = re.search(ROLE_RE, rm.group(2), re.I).group(0)
+                    anchor = self._link_role(canon_role(rsurf))
+                    self._mention(anc_full, astart, "role", anchor)
+                elif rbare:
+                    anchor = self._link_role(rbare)
+                    self._mention(anc_full, astart, "role", anchor)
+                else:
+                    hits = self._by_name(anchor_txt) or \
+                           self._by_first(anchor_txt.split()[0])
+                    anchor = hits[0] if len(hits) == 1 else None
+            # KIN nu ("seu filho presenciou") vincula ao titular
+            # único do papel de parentesco; com âncora/filho nomeado
+            # continua sendo entidade nova ligada por REL
+            e = (self._link_role(kcanon, gender=kg)
+                 if not anchor and not child_name
+                 else self._new(role=kcanon, gender=kg))
+            if child_name:
+                e.name = child_name
+                e.named_by_kin = True
+            if anchor:
+                e.kin.append((anchor, kcanon))
+            self._mention(m.group(0), m.start(), "kin", e)
+            # apositivo pós-parentesco: "esposa do autor, Maria,"
+            am = re.match(rf"\s*,\s*({NAME})\s*,", text[m.end():])
+            if am:
+                e.name = am.group(1)
+                e.named_by_kin = True
+                g = self._gender(None, "", am.group(1))
+                if g and not e.gender: e.gender = g
+                self._mention(am.group(1),
+                              m.end() + am.start(1), "name", e)
+                take(m.start(), m.end() + am.end())
+            else:
+                take(m.start(), m.end())
+
         # 1) "ART ROLE NAME?"  — "o autor João da Silva" / "a ré"
         for m in re.finditer(
             rf"\b({CI(ART)})\s+({CI(ROLE_RE)})\b(?:\s+({NAME}))?", text):
+            if busy(m.start(), m.end()): continue
             art, rsurf, name = m.group(1), m.group(2), m.group(3)
             rcanon = canon_role(rsurf)
             g = self._gender(art, rsurf, name)
@@ -254,56 +357,6 @@ class Engine:
             rstart = m.start(2)
             self._mention(rsurf, rstart, "role", e)
             take(m.start(), m.end())
-
-        # 2) parentesco: "KIND (de|do|da|d') ANCHOR?" onde ANCHOR é
-        #    "ART ROLE" (filho do autor) ou NAME (filho de Maria —
-        #    a não ser precedido de possessivo, aí NAME é o parente).
-        for m in re.finditer(
-            rf"\b({CI(KIN_RE)})\s+((?i:d[oe]|d')\s+"
-            rf"({CI(ART)}\s+{CI(ROLE_RE)}|{NAME})|({NAME}))?", text):
-            if busy(m.start(), m.end()): continue
-            ksurf = fold(m.group(1))
-            kcanon, kg = KIN[ksurf]
-            anchor_txt = m.group(3)    # com preposição
-            child_name = m.group(4)    # NAME direto (possessivo implícito)
-            anchor = None
-            if anchor_txt:
-                rm = re.match(rf"{CI(ART)}\s+({CI(ROLE_RE)})", anchor_txt)
-                rbare = canon_role(anchor_txt)  # "do autor"→"autor"
-                if rm:
-                    rsurf = re.search(ROLE_RE, rm.group(2), re.I).group(0)
-                    anchor = self._link_role(canon_role(rsurf))
-                    am = re.search(re.escape(anchor_txt),
-                                   text[m.start():m.end()])
-                    astart = m.start() + (am.start() if am else 0)
-                    self._mention(anchor_txt, astart, "role", anchor)
-                elif rbare:
-                    anchor = self._link_role(rbare)
-                    am = re.search(re.escape(anchor_txt),
-                                   text[m.start():m.end()])
-                    astart = m.start() + (am.start() if am else 0)
-                    self._mention(anchor_txt, astart, "role", anchor)
-                else:
-                    hits = self._by_name(anchor_txt) or \
-                           self._by_first(anchor_txt.split()[0])
-                    anchor = hits[0] if len(hits) == 1 else None
-            e = self._new(role=kcanon, gender=kg)
-            if child_name:
-                e.name = child_name
-            if anchor:
-                e.kin.append((anchor, kcanon))
-            self._mention(m.group(0), m.start(), "kin", e)
-            # apositivo pós-parentesco: "esposa do autor, Maria,"
-            am = re.match(rf"\s*,\s*({NAME})\s*,", text[m.end():])
-            if am:
-                e.name = am.group(1)
-                g = self._gender(None, "", am.group(1))
-                if g and not e.gender: e.gender = g
-                self._mention(am.group(1),
-                              m.end() + am.start(1), "name", e)
-                take(m.start(), m.end() + am.end())
-            else:
-                take(m.start(), m.end())
 
         # 3) discurso: "o referido ROLE" / "o mesmo" / "a mencionada"
         for m in re.finditer(
@@ -400,10 +453,6 @@ class Engine:
         # ("O autor compareceu. João da Silva assinou."). Regra
         # estreita de propósito: over-link é o pior erro, então só
         # funde no caso 1×1 inequívoco.
-        PARTE = {"autor", "reu", "requerente", "requerido",
-                 "reclamante", "reclamado", "exequente", "executado",
-                 "impetrante", "impetrado", "embargante", "embargado",
-                 "apelante", "apelado"}
         sem_nome = [e for e in self.ents
                     if e.name is None and e.roles & PARTE]
         sem_papel = [e for e in self.ents

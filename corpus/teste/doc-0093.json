@@ -8,56 +8,64 @@
       "tipo": "NOME",
       "inicio": 48,
       "fim": 59,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0093:p1"
     },
     {
       "texto": "422.925.360-56",
       "tipo": "CPF",
       "inicio": 65,
       "fim": 79,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0093:p1"
     },
     {
       "texto": "Ivonete Pinheiro",
       "tipo": "NOME",
       "inicio": 93,
       "fim": 109,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0093:p2"
     },
     {
       "texto": "55261232279",
       "tipo": "CPF",
       "inicio": 115,
       "fim": 126,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0093:p2"
     },
     {
       "texto": "Tv. Castelo Branco, 2391, Sao Bras, Castanhal-PA, CEP 67807-379",
       "tipo": "ENDERECO",
       "inicio": 137,
       "fim": 200,
-      "preservar": false
+      "preservar": false,
+      "ent_id": "doc-0093:p2"
     },
     {
       "texto": "R$ 72.057,11",
       "tipo": "VALOR",
       "inicio": 238,
       "fim": 250,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "7428686-38.2023.8.13.6037",
       "tipo": "CNJ",
       "inicio": 288,
       "fim": 313,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     },
     {
       "texto": "Ministerio Publico Federal",
       "tipo": "ORGAO",
       "inicio": 324,
       "fim": 350,
-      "preservar": true
+      "preservar": true,
+      "ent_id": null
     }
   ]
 }
