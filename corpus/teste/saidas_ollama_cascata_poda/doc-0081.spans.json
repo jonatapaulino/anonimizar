@@ -1,0 +1,1 @@
+[{"ini": 57, "fim": 79, "fonte": "llm1:NOME"}, {"ini": 85, "fim": 99, "fonte": "det:CPF"}, {"ini": 110, "fim": 177, "fonte": "det:ENDERECO"}, {"ini": 267, "fim": 297, "fonte": "det:EMAIL"}, {"ini": 300, "fim": 312, "fonte": "det:TELEFONE"}]

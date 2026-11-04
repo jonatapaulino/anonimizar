@@ -56,6 +56,8 @@ anonimização e tramitação de documentos jurídicos. Repo privado:
 
 ## Estado medido (teste, 80 docs)
 
+Medição original (cascata v0, `saidas_ollama_cascata_teste`):
+
 - Recall alvo 356/360 (98,9%); excesso preservado 0/305
 - Reident: menção 4/360 (1,1%); documento 4/80 (5,0%)
 - NER exact F1 **0,755 < gate 0,85 (FAIL)**; overlap F1 0,938
@@ -63,11 +65,29 @@ anonimização e tramitação de documentos jurídicos. Repo privado:
 - Ajuste reexecutado reproduziu 123/123 + 0 excesso (determinismo
   local, não reprodutibilidade cruzada)
 
+Medição 04/11/2026 — cascata+poda (`saidas_ollama_cascata_poda`,
+mesmo modelo/digest, `eval_cascata.py` + `poda_fronteira.py`):
+
+- NER exact F1 **0,919 ≥ gate 0,85 (PASS)**; overlap F1 0,972
+- Recall alvo 357/360 (99,2%); excesso preservado 0/305
+- Reident: menção 3/360 (0,83%) — os 3 leaks são 'Pedro Henrique
+  Almeida' (docs 0051/0066/0078), omissão de enumeração da passada
+  só-NOME; 'MARCOS AURELIO TAVARES' (doc-0080) recuperado
+- Prosa comida: rótulo 419c→45c, conteúdo 59c→8c (43→17 docs)
+- CEP por-tipo F1 0,00 (FP=1, era FP=2): peculiaridade pré-
+  registrada — LLM declara CEP como tipo, ouro não anota CEP fora
+  de ENDERECO; pendente de emenda em `metricas.md`
+- Ajuste (30 docs) com poda: exact F1 0,927, reident 0/123
+- Residual: TELEFONE FN=8 overlap (mesmos 8 da v0 — formato que
+  nem det nem LLM cobrem); CPF FP=8 (det dispara em não-CPF)
+
 ## Próximos passos (ordem de dependência)
 
-1. Fechar NER exact ≥0,85: podar FP de fronteira dos spans LLM
-   (rótulos/prosa; 52/74 FP); caminho longo = NER discriminativo
-   (LeNER-Br/UlyssesNER-Br) na porta MotorIA.
+1. ~~Fechar NER exact ≥0,85~~ **feito na POC sintética**
+   (04/11/2026): poda de fronteira aplicada → 0,919 na teste.
+   Segue em aberto o caminho longo: NER discriminativo
+   (LeNER-Br/UlyssesNER-Br) na porta MotorIA — necessário para
+   sair do desvio ADR-0011 e validar em corpus real.
 2. `ent_id` no corpus → destrava gates de correferência (pairwise
    ≥0,90, anti-merge ≤5%, consistência ≥0,85).
 3. Cofre de chaves (Etapa 4/5) — decisão jurídica de reidentificação

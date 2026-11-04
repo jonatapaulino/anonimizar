@@ -2,10 +2,14 @@
 LLM spans (contrato-spans-v0, todos os tipos) + LLM so-de-NOME +
 guarda de zonas preservadas (CNJ, VALOR).
 
-Substituicao por codigo, offset a offset. Saidas em
-corpus/ajuste/saidas_ollama_cascata/. Sem tocar app/.
+Substituicao por codigo, offset a offset. Poda deterministica de
+borda (scripts/poda_fronteira.py) aplicada aos candidatos llm*
+antes do mesclar — medida da POC "cascata+poda".
 
-Uso: python scripts/eval_cascata.py [base]
+Saidas em corpus/<particao>/saidas_ollama_cascata_<tag>/ — nunca
+sobrescreve os diretorios ja medidos. Sem tocar app/.
+
+Uso: python scripts/eval_cascata.py [base] [particao] [tag]
 """
 from __future__ import annotations
 
@@ -20,6 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import app.motor_ollama as mo                        # noqa: E402
 from app.motor_ollama import MotorOllama, TAG        # noqa: E402
+from poda_fronteira import podar                    # noqa: E402
 
 # ---- camada deterministica ----
 PRESERVADOS = [
@@ -83,7 +88,8 @@ def mesclar(cands, prot):
     return ok
 
 
-async def main(base: Path, particao: str = "ajuste"):
+async def main(base: Path, particao: str = "ajuste",
+               tag: str = "poda"):
     pasta = base / particao
     docs = []
     for g in sorted(pasta.glob("doc-*.json")):
@@ -107,8 +113,7 @@ async def main(base: Path, particao: str = "ajuste"):
     motor = MotorOllama.de_env(num_ctx=1024)
     print(f"modelo={motor.modelo} digest={motor.digest[:16]}…")
 
-    out_dir = pasta / f"saidas_ollama_cascata_{particao}" \
-        if particao != "ajuste" else pasta / "saidas_ollama_cascata"
+    out_dir = pasta / f"saidas_ollama_cascata_{tag}"
     out_dir.mkdir(exist_ok=True)
     falhas = []
     t0 = time.time()
@@ -136,13 +141,24 @@ async def main(base: Path, particao: str = "ajuste"):
                         start = i + 1
             except Exception as ex:
                 falhas.append((nome, j, str(ex)[:60]))
-        spans = mesclar(det + llm, prot)
+        # poda de borda nos candidatos llm* antes do merge
+        cands = list(det)
+        for i, f, o in llm:
+            if o.startswith("llm"):
+                for pi, pf in podar(txt, i, f, o.split(":")[-1]):
+                    cands.append((pi, pf, o))
+            else:
+                cands.append((i, f, o))
+        spans = mesclar(cands, prot)
         saida = txt
         for i, f, o in sorted(spans, key=lambda s: -s[0]):
             saida = saida[:i] + TAG + saida[f:]
         (out_dir / f"{nome}.txt").write_text(saida, "utf-8")
         (out_dir / f"{nome}.spans.json").write_text(json.dumps(
             [{"ini": i, "fim": f, "fonte": o} for i, f, o in spans]),
+            "utf-8")
+        (out_dir / f"{nome}.cands.json").write_text(json.dumps(
+            [{"ini": i, "fim": f, "fonte": o} for i, f, o in cands]),
             "utf-8")
         print(f"  {nome}: det={len(det)} llm={len(llm)} "
               f"aceitos={len(spans)}")
@@ -155,4 +171,6 @@ if __name__ == "__main__":
     asyncio.run(main(Path(sys.argv[1] if len(sys.argv) > 1
                       else "corpus"),
                      sys.argv[2] if len(sys.argv) > 2
-                     else "ajuste"))
+                     else "ajuste",
+                     sys.argv[3] if len(sys.argv) > 3
+                     else "poda"))
