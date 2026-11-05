@@ -135,8 +135,14 @@ revisto, harness `p8_metricas.py`, emenda 04/11-04b em
    (`ArmazenamentoCifrado`). Chave via `E2E_CHAVE` (Vault); API sobe
    com `E2E_OBRIGATORIO=1` no compose. Provas: sniffer de socket
    real + cobertura de todas as rotas + handshake mTLS real
-   (`docs/relatorio_seguranca_e2e.md`). Aberto: TLS interno nos
-   clientes (amqps/pg/ssl/s3) é contrato de URL — falta prova
-   dinâmica com os serviços reais + tcpdump na `interna`.
+   (`docs/relatorio_seguranca_e2e.md`). Aberto:
+   (a) **emissor E2E** — repo só tem o lado servidor do envelope;
+       falta cliente (httpx + selar) p/ round-trip A↔B real;
+   (b) **replay** — envelope não tem timestamp/janela: quadro
+       íntegro reenviado é aceito (só idempotency_key defende);
+   (c) **ingress stream** — `abrir` materializa o corpo: upload
+       multipart grande atravessa num quadro só;
+   (d) TLS interno nos clientes (amqps/pg/ssl/s3) é contrato de
+       URL — falta prova dinâmica + tcpdump na `interna`.
 5. Corpus real (Etapa 3) — depende das exclusões jurídicas.
 6. Gates não avaliados: utility TAB ≥0,85, latência.
