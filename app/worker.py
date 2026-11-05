@@ -116,19 +116,20 @@ class FabricaStorages:
 
 
 def fabrica_minio(endpoint: str, user: str, pw: str):
-    """Storage MinIO do worker — com E2E_CHAVE, envelopa em
+    """Storage MinIO do worker — com chave no cofre, envelopa em
     ArmazenamentoCifrado: objeto sai do motor em claro e só
     toca a rede/disco do MinIO como quadro AEAD."""
-    from app.crypto_e2e import chave_de_env
+    from app.cofre import fonte_de_env
     from app.storage import ArmazenamentoCifrado
-    chave = chave_de_env()
+    f = fonte_de_env()
+    chaves = f.chaves() if f else None
 
     def _f(orgao, bucket):
         st = ArmazenamentoMinIO(
             orgao, endpoint, user, pw,
             secure=endpoint.startswith("https"),
             nome_bucket=bucket)
-        return ArmazenamentoCifrado(st, chave) if chave else st
+        return ArmazenamentoCifrado(st, chaves) if chaves else st
     return _f
 
 
@@ -190,18 +191,19 @@ def payload_de_mensagem(m, fresco: bool = True) -> dict:
     a drenagem forense ainda precisa lê-la p/ registrar a falha.
     Nonce-cache não se aplica aqui: o broker redelivers o mesmo
     envelope no retry legítimo."""
-    from app.crypto_e2e import (CT_E2E, abrir, chave_de_env,
-                                eh_e2e, janela_de_env)
+    from app.cofre import abrir_todas, fonte_de_env
+    from app.crypto_e2e import (CT_E2E, eh_e2e, janela_de_env)
     dados = m.body
     ct = getattr(m, "content_type", "") or ""
     if ct == CT_E2E or eh_e2e(dados):
-        chave = chave_de_env()
-        if chave is None:
+        f = fonte_de_env()
+        chaves = f.chaves() if f else None
+        if chaves is None:
             raise RuntimeError(
-                "mensagem E2E sem E2E_CHAVE — fail closed")
-        dados = abrir(chave, dados,
-                      janela_ms=janela_de_env() if fresco
-                      else None)
+                "mensagem E2E sem chave no cofre — fail closed")
+        dados = abrir_todas(
+            chaves, dados,
+            janela_ms=janela_de_env() if fresco else None)
     return json.loads(dados)
 
 

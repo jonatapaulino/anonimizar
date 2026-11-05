@@ -89,16 +89,20 @@ class PublicadorRabbitMQ:
         "x-dead-letter-routing-key": FILA_DLQ,
     }
 
-    def __init__(self, url: str, chave: bytes | None = ...):
+    def __init__(self, url: str, chave=...):
         self.url = url
         self._conn = self._ex = None
-        # `...` = resolve da env (E2E_CHAVE). Com chave, o corpo da
-        # mensagem vira quadro AEAD — o broker só armazena/entrega
-        # ciphertext; o claro nunca sai do contêiner que selou.
+        # `...` = resolve do cofre (E2E_FONTE -> env|vault). Com
+        # chave, o corpo da mensagem vira quadro AEAD — o broker só
+        # armazena/entrega ciphertext; o claro nunca sai do
+        # contêiner que selou. Rotação: publica com a atual.
         if chave is ...:
-            from app.crypto_e2e import chave_de_env
-            chave = chave_de_env()
-        self._chave = chave
+            from app.cofre import fonte_de_env
+            f = fonte_de_env()
+            chave = f.chaves() if f else None
+        from app.cofre import ChavesE2E
+        self._chaves = (chave if chave is None or isinstance(
+            chave, ChavesE2E) else ChavesE2E(chave))
 
     async def conectar(self):
         import aio_pika
@@ -112,9 +116,9 @@ class PublicadorRabbitMQ:
         body = evento if isinstance(evento, dict) else asdict(evento)
         dados = json.dumps(body, default=str).encode()
         ct = "application/json"
-        if self._chave is not None:
+        if self._chaves is not None:
             from app.crypto_e2e import CT_E2E, selar
-            dados, ct = selar(self._chave, dados), CT_E2E
+            dados, ct = selar(self._chaves.atual, dados), CT_E2E
         msg = aio_pika.Message(
             dados,
             delivery_mode=aio_pika.DeliveryMode.PERSISTENT,

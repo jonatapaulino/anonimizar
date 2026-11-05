@@ -124,8 +124,14 @@ revisto, harness `p8_metricas.py`, emenda 04/11-04b em
    gates de correferência mensuráveis; motor simbólico passa
    1,000/1,000/0% no proxy corpus_v0. Aberto: exercício real de
    pairwise/consistência exige docs com menções repetidas.
-3. Cofre de chaves (Etapa 4/5) — decisão jurídica de reidentificação
-   pendente (ver ata em `docs/atas/`).
+3. Cofre de chaves — **mecanismo feito** (04/11/2026):
+   `app/cofre.py` — `E2E_FONTE=env|vault` (KV v2 `{atual,
+   anterior_1..N}`, cache TTL), rotação sela-com-atual/abre-com-
+   todas em middleware/broker/storage/cliente; `CofrePseudonimos`
+   (mapa ent_id→rótulo como objeto E2E no storage do nó).
+   Pendente: **decisão jurídica de reidentificação** (ver ata em
+   `docs/atas/`), motor emitir `ent_id`+mapa (integração), AppRole
+   + TLS ao Vault, cache de replay compartilhado p/ multi-réplica.
 4. ~~mTLS na fronteira A↔B~~ **feito** (04/11/2026): JWT removido
    (reprovado — XSS); identidade = certificado de cliente verificado
    no nginx (`deploy/nginx.conf`, `scripts/gerar_certs_mtls.py`) →

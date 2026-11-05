@@ -124,7 +124,11 @@ docker reais; 4 xfailed — pré-existentes).
    = quem vaza a chave decifra **e forja** tráfego nos dois
    sentidos. Sem **forward secrecy**: ciphertext gravado hoje +
    chave vazada amanhã = legível. TLS de transporte mitiga o hop,
-   a camada E2E não tem PFS.
+   a camada E2E não tem PFS. **Mitigado parcialmente** (04/11/2026)
+   pelo cofre `app/cofre.py`: fonte `env|vault` (KV v2 + cache
+   TTL) e rotação `{atual, anterior_1..N}` — vazamento de uma
+   chave passa a ter janela limitada pela rotação, mas a
+   simetria e a ausência de PFS permanecem.
 2. ~~AEAD não impede replay~~ — **mitigado no quadro v2**
    (04/11/2026): `ts_ms` no AAD + janela de frescura
    (`E2E_JANELA_MS`, 300 s) + `ReplayCache` de nonces no ingresso

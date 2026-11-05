@@ -127,9 +127,16 @@ class ArmazenamentoCifrado:
     de repouso+trânsito no objeto: o backend (MinIO/memória) só
     persiste quadros E2E; o claro existe só dentro do processo que
     selou/abriu. Streaming preservado: guardar cifra bloco a bloco
-    para spool; abrir decifra quadro a quadro do stream."""
-    def __init__(self, inner: ArmazenamentoPort, chave: bytes):
-        self._inner, self._chave = inner, chave
+    para spool; abrir decifra quadro a quadro do stream.
+
+    `chave` aceita `bytes` ou `ChavesE2E` (rotação): sela com a
+    atual; abre tentando atual->anteriores — objeto selado com
+    chave recém-rotacionada continua legível na transição."""
+    def __init__(self, inner: ArmazenamentoPort, chave):
+        from app.cofre import ChavesE2E
+        self._chaves = (chave if isinstance(chave, ChavesE2E)
+                        else ChavesE2E(chave))
+        self._inner = inner
         self.bucket = inner.bucket
 
     async def garantir(self):
@@ -139,16 +146,29 @@ class ArmazenamentoCifrado:
         import tempfile
         from app.crypto_e2e import selar_stream
         spool = tempfile.SpooledTemporaryFile(max_size=CHUNK * 8)
-        for q in selar_stream(self._chave, fonte):
+        for q in selar_stream(self._chaves.atual, fonte):
             spool.write(q)
         spool.seek(0)
         await self._inner.guardar(chave, spool)
 
     async def abrir(self, chave: str):
-        from app.crypto_e2e import abrir_stream_async
-        async for b in abrir_stream_async(
-                self._chave, self._inner.abrir(chave)):
-            yield b
+        from app.crypto_e2e import ErroCripto, abrir_stream_async
+        ult = None
+        for c in self._chaves.todas():
+            # fallback só ANTES de qualquer claro sair — falha no
+            # meio do stream é adulteração, não chave errada
+            cedeu = False
+            try:
+                async for b in abrir_stream_async(
+                        c, self._inner.abrir(chave)):
+                    cedeu = True
+                    yield b
+                return
+            except ErroCripto as e:
+                if cedeu:
+                    raise
+                ult = e
+        raise ult or ErroCripto("conjunto de chaves vazio")
 
     async def existe(self, chave: str) -> bool:
         return await self._inner.existe(chave)

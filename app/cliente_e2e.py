@@ -21,8 +21,8 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from app.crypto_e2e import (CT_E2E, ErroCripto, abrir, eh_e2e,
-                            selar)
+from app.cofre import ChavesE2E, abrir_todas
+from app.crypto_e2e import (CT_E2E, ErroCripto, eh_e2e, selar)
 
 
 class RespostaE2E:
@@ -37,16 +37,18 @@ class RespostaE2E:
 class ClienteE2E:
     """Emissor do envelope — httpx async por baixo."""
 
-    def __init__(self, base_url: str, chave: bytes,
+    def __init__(self, base_url: str, chave,
                  orgao: str | None = None,
                  cert: tuple[str, str] | None = None,
                  verify: str | bool = True,
                  client=None):
         """`client`: injetável (testes usam ASGITransport ou socket
         real). cert=(path_crt, path_key) ativa mTLS; verify=caminho
-        da ca.crt."""
+        da ca.crt. `chave` aceita bytes ou ChavesE2E (rotação)."""
         self.base = base_url.rstrip("/")
-        self.chave, self.orgao = chave, orgao
+        self.chaves = (chave if isinstance(chave, ChavesE2E)
+                       else ChavesE2E(chave))
+        self.orgao = orgao
         self._client = client
         self._cert, self._verify = cert, verify
 
@@ -72,7 +74,7 @@ class ClienteE2E:
         corpo = b"{}" if corpo is None else corpo
         h["Content-Type"] = CT_E2E
         h["X-E2E-CT"] = ct_real
-        dados = selar(self.chave, corpo)
+        dados = selar(self.chaves.atual, corpo)
         if self.orgao:
             h.setdefault("X-Cliente-Orgao", self.orgao)
         r = await cli.request(metodo, self.base + path,
@@ -80,7 +82,7 @@ class ClienteE2E:
         ct_resp = r.headers.get("content-type", "").split(";")[0]
         if ct_resp == CT_E2E or eh_e2e(r.content[:34]):
             return RespostaE2E(r.status_code,
-                               abrir(self.chave, r.content))
+                               abrir_todas(self.chaves, r.content))
         # resposta em claro quando o canal exige E2E: nao engole.
         # 400/415 sao erros de transporte que o proprio middleware
         # devolve em JSON claro (o par nem falou E2E ainda).

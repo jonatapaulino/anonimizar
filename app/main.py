@@ -65,11 +65,13 @@ def _storage_de_env(orgao: str, anonimizados: bool = False):
         nome_bucket=bucket_para(
             orgao, "docs-anonimizados" if anonimizados
             else "docs"))
-    # E2E no objeto: com E2E_CHAVE, o bucket só guarda quadros
-    # AEAD — claro jamais toca o disco do MinIO nem a rede S3.
-    from app.crypto_e2e import chave_de_env
-    chave = chave_de_env()
-    return ArmazenamentoCifrado(st, chave) if chave else st
+    # E2E no objeto: com chave no cofre, o bucket só guarda
+    # quadros AEAD — claro jamais toca o disco do MinIO nem a
+    # rede S3.
+    from app.cofre import fonte_de_env
+    f = fonte_de_env()
+    chaves = f.chaves() if f else None
+    return ArmazenamentoCifrado(st, chaves) if chaves else st
 
 
 def create_app(orgao: str, repo: Repositorio = None,
@@ -153,13 +155,15 @@ def create_app(orgao: str, repo: Repositorio = None,
                   version="0.1.0-mvp", lifespan=lifespan)
     # Blindagem E2E na fronteira do contêiner: request cifrado é
     # aberto ANTES do roteador; resposta sai sempre cifrada quando
-    # o canal exige E2E. Chave via E2E_CHAVE (Vault em produção);
-    # ausente => bypass (dev/teste injetam storage/memória).
-    from app.crypto_e2e import chave_de_env
+    # o canal exige E2E. Chaves via cofre (E2E_FONTE=env|vault —
+    # produção: Vault); ausente => bypass (dev/teste injetam
+    # storage/memória).
+    from app.cofre import fonte_de_env
     from app.middleware_e2e import MiddlewareE2E
-    chave_e2e = chave_de_env()
+    _f = fonte_de_env()
+    chaves_e2e = _f.chaves() if _f else None
     app.add_middleware(
-        MiddlewareE2E, chave=chave_e2e,
+        MiddlewareE2E, chave=chaves_e2e,
         obrigatorio=os.environ.get("E2E_OBRIGATORIO") == "1")
     app.state.no = (NoTramitacao(orgao, repo, storage,
                                  storage_anon,

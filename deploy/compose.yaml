@@ -36,6 +36,14 @@ services:
       # janela é rejeitado (ms). Padrão interno 300000 = 5 min;
       # pares precisam de NTP sincronizado.
       E2E_JANELA_MS: "300000"
+      # Fonte das chaves E2E: env (dev) ou vault (produção).
+      # vault: KV v2 {atual, anterior_1..N} — rotação propaga por
+      # cache TTL sem restart; VAULT_TOKEN é dev — produção:
+      # AppRole + TLS ao Vault (dívida de implantação).
+      E2E_FONTE: "env"
+      VAULT_ADDR:
+      VAULT_KV_PATH: "isaci/e2e"
+      VAULT_TOKEN:
       # E2E_CHAVE (hex de 32B) injetada em runtime pelo Vault do
       # nó — passthrough do ambiente, nunca literal no repo.
       E2E_CHAVE:

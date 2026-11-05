@@ -21,8 +21,9 @@ from __future__ import annotations
 import json
 import logging
 
+from app.cofre import ChavesE2E, abrir_todas
 from app.crypto_e2e import (CT_E2E, ErroCripto, FluxoSelador,
-                            ReplayCache, abrir, janela_de_env)
+                            ReplayCache, janela_de_env)
 
 log = logging.getLogger("tramitacao.e2e")
 
@@ -37,13 +38,17 @@ class MiddlewareE2E:
     """ASGI puro (não BaseHTTPMiddleware): preserva streaming —
     a resposta cifra quadro a quadro sem materializar o corpo."""
 
-    def __init__(self, app, chave: bytes | None = None,
+    def __init__(self, app, chave=None,
                  obrigatorio: bool = False):
-        self.app, self.chave = app, chave
-        self.obrigatorio = obrigatorio and chave is not None
+        # bytes ou ChavesE2E (rotação: abre com todas, sela com a
+        # atual); None = bypass dev
+        self.app = app
+        self.chaves = (chave if chave is None or isinstance(
+            chave, ChavesE2E) else ChavesE2E(chave))
+        self.obrigatorio = obrigatorio and self.chaves is not None
 
     async def __call__(self, scope, receive, send):
-        if scope["type"] != "http" or self.chave is None:
+        if scope["type"] != "http" or self.chaves is None:
             await self.app(scope, receive, send)
             return
 
@@ -67,9 +72,9 @@ class MiddlewareE2E:
 
         if vio_e2e:
             try:
-                corpo = abrir(self.chave, corpo,
-                              janela_ms=janela_de_env(),
-                              replay=_REPLAY)
+                corpo = abrir_todas(
+                    self.chaves, corpo,
+                    janela_ms=janela_de_env(), replay=_REPLAY)
             except ErroCripto:
                 log.warning("e2e: selo inválido em %s", path)
                 await _responder(send, 400)
@@ -96,7 +101,8 @@ class MiddlewareE2E:
 
         # ---- egresso: cifra quadro a quadro quando o par fala E2E
         cifrar = vio_e2e or self.obrigatorio
-        selador = FluxoSelador(self.chave) if cifrar else None
+        selador = (FluxoSelador(self.chaves.atual)
+                   if cifrar else None)
 
         async def send_cifrado(message):
             if not cifrar:
