@@ -179,13 +179,19 @@ async def processar_evento(payload: dict, st_origem, st_dest,
     return doc
 
 
-def payload_de_mensagem(m) -> dict:
+def payload_de_mensagem(m, fresco: bool = True) -> dict:
     """Decodifica o corpo da mensagem. Com E2E ativo
     (`content-type: application/x-e2e` ou magia no primeiro byte)
     o corpo é quadro AEAD — decifra ANTES do parse. O broker só
-    carrega ciphertext; o claro existe só neste processo."""
-    from app.crypto_e2e import (CT_E2E, chave_de_env, eh_e2e,
-                                abrir)
+    carrega ciphertext; o claro existe só neste processo.
+
+    `fresco` impõe a janela `E2E_JANELA_MS` — fila principal. DLQ
+    decodifica com fresco=False: mensagem morta pode ter horas e
+    a drenagem forense ainda precisa lê-la p/ registrar a falha.
+    Nonce-cache não se aplica aqui: o broker redelivers o mesmo
+    envelope no retry legítimo."""
+    from app.crypto_e2e import (CT_E2E, abrir, chave_de_env,
+                                eh_e2e, janela_de_env)
     dados = m.body
     ct = getattr(m, "content_type", "") or ""
     if ct == CT_E2E or eh_e2e(dados):
@@ -193,7 +199,9 @@ def payload_de_mensagem(m) -> dict:
         if chave is None:
             raise RuntimeError(
                 "mensagem E2E sem E2E_CHAVE — fail closed")
-        dados = abrir(chave, dados)
+        dados = abrir(chave, dados,
+                      janela_ms=janela_de_env() if fresco
+                      else None)
     return json.loads(dados)
 
 
@@ -242,7 +250,7 @@ async def um_ciclo_dlq(dlq, repo) -> bool:
     m = await dlq.get(fail=False)
     if m is None:
         return False
-    payload = payload_de_mensagem(m)
+    payload = payload_de_mensagem(m, fresco=False)
     try:
         await registrar_falha(payload, repo)
     except Exception as e:
@@ -291,7 +299,7 @@ async def main():
         async with dlq.iterator() as it:
             async for m in it:
                 try:
-                    payload = payload_de_mensagem(m)
+                    payload = payload_de_mensagem(m, fresco=False)
                     await registrar_falha(payload, repo)
                     await m.ack()
                     log.warning("dlq: falha_anonimizacao -> %s",

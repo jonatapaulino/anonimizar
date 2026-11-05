@@ -32,6 +32,10 @@ services:
     environment:
       # Blindagem E2E obrigatória: plaintext em /v1/ => 415.
       E2E_OBRIGATORIO: "1"
+      # Frescura anti-replay: envelope mais velho/futuro que a
+      # janela é rejeitado (ms). Padrão interno 300000 = 5 min;
+      # pares precisam de NTP sincronizado.
+      E2E_JANELA_MS: "300000"
       # E2E_CHAVE (hex de 32B) injetada em runtime pelo Vault do
       # nó — passthrough do ambiente, nunca literal no repo.
       E2E_CHAVE:

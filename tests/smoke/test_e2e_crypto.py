@@ -14,7 +14,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.crypto_e2e import (CT_E2E, ErroCripto, FluxoSelador,
-                            abrir, eh_e2e, selar)
+                            ReplayCache, abrir, abrir_stream_async,
+                            agora_ms, eh_e2e, selar)
 from app.main import create_app
 from app.storage import ArmazenamentoCifrado, ArmazenamentoMemoria
 from tests.identidade import hdr
@@ -72,7 +73,7 @@ class TestCanalProtegido:
 
     def test_selo_adulterado_400(self, ca):
         env = bytearray(selar(CHAVE, b'{"x":1}'))
-        env[25] ^= 0xFF                    # bit-flip no ciphertext
+        env[40] ^= 0xFF                    # bit-flip no ciphertext
         r = ca.post("/v1/recebimentos", content=bytes(env),
                     headers={"Content-Type": CT_E2E, **hdr("tjpa")})
         assert r.status_code == 400
@@ -123,7 +124,7 @@ class TestStorageCifrado:
         await st.guardar("grande", io.BytesIO(dados))
         claro = b"".join([c async for c in st.abrir("grande")])
         assert claro == dados
-        inner._objs["grande"] = inner._objs["grande"][:-17]
+        inner._objs["grande"] = inner._objs["grande"][:-26]
         with pytest.raises(ErroCripto):
             async for _ in st.abrir("grande"):
                 pass
@@ -144,3 +145,67 @@ class TestQuadro:
         s = FluxoSelador(CHAVE)
         with pytest.raises(ErroCripto):
             abrir(CHAVE, s.selar_bloco(b"x"))   # sem terminador
+
+
+class TestReplay:
+    """v2: ts_ms no AAD + janela de frescura + nonce-cache."""
+
+    def test_envelope_velho_recusado(self):
+        env = selar(CHAVE, b"{}", ts_ms=agora_ms() - 120_000)
+        with pytest.raises(ErroCripto):
+            abrir(CHAVE, env, janela_ms=60_000)
+
+    def test_envelope_futuro_recusado(self):
+        env = selar(CHAVE, b"{}", ts_ms=agora_ms() + 120_000)
+        with pytest.raises(ErroCripto):
+            abrir(CHAVE, env, janela_ms=60_000)
+
+    def test_dentro_da_janela_abre(self):
+        env = selar(CHAVE, b"{}", ts_ms=agora_ms() - 30_000)
+        assert abrir(CHAVE, env, janela_ms=60_000) == b"{}"
+
+    def test_reenvio_bloqueia_no_cache(self):
+        cache = ReplayCache()
+        env = selar(CHAVE, b"{}")
+        assert abrir(CHAVE, env, janela_ms=60_000,
+                     replay=cache) == b"{}"
+        with pytest.raises(ErroCripto):
+            abrir(CHAVE, env, janela_ms=60_000, replay=cache)
+
+    def test_ts_adulterado_quebra_selo(self):
+        env = bytearray(selar(CHAVE, b"{}"))
+        env[20] ^= 0x01                  # byte do ts — AAD o cobre
+        with pytest.raises(ErroCripto):
+            abrir(CHAVE, env)
+
+    def test_sem_janela_envelope_antigo_abre(self):
+        """Storage/DLQ: dado em repouso não expira."""
+        env = selar(CHAVE, b"doc",
+                    ts_ms=agora_ms() - 86_400_000)
+        assert abrir(CHAVE, env) == b"doc"
+
+    async def test_stream_async_frescura(self):
+        async def _ait(b):
+            yield b
+        env = selar(CHAVE, b"x", ts_ms=agora_ms() - 120_000)
+        with pytest.raises(ErroCripto):
+            [_ async for _ in abrir_stream_async(
+                CHAVE, _ait(env), janela_ms=60_000)]
+
+    def test_middleware_replay_400(self, ca, caso):
+        """Mesmo envelope reenviado no canal HTTP => 400 do
+        middleware (idempotência ecoaria 201 — o nonce-cache é
+        camada de transporte, anterior ao negócio)."""
+        import hashlib
+        p = dict(caso_cnj=caso, destino="mpf.pa",
+                 modo="pseudonimizacao",
+                 hash_documento_sha256=hashlib.sha256(
+                     b"doc replay").hexdigest(),
+                 metadados={}, idempotency_key="tjpa-replay-0001")
+        env = selar(CHAVE, json.dumps(p).encode())
+        hd = {"Content-Type": CT_E2E, "X-E2E-CT": "application/json",
+              **hdr("tjpa")}
+        r1 = ca.post("/v1/tramitacoes", content=env, headers=hd)
+        assert r1.status_code == 201
+        r2 = ca.post("/v1/tramitacoes", content=env, headers=hd)
+        assert r2.status_code == 400

@@ -52,9 +52,17 @@ header **porque** o compose garante que só o nginx alcança a rede
 
 ### 2. Núcleo criptográfico — `app/crypto_e2e.py`
 
-- Quadro: `0xE2 | nonce 12B | len 4B | ciphertext+tag 16B`
-- AAD = índice do quadro → reordenação/supressão quebram o selo
-- Terminador `0xE2+16×0x00` → truncamento de stream detectável
+- Quadro v2: `0xE2 | ver 0x02 | nonce 12B | len 4B | ts_ms 8B |
+  ciphertext+tag 16B`
+- AAD = índice‖ts do quadro → reordenação/supressão quebram o
+  selo e o carimbo não pode ser adulterado sem invalidá-lo
+- Terminador `0xE2|0x02+24×0x00` → truncamento de stream detectável
+- Anti-replay: frescura `E2E_JANELA_MS` (padrão 300 s) rejeita
+  envelope velho/futuro; `ReplayCache` de nonces do quadro 0
+  bloqueia reenvio do mesmo envelope no ingresso HTTP. AMQP usa
+  só frescura (a redelivery legítima do broker repete o mesmo
+  envelope); S3/DLQ abrem sem janela — dado em repouso e
+  drenagem forense não expiram
 - `FluxoSelador`/`_abrir_quadros`/`abrir_stream_async` — streaming
   real (bloco a bloco, sem materializar arquivo em RAM)
 - Chave: `E2E_CHAVE` (hex 32B, via Vault em runtime); ausente →
@@ -117,11 +125,12 @@ docker reais; 4 xfailed — pré-existentes).
    sentidos. Sem **forward secrecy**: ciphertext gravado hoje +
    chave vazada amanhã = legível. TLS de transporte mitiga o hop,
    a camada E2E não tem PFS.
-2. **AEAD não impede replay.** Um envelope íntegro capturado é
-   um envelope válido — reenviar funciona. A defesa é a camada
-   de negócio (`idempotency_key` em criações) e o nonce temporal
-   ainda **não implementado** no envelope (timestamp + janela
-   seria o endurecimento natural).
+2. ~~AEAD não impede replay~~ — **mitigado no quadro v2**
+   (04/11/2026): `ts_ms` no AAD + janela de frescura
+   (`E2E_JANELA_MS`, 300 s) + `ReplayCache` de nonces no ingresso
+   HTTP. Limites que permanecem: o cache é **processo-local**
+   (deployment multi-réplica exige store compartilhado) e a
+   janela exige **NTP sincronizado** entre os pares.
 3. **`X-Cliente-Orgao` é confiança de perímetro.** Quem já está
    dentro da `interna` pode forjar o header — ameaça interna está
    fora do modelo de borda. Mitigação futura: o próprio envelope

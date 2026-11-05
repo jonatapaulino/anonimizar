@@ -140,8 +140,13 @@ revisto, harness `p8_metricas.py`, emenda 04/11-04b em
        — selar+`x-e2e-ct`, GET selado canônico, multipart sob
        envelope, cert/verify p/ mTLS real; round-trip A↔B provado
        (tjpa→mpf.pa, dois uvicorns, `test_cliente_e2e.py`);
-   (b) **replay** — envelope não tem timestamp/janela: quadro
-       íntegro reenviado é aceito (só idempotency_key defende);
+   (b) ~~replay~~ **feito** (04/11/2026): quadro v2 = `0xE2|0x02|
+       nonce|len|ts_ms|ct` — ts no AAD (adulterá-lo quebra o selo);
+       frescura `E2E_JANELA_MS` (300 s) + `ReplayCache` de nonces
+       no ingresso HTTP; AMQP só frescura (redelivery legítima
+       repete o envelope); S3/DLQ sem janela (repouso/forense não
+       expira). Dívida: cache é processo-local — multi-réplica
+       exige store compartilhado;
    (c) **ingress stream** — `abrir` materializa o corpo: upload
        multipart grande atravessa num quadro só;
    (d) TLS interno nos clientes (amqps/pg/ssl/s3) é contrato de

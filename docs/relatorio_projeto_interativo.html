@@ -291,7 +291,7 @@ footer{border-top:1px solid var(--border);margin-top:60px}
 
   <div class="grid g3 reveal">
     <div class="card"><h3>🪪 Identidade: certificado</h3><p>nginx exige <code>ssl_verify_client on</code>; o CN do cert vira <code>X-Cliente-Orgao</code>. O header só é confiável porque a API não publica porta — prova estática no compose.</p></div>
-    <div class="card"><h3>📦 Envelope: 0xE2</h3><p><code>0xE2 | nonce 12B | len | ct+tag</code>, AAD = índice do quadro, terminador detectável. Reordenar, suprimir ou adulterar quebra o selo Poly1305.</p></div>
+    <div class="card"><h3>📦 Envelope: 0xE2 v2</h3><p><code>0xE2 | 0x02 | nonce 12B | len | ts_ms | ct+tag</code>, AAD = índice‖ts, terminador detectável. Reordenar, suprimir ou adulterar quebra o selo Poly1305; janela de frescura + nonce-cache bloqueiam replay.</p></div>
     <div class="card"><h3>🧱 3 fronteiras</h3><p>Middleware ASGI (request/response), broker (Message.body selado) e storage (ArmazenamentoCifrado) — o claro existe só na memória de quem processa.</p></div>
   </div>
 

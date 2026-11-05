@@ -22,11 +22,15 @@ import json
 import logging
 
 from app.crypto_e2e import (CT_E2E, ErroCripto, FluxoSelador,
-                            abrir)
+                            ReplayCache, abrir, janela_de_env)
 
 log = logging.getLogger("tramitacao.e2e")
 
 _PREFIXO_PROTEGIDO = "/v1/"
+
+# anti-replay de ingresso: nonces do quadro 0 dentro da janela
+# (processo-local — multi-réplica exigiria cache compartilhado)
+_REPLAY = ReplayCache()
 
 
 class MiddlewareE2E:
@@ -63,7 +67,9 @@ class MiddlewareE2E:
 
         if vio_e2e:
             try:
-                corpo = abrir(self.chave, corpo)
+                corpo = abrir(self.chave, corpo,
+                              janela_ms=janela_de_env(),
+                              replay=_REPLAY)
             except ErroCripto:
                 log.warning("e2e: selo inválido em %s", path)
                 await _responder(send, 400)
