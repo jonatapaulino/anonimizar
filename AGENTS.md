@@ -136,8 +136,10 @@ revisto, harness `p8_metricas.py`, emenda 04/11-04b em
    com `E2E_OBRIGATORIO=1` no compose. Provas: sniffer de socket
    real + cobertura de todas as rotas + handshake mTLS real
    (`docs/relatorio_seguranca_e2e.md`). Aberto:
-   (a) **emissor E2E** — repo só tem o lado servidor do envelope;
-       falta cliente (httpx + selar) p/ round-trip A↔B real;
+   (a) ~~emissor E2E~~ **feito** (04/11/2026): `app/cliente_e2e.py`
+       — selar+`x-e2e-ct`, GET selado canônico, multipart sob
+       envelope, cert/verify p/ mTLS real; round-trip A↔B provado
+       (tjpa→mpf.pa, dois uvicorns, `test_cliente_e2e.py`);
    (b) **replay** — envelope não tem timestamp/janela: quadro
        íntegro reenviado é aceito (só idempotency_key defende);
    (c) **ingress stream** — `abrir` materializa o corpo: upload
