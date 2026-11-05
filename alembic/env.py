@@ -36,7 +36,12 @@ async def run_online():
         raise RuntimeError(
             "DATABASE_URL deve declarar driver async "
             "(postgresql+asyncpg://... | sqlite+aiosqlite://...)")
-    engine = create_async_engine(url)
+    kw = {}
+    from app.tls_interno import ctx_cliente
+    ctx = ctx_cliente()
+    if ctx is not None:
+        kw["connect_args"] = {"ssl": ctx}
+    engine = create_async_engine(url, **kw)
     async with engine.connect() as conn:
         await conn.run_sync(do_migrations)
     await engine.dispose()

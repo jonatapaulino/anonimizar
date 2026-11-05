@@ -324,8 +324,14 @@ class RepositorioSQL:
 
 def repo_from_url(url: str) -> RepositorioSQL:
     """Fábrica de produção — ex.: postgresql+asyncpg://...  As
-    tabelas são criadas pelo alembic, não por create_all."""
-    e = create_async_engine(url)
+    tabelas são criadas pelo alembic, não por create_all. TLS no
+    link quando TLS_CA_BUNDLE está definida (CA interna)."""
+    from app.tls_interno import ctx_cliente
+    kw = {}
+    ctx = ctx_cliente()
+    if ctx is not None:
+        kw["connect_args"] = {"ssl": ctx}
+    e = create_async_engine(url, **kw)
     return RepositorioSQL(
         async_sessionmaker(e, expire_on_commit=False))
 

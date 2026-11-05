@@ -49,7 +49,7 @@ def _nome(cn: str) -> x509.Name:
 
 
 def _assinar(subj, pub, issuer, issuer_key, dias, *,
-             ca=False, client=False, server=False):
+             ca=False, client=False, server=False, sans=None):
     agora = dt.datetime.now(dt.timezone.utc)
     b = (x509.CertificateBuilder()
          .subject_name(subj).issuer_name(issuer)
@@ -64,10 +64,10 @@ def _assinar(subj, pub, issuer, issuer_key, dias, *,
         b = b.add_extension(x509.ExtendedKeyUsage(uso),
                             critical=True)
         if server:
+            nomes = sans or ["localhost", "nginx"]
             b = b.add_extension(x509.SubjectAlternativeName(
-                [x509.DNSName("localhost"),
-                 x509.DNSName("nginx"),
-                 x509.IPAddress(ipaddress.ip_address("127.0.0.1"))]),
+                [x509.DNSName(n) for n in nomes]
+                + [x509.IPAddress(ipaddress.ip_address("127.0.0.1"))]),
                 critical=False)
     return b.sign(issuer_key, hashes.SHA256())
 
@@ -77,6 +77,9 @@ def main():
     ap.add_argument("--out", default="deploy/certs")
     ap.add_argument("--node", default="node-local")
     ap.add_argument("--peers", nargs="*", default=[])
+    ap.add_argument("--servicos", nargs="*", default=[],
+                    help="server certs p/ servicos internos "
+                         "(SAN = o nome do servico na rede)")
     a = ap.parse_args()
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -89,7 +92,8 @@ def main():
 
     node_key = _chave()
     node = _assinar(_nome(a.node), node_key.public_key(),
-                    ca_name, ca_key, 825, server=True)
+                    ca_name, ca_key, 825, server=True,
+                    sans=["localhost", "nginx", a.node])
     (out / "node.key").write_bytes(_pem_priv(node_key))
     (out / "node.crt").write_bytes(_pem_cert(node))
 
@@ -100,6 +104,14 @@ def main():
         (out / f"{par}.key").write_bytes(_pem_priv(k))
         (out / f"{par}.crt").write_bytes(_pem_cert(c))
         print(f"cert de cliente: {par}")
+
+    for svc in a.servicos:
+        k = _chave()
+        c = _assinar(_nome(svc), k.public_key(), ca_name, ca_key,
+                     825, server=True, sans=[svc, "localhost"])
+        (out / f"svc-{svc}.key").write_bytes(_pem_priv(k))
+        (out / f"svc-{svc}.crt").write_bytes(_pem_cert(c))
+        print(f"cert de servico: {svc}")
 
     print(f"CA + certs em {out}/ — DEV ONLY; producao usa PKI "
           f"de cada orgao e troca so as ca.crt publicas")

@@ -71,11 +71,13 @@ class ArmazenamentoMinIO:
     chunked (não materializa em RAM); get_object devolve stream."""
     def __init__(self, orgao: str, endpoint: str, access: str,
                  secret: str, secure: bool = False,
-                 nome_bucket: str | None = None):
+                 nome_bucket: str | None = None,
+                 ca_bundle: str | None = None):
         import aioboto3
         self.bucket = nome_bucket or bucket_para(orgao)
         # secure=True força https no endpoint — tráfego S3 nunca
-        # legível na rede interna.
+        # legível na rede interna. ca_bundle = CA privada do nó
+        # (TLS_CA_BUNDLE); sem ela, https de CA interna falha.
         if secure and endpoint.startswith("http://"):
             endpoint = "https://" + endpoint[len("http://"):]
         self._sess = aioboto3.Session()
@@ -83,6 +85,8 @@ class ArmazenamentoMinIO:
                         endpoint_url=endpoint,
                         aws_access_key_id=access,
                         aws_secret_access_key=secret)
+        if ca_bundle:
+            self._kw["verify"] = ca_bundle
         self._cm = self._s3 = None
 
     async def garantir(self):

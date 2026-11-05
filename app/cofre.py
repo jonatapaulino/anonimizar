@@ -76,18 +76,34 @@ class FonteVaultKV:
     bem-sucedida — chave vazia seria pior)."""
 
     def __init__(self, addr: str, path: str, token: str | None,
-                 mount: str = "secret", ttl_s: int = 30):
+                 mount: str = "secret", ttl_s: int = 30,
+                 token_file: str | None = None):
         self._addr, self._path = addr.rstrip("/"), path
         self._token, self._mount = token, mount
+        self._token_file = token_file
         self._ttl = ttl_s
         self._cache: tuple[float, ChavesE2E] | None = None
 
+    def _token_atual(self) -> str:
+        """Token direto ou arquivo (init do Vault grava o root —
+        lido a cada chamada para acompanhar rotação)."""
+        if self._token:
+            return self._token
+        if self._token_file:
+            try:
+                return open(self._token_file).read().strip()
+            except OSError:
+                return ""
+        return ""
+
     def _le_vault(self) -> dict:
         import httpx
+        from app.tls_interno import ca_bundle
         r = httpx.get(
             f"{self._addr}/v1/{self._mount}/data/{self._path}",
-            headers={"X-Vault-Token": self._token or ""},
-            timeout=5.0)
+            headers={"X-Vault-Token": self._token_atual()},
+            timeout=5.0,
+            verify=ca_bundle() or True)
         r.raise_for_status()
         d = r.json()["data"]["data"]
         if "atual" not in d:
@@ -130,7 +146,8 @@ def fonte_de_env() -> FonteChaves | None:
             path=os.environ.get("VAULT_KV_PATH", "isaci/e2e"),
             token=os.environ.get("VAULT_TOKEN"),
             mount=os.environ.get("VAULT_KV_MOUNT", "secret"),
-            ttl_s=int(os.environ.get("VAULT_CACHE_TTL_S", "30")))
+            ttl_s=int(os.environ.get("VAULT_CACHE_TTL_S", "30")),
+            token_file=os.environ.get("VAULT_TOKEN_FILE"))
     raise ErroCripto(f"E2E_FONTE desconhecida: {f}")
 
 

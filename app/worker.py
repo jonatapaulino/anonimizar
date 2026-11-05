@@ -128,7 +128,8 @@ def fabrica_minio(endpoint: str, user: str, pw: str):
         st = ArmazenamentoMinIO(
             orgao, endpoint, user, pw,
             secure=endpoint.startswith("https"),
-            nome_bucket=bucket)
+            nome_bucket=bucket,
+            ca_bundle=os.environ.get("TLS_CA_BUNDLE"))
         return ArmazenamentoCifrado(st, chaves) if chaves else st
     return _f
 
@@ -275,7 +276,9 @@ async def main():
     if not url_minio:
         raise SystemExit("MINIO_URL não definida")
 
-    conn = await aio_pika.connect_robust(url_amqp)
+    from app.tls_interno import ctx_cliente
+    conn = await aio_pika.connect_robust(
+        url_amqp, ssl_context=ctx_cliente())
     ch = await conn.channel()
     await ch.set_qos(prefetch_count=1)     # uma mensagem por vez
     _, queue, dlq = await declarar_topologia_ia(ch)

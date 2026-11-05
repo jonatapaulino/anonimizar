@@ -106,7 +106,9 @@ class PublicadorRabbitMQ:
 
     async def conectar(self):
         import aio_pika
-        self._conn = await aio_pika.connect_robust(self.url)
+        from app.tls_interno import ctx_cliente
+        self._conn = await aio_pika.connect_robust(
+            self.url, ssl_context=ctx_cliente())
         ch = await self._conn.channel(publisher_confirms=True)
         self._ex, _, _ = await declarar_topologia_ia(ch)
 

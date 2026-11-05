@@ -54,9 +54,19 @@ class ClienteE2E:
 
     async def _cli(self):
         if self._client is None:
+            import ssl
             import httpx
+            verify = self._verify
+            if self._cert is not None:
+                # httpx cert= não oferta o cert neste cenário —
+                # monta o contexto explicitamente (mTLS real)
+                ctx = ssl.create_default_context(
+                    cafile=verify if isinstance(verify, str)
+                    else None)
+                ctx.load_cert_chain(*self._cert)
+                verify = ctx
             self._client = httpx.AsyncClient(
-                cert=self._cert, verify=self._verify,
+                verify=verify,
                 timeout=httpx.Timeout(60.0, connect=10.0))
         return self._client
 

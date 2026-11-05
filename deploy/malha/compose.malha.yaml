@@ -1,0 +1,328 @@
+# Malha executável de prova — DOIS nós soberanos (A=tjpa, B=mpfpa)
+# + sniffer de NIC em cada `interna`. Complemento dinâmico do
+# contrato estático (deploy/compose.yaml): aqui roda de verdade —
+# TLS em todos os links internos, Vault com TLS, mTLS na borda,
+# envelope E2E atravessando nginx->api->broker/storage.
+#
+# Nó A: prova E2E_FONTE=vault (cofre real). Nó B: E2E_FONTE=env
+# (mesmo par de chaves — a simetria A<->B é o desenho).
+# `peer` simula o emissor do órgão A: fala https+mTLS com os dois
+# nginx e selar/abrir com a chave do par.
+name: isaci-malha
+
+networks:
+  borda: {}                       # a "WAN" entre órgãos
+  interna-a: { internal: true }
+  interna-b: { internal: true }
+
+volumes:
+  segredos: {}                    # vault-init -> api (token)
+  capturas: {}                    # pcaps do sniffer
+  vault-data: {}
+
+x-env-no: &env-no
+  E2E_OBRIGATORIO: "1"
+  E2E_JANELA_MS: "300000"
+  E2E_CHAVE: ${E2E_CHAVE}
+  TLS_CA_BUNDLE: /run/certs/ca.crt
+  MINIO_USER: edvar
+  MINIO_PASS: edvar_dev_minio
+  IA_ENGINE: stub
+
+x-imagem-no: &imagem-no
+  image: isaci-no:dev
+  build:
+    context: ../..
+    dockerfile: Dockerfile
+
+services:
+
+  # ============ NÓ A — tjpa (cofre: Vault real) ============
+  nginx-a:
+    image: nginx:1.27
+    networks: [borda, interna-a]
+    ports: ["8443:443"]
+    volumes:
+      - ../nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certs/svc-nginx-a.crt:/etc/nginx/certs/node.crt:ro
+      - ./certs/svc-nginx-a.key:/etc/nginx/certs/node.key:ro
+      - ./certs/ca.crt:/etc/nginx/certs/ca.crt:ro
+    depends_on: { api-a: { condition: service_started } }
+
+  api-a:
+    <<: *imagem-no
+    networks:
+      interna-a:
+        aliases: [api]      # proxy_pass http://api do nginx.conf
+    environment:
+      <<: *env-no
+      ORGAO: tjpa
+      DATABASE_URL:
+        postgresql+asyncpg://edvar:edvar_dev@db-a:5432/tramitacao
+      RABBITMQ_URL: amqps://edvar:edvar_dev@rabbitmq-a:5671
+      MINIO_URL: https://minio-a:9000
+      E2E_FONTE: vault
+      VAULT_ADDR: https://vault-a:8200
+      VAULT_KV_PATH: isaci/e2e
+      VAULT_TOKEN_FILE: /segredos/vault_token
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn app.servidor:app --host 0.0.0.0 --port 8000"
+    volumes:
+      - ./certs/ca.crt:/run/certs/ca.crt:ro
+      - segredos:/segredos:ro
+    depends_on:
+      vault-init-a: { condition: service_completed_successfully }
+      db-a: { condition: service_healthy }
+      rabbitmq-a: { condition: service_healthy }
+      minio-a: { condition: service_healthy }
+
+  db-a:
+    image: postgres:16
+    networks: [interna-a]
+    environment:
+      POSTGRES_USER: edvar
+      POSTGRES_PASSWORD: edvar_dev
+      POSTGRES_DB: tramitacao
+    tmpfs: [/tmp]
+    volumes:
+      - ./certs/svc-db-a.crt:/pgcerts/svc-db-a.crt:ro
+      - ./certs/svc-db-a.key:/pgcerts/svc-db-a.key:ro
+      - ./certs/ca.crt:/pgcerts/ca.crt:ro
+    command: >-
+      sh -c "mkdir -p /tmp/pgssl && cp /pgcerts/svc-db-a.crt /tmp/pgssl/server.crt && cp /pgcerts/svc-db-a.key /tmp/pgssl/server.key && cp /pgcerts/ca.crt /tmp/pgssl/ca.crt && chmod 600 /tmp/pgssl/server.key && chown -R postgres:postgres /tmp/pgssl && exec docker-entrypoint.sh postgres -c ssl=on -c ssl_cert_file=/tmp/pgssl/server.crt -c ssl_key_file=/tmp/pgssl/server.key -c ssl_ca_file=/tmp/pgssl/ca.crt"
+    healthcheck:
+      test: ["CMD-SHELL",
+             "pg_isready -U edvar -d tramitacao"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+
+  rabbitmq-a:
+    image: rabbitmq:3
+    networks: [interna-a]
+    environment:
+      RABBITMQ_DEFAULT_USER: edvar
+      RABBITMQ_DEFAULT_PASS: edvar_dev
+    volumes:
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./certs/svc-rabbitmq-a.crt:/etc/rabbitmq/tls/server.crt:ro
+      - ./certs/svc-rabbitmq-a.key:/etc/rabbitmq/tls/server.key:ro
+      - ./certs/ca.crt:/etc/rabbitmq/tls/ca.crt:ro
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  minio-a:
+    image: bitnamilegacy/minio:latest
+    networks: [interna-a]
+    command:
+      server /bitnami/minio/data --certs-dir /certs
+      --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: edvar
+      MINIO_ROOT_PASSWORD: edvar_dev_minio
+    volumes:
+      - ./certs/svc-minio-a.crt:/certs/public.crt:ro
+      - ./certs/svc-minio-a.key:/certs/private.key:ro
+    healthcheck:
+      test: ["CMD-SHELL",
+             "curl -sfk https://localhost:9000/minio/health/live || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  worker-a:
+    <<: *imagem-no
+    networks: [interna-a]
+    command: ["python", "-m", "app.worker"]
+    environment:
+      <<: *env-no
+      ORGAO: tjpa
+      DATABASE_URL:
+        postgresql+asyncpg://edvar:edvar_dev@db-a:5432/tramitacao
+      RABBITMQ_URL: amqps://edvar:edvar_dev@rabbitmq-a:5671
+      MINIO_URL: https://minio-a:9000
+      E2E_FONTE: vault
+      VAULT_ADDR: https://vault-a:8200
+      VAULT_KV_PATH: isaci/e2e
+      VAULT_TOKEN_FILE: /segredos/vault_token
+    volumes:
+      - ./certs/ca.crt:/run/certs/ca.crt:ro
+      - segredos:/segredos:ro
+    depends_on:
+      vault-init-a: { condition: service_completed_successfully }
+      rabbitmq-a: { condition: service_healthy }
+      minio-a: { condition: service_healthy }
+
+  vault-a:
+    image: hashicorp/vault:1.18
+    networks: [interna-a]
+    command: server
+    user: "0:0"            # entrypoint chowna /vault e desce p/ vault
+    cap_add: [IPC_LOCK]
+    volumes:
+      - ./vault.hcl:/vault/config/vault.hcl:ro
+      - ./certs/svc-vault-a.crt:/vault/certs/server.crt:ro
+      - ./certs/svc-vault-a.key:/vault/certs/server.key:ro
+      - ./certs/ca.crt:/vault/certs/ca.crt:ro
+      - vault-data:/vault/file
+
+  vault-init-a:
+    image: hashicorp/vault:1.18
+    networks: [interna-a]
+    entrypoint: ["sh", "/segredos-src/vault-init.sh"]
+    environment:
+      E2E_SEED: ${E2E_CHAVE}
+    volumes:
+      - ./vault-init.sh:/segredos-src/vault-init.sh:ro
+      - ./certs/ca.crt:/vault/certs/ca.crt:ro
+      - segredos:/segredos
+    depends_on: { vault-a: { condition: service_started } }
+
+  sniffer-a:
+    image: nicolaka/netshoot:latest
+    # netns do próprio api-a: bridge docker não é hub — só se
+    # captura o tráfego alheio dentro do namespace dele
+    network_mode: service:api-a
+    cap_add: [NET_ADMIN]
+    command: >-
+      tcpdump -i any -n -s0 -w /capturas/interna-a.pcap
+    volumes:
+      - ./capturas:/capturas
+    depends_on: { api-a: { condition: service_started } }
+
+  # ============ NÓ B — mpfpa (cofre: env) ============
+  nginx-b:
+    image: nginx:1.27
+    networks: [borda, interna-b]
+    ports: ["9443:443"]
+    volumes:
+      - ../nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certs/svc-nginx-b.crt:/etc/nginx/certs/node.crt:ro
+      - ./certs/svc-nginx-b.key:/etc/nginx/certs/node.key:ro
+      - ./certs/ca.crt:/etc/nginx/certs/ca.crt:ro
+    depends_on: { api-b: { condition: service_started } }
+
+  api-b:
+    <<: *imagem-no
+    networks:
+      interna-b:
+        aliases: [api]
+    environment:
+      <<: *env-no
+      ORGAO: mpfpa
+      DATABASE_URL:
+        postgresql+asyncpg://edvar:edvar_dev@db-b:5432/tramitacao
+      RABBITMQ_URL: amqps://edvar:edvar_dev@rabbitmq-b:5671
+      MINIO_URL: https://minio-b:9000
+      E2E_FONTE: env
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn app.servidor:app --host 0.0.0.0 --port 8000"
+    volumes:
+      - ./certs/ca.crt:/run/certs/ca.crt:ro
+    depends_on:
+      db-b: { condition: service_healthy }
+      rabbitmq-b: { condition: service_healthy }
+      minio-b: { condition: service_healthy }
+
+  db-b:
+    image: postgres:16
+    networks: [interna-b]
+    environment:
+      POSTGRES_USER: edvar
+      POSTGRES_PASSWORD: edvar_dev
+      POSTGRES_DB: tramitacao
+    tmpfs: [/tmp]
+    volumes:
+      - ./certs/svc-db-b.crt:/pgcerts/svc-db-b.crt:ro
+      - ./certs/svc-db-b.key:/pgcerts/svc-db-b.key:ro
+      - ./certs/ca.crt:/pgcerts/ca.crt:ro
+    command: >-
+      sh -c "mkdir -p /tmp/pgssl && cp /pgcerts/svc-db-b.crt /tmp/pgssl/server.crt && cp /pgcerts/svc-db-b.key /tmp/pgssl/server.key && cp /pgcerts/ca.crt /tmp/pgssl/ca.crt && chmod 600 /tmp/pgssl/server.key && chown -R postgres:postgres /tmp/pgssl && exec docker-entrypoint.sh postgres -c ssl=on -c ssl_cert_file=/tmp/pgssl/server.crt -c ssl_key_file=/tmp/pgssl/server.key -c ssl_ca_file=/tmp/pgssl/ca.crt"
+    healthcheck:
+      test: ["CMD-SHELL",
+             "pg_isready -U edvar -d tramitacao"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+
+  rabbitmq-b:
+    image: rabbitmq:3
+    networks: [interna-b]
+    environment:
+      RABBITMQ_DEFAULT_USER: edvar
+      RABBITMQ_DEFAULT_PASS: edvar_dev
+    volumes:
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./certs/svc-rabbitmq-b.crt:/etc/rabbitmq/tls/server.crt:ro
+      - ./certs/svc-rabbitmq-b.key:/etc/rabbitmq/tls/server.key:ro
+      - ./certs/ca.crt:/etc/rabbitmq/tls/ca.crt:ro
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  minio-b:
+    image: bitnamilegacy/minio:latest
+    networks: [interna-b]
+    command:
+      server /bitnami/minio/data --certs-dir /certs
+      --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: edvar
+      MINIO_ROOT_PASSWORD: edvar_dev_minio
+    volumes:
+      - ./certs/svc-minio-b.crt:/certs/public.crt:ro
+      - ./certs/svc-minio-b.key:/certs/private.key:ro
+    healthcheck:
+      test: ["CMD-SHELL",
+             "curl -sfk https://localhost:9000/minio/health/live || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  worker-b:
+    <<: *imagem-no
+    networks: [interna-b]
+    command: ["python", "-m", "app.worker"]
+    environment:
+      <<: *env-no
+      ORGAO: mpfpa
+      DATABASE_URL:
+        postgresql+asyncpg://edvar:edvar_dev@db-b:5432/tramitacao
+      RABBITMQ_URL: amqps://edvar:edvar_dev@rabbitmq-b:5671
+      MINIO_URL: https://minio-b:9000
+      E2E_FONTE: env
+    volumes:
+      - ./certs/ca.crt:/run/certs/ca.crt:ro
+    depends_on:
+      rabbitmq-b: { condition: service_healthy }
+      minio-b: { condition: service_healthy }
+
+  sniffer-b:
+    image: nicolaka/netshoot:latest
+    network_mode: service:api-b
+    cap_add: [NET_ADMIN]
+    command: >-
+      tcpdump -i any -n -s0 -w /capturas/interna-b.pcap
+    volumes:
+      - ./capturas:/capturas
+    depends_on: { api-b: { condition: service_started } }
+
+  # ============ Emissor do órgão A (fala com as duas bordas) ====
+  peer:
+    <<: *imagem-no
+    networks: [borda]
+    command: ["sleep", "infinity"]
+    environment:
+      E2E_CHAVE: ${E2E_CHAVE}
+    volumes:
+      - ./certs/tjpa.crt:/run/certs/tjpa.crt:ro
+      - ./certs/tjpa.key:/run/certs/tjpa.key:ro
+      - ./certs/ca.crt:/run/certs/ca.crt:ro
+      - ../../scripts/prova_malha.py:/run/prova_malha.py:ro

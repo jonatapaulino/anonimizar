@@ -3,3 +3,9 @@ __pycache__/
 .pytest_cache/
 .env
 .env.*
+
+# chaves/certs de dev nunca entram no repo
+deploy/certs/
+deploy/malha/certs/
+deploy/malha/capturas/
+deploy/malha/segredos/

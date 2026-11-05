@@ -155,7 +155,20 @@ revisto, harness `p8_metricas.py`, emenda 04/11-04b em
        exige store compartilhado;
    (c) **ingress stream** — `abrir` materializa o corpo: upload
        multipart grande atravessa num quadro só;
-   (d) TLS interno nos clientes (amqps/pg/ssl/s3) é contrato de
-       URL — falta prova dinâmica + tcpdump na `interna`.
+   (d) ~~TLS interno + tcpdump~~ **feito** (05/11/2026): malha
+       executável `deploy/malha/` — DOIS nós (tjpa+mpfpa), TLS
+       real em todos os links (rabbitmq TLS-only 5671, postgres
+       ssl=on, minio https, vault https), Vault KV real com seed
+       `isaci/e2e` (E2E_FONTE=vault provado: worker-a lê a chave
+       via GET 200), mTLS na borda nginx. Prova A↔B REAL:
+       `scripts/prova_malha.py` no contêiner `peer` — criar 201,
+       upload multipart selado 201, envio 200, recebimentos em B
+       200 com hash_cadeia. Prova de NIC: sniffers no netns dos
+       apis (`network_mode: service:api-*` — bridge docker não é
+       hub) → `scripts/prova_pcap.py` PASS: 22+15 registros TLS,
+       magia E2E no hop nginx→api, ZERO bytes legíveis no fio
+       (sentinela/caso_cnj/JSON/credenciais). Ressalva do modelo:
+       o hop nginx→api é HTTP em claro na `interna` carregando
+       quadros E2E (headers legíveis, payload não — é o desenho).
 5. Corpus real (Etapa 3) — depende das exclusões jurídicas.
 6. Gates não avaliados: utility TAB ≥0,85, latência.

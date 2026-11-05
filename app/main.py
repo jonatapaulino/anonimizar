@@ -64,7 +64,8 @@ def _storage_de_env(orgao: str, anonimizados: bool = False):
         secure=url.startswith("https"),
         nome_bucket=bucket_para(
             orgao, "docs-anonimizados" if anonimizados
-            else "docs"))
+            else "docs"),
+        ca_bundle=os.environ.get("TLS_CA_BUNDLE"))
     # E2E no objeto: com chave no cofre, o bucket só guarda
     # quadros AEAD — claro jamais toca o disco do MinIO nem a
     # rede S3.
