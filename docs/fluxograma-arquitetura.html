@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iSACI — Fluxograma da arquitetura · cada tecnologia e sua função</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e1a; --bg2:#0e1424; --surface:#121a30; --surface2:#16203a;
+  --border:rgba(148,163,184,.14); --border-hi:rgba(212,175,55,.45);
+  --text:#e6eaf2; --muted:#8b96ad; --faint:#5d6880;
+  --gold:#d4af37; --gold2:#e9cd6e; --blue:#5b8cff; --cyan:#4fd1c5;
+  --green:#34d399; --red:#f87171; --amber:#fbbf24; --violet:#a78bfa;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --sans:'Inter',system-ui,sans-serif; --serif:'Fraunces',Georgia,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6}
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(1000px 600px at 80% -10%,rgba(91,140,255,.08),transparent 60%),
+  radial-gradient(800px 500px at 10% 30%,rgba(212,175,55,.05),transparent 60%);pointer-events:none;z-index:0}
+main{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:48px 24px 60px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:'';width:34px;height:1px;background:var(--gold)}
+h1{font-family:var(--serif);font-size:clamp(30px,4.4vw,48px);line-height:1.1;margin:16px 0 14px;font-weight:700}
+h1 em{font-style:normal;background:linear-gradient(120deg,var(--gold2),var(--gold) 60%,#a8842a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{color:var(--muted);max-width:900px;font-size:15.5px;margin-bottom:26px}
+.lede b{color:var(--text)}
+.lede code{color:var(--cyan);font-size:12.5px}
+
+.flowchart{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:20px;overflow-x:auto}
+.flowchart svg{min-width:1280px;width:100%;height:auto;display:block}
+.fc-zone{fill:rgba(79,209,197,.03);stroke:rgba(79,209,197,.4);stroke-dasharray:7 5;rx:14}
+.fc-wan{fill:rgba(91,140,255,.04);stroke:rgba(91,140,255,.45);stroke-dasharray:7 5;rx:12}
+.fc-zlabel{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.fc-box{fill:var(--surface);stroke:var(--border);stroke-width:1.2;rx:9;cursor:pointer;transition:.2s}
+.fc-box:hover,.fc-box.hot{stroke:var(--gold);stroke-width:1.8}
+.fc-nm{font-family:var(--sans);font-size:13px;font-weight:600;fill:var(--text)}
+.fc-tp{font-family:var(--mono);font-size:9.5px;fill:var(--faint)}
+.fc-edge{stroke-width:1.8;fill:none;cursor:pointer;transition:.2s}
+.fc-edge.e-mtls{stroke:var(--blue)}
+.fc-edge.e-e2e{stroke:var(--gold)}
+.fc-edge.e-tls{stroke:var(--cyan)}
+.fc-edge.e-http{stroke:var(--faint);stroke-dasharray:6 4}
+.fc-edge.e-sig{stroke:var(--violet);stroke-dasharray:8 4}
+.fc-edge:hover,.fc-edge.hot{stroke-width:3.4;filter:drop-shadow(0 0 5px currentColor)}
+.fc-elabel{font-family:var(--mono);font-size:9.5px;fill:var(--muted);pointer-events:none}
+.fc-ghost{fill:none;stroke:var(--faint);stroke-dasharray:4 4;rx:8}
+.fc-num{fill:var(--gold);stroke:#0a0e1a;stroke-width:1}
+.fc-numt{font-family:var(--mono);font-size:10px;font-weight:600;fill:#0a0e1a;text-anchor:middle}
+
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin:14px 4px}
+.legend span{font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;align-items:center;gap:7px}
+.legend i{width:22px;height:3px;border-radius:2px;display:inline-block}
+.detail-panel{margin-top:8px;background:var(--surface);border:1px solid var(--border-hi);border-radius:12px;padding:18px;display:none}
+.detail-panel.on{display:block;animation:fadeUp .3s}
+.detail-panel h4{color:var(--gold2);font-size:14px;margin-bottom:6px}
+.detail-panel p{color:var(--muted);font-size:13.5px}
+.detail-panel code{color:var(--cyan);font-size:12px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+h2{font-family:var(--serif);font-size:clamp(22px,3vw,30px);margin:44px 0 8px;font-weight:700}
+h3.sub{font-size:14px;color:var(--muted);font-weight:500;margin-bottom:18px;max-width:900px}
+h3.sub code{color:var(--cyan);font-size:12px}
+
+table.techtab{width:100%;border-collapse:collapse;font-size:13px}
+.techtab th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);text-align:left;padding:9px 12px;border-bottom:1px solid var(--border)}
+.techtab td{padding:12px;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:top}
+.techtab td:first-child{color:var(--text);font-weight:600;white-space:nowrap}
+.techtab td code{color:var(--cyan);font-size:11.5px}
+.techtab tr:hover td{background:rgba(255,255,255,.015)}
+.tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;padding:3px 8px;border-radius:5px;text-transform:uppercase;white-space:nowrap}
+.tag.provado{background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.3)}
+.tag.contrato{background:rgba(251,191,36,.1);color:var(--amber);border:1px solid rgba(251,191,36,.3)}
+.tag.info{background:rgba(91,140,255,.1);color:var(--blue);border:1px solid rgba(91,140,255,.3)}
+.tag.novo{background:rgba(212,175,55,.14);color:var(--gold2);border:1px solid rgba(212,175,55,.4)}
+
+.card{background:linear-gradient(180deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:14px;padding:20px}
+.callout{border-left:3px solid var(--amber);background:rgba(251,191,36,.05);padding:14px 18px;border-radius:0 10px 10px 0;margin-top:22px}
+.callout p{color:var(--muted);font-size:13.5px}
+.callout p b{color:var(--text)}
+.callout p code{color:var(--cyan);font-size:12px}
+footer{margin-top:44px;color:var(--faint);font-size:12px;font-family:var(--mono)}
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">iSACI · PIDE/FAPESPA · documento autônomo</div>
+  <h1>Fluxograma da arquitetura — <em>cada tecnologia e o que ela faz</em></h1>
+  <p class="lede">Topologia real executada (<b>deploy/malha</b>): dois nós soberanos (tjpa ↔ mpfpa), cada hop com sua criptografia, e a camada de custódia <b>Ed25519</b> sobre o protocolo. Os círculos dourados <b>①→⑩</b> ordenam o ciclo de vida do documento. <b>Clique em qualquer caixa ou aresta</b> para ler o que trafega ali.</p>
+
+  <div class="flowchart">
+    <svg viewBox="0 0 1400 900">
+      <defs>
+        <marker id="a-b" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L8,4L0,8z" fill="#5b8cff"/></marker>
+        <marker id="a-g" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L8,4L0,8z" fill="#d4af37"/></marker>
+        <marker id="a-c" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L8,4L0,8z" fill="#4fd1c5"/></marker>
+        <marker id="a-h" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L8,4L0,8z" fill="#5d6880"/></marker>
+        <marker id="a-v" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L8,4L0,8z" fill="#a78bfa"/></marker>
+      </defs>
+
+      <!-- ===== WAN ===== -->
+      <rect class="fc-wan" x="20" y="14" width="1360" height="100"/>
+      <text class="fc-zlabel" x="38" y="34" fill="#5b8cff">WAN / borda — rede entre órgãos (só os nginx publicam porta 443)</text>
+
+      <g class="fc-boxw" data-e="peer">
+        <rect class="fc-box" x="560" y="40" width="280" height="56"/>
+        <text class="fc-nm" x="700" y="62" text-anchor="middle">peer — cliente do órgão A</text>
+        <text class="fc-tp" x="700" y="81" text-anchor="middle">ClienteE2E + cert CN=tjpa · httpx/mTLS</text>
+      </g>
+
+      <!-- ===== NÓ A ===== -->
+      <rect class="fc-zone" x="30" y="140" width="660" height="750"/>
+      <text class="fc-zlabel" x="48" y="162" fill="#4fd1c5">NÓ A · tjpa · interna-a (internal:true — sem rota de saída)</text>
+
+      <g class="fc-boxw" data-e="nginx-a">
+        <rect class="fc-box" x="270" y="176" width="180" height="56"/>
+        <text class="fc-nm" x="360" y="197" text-anchor="middle">nginx-a :443</text>
+        <text class="fc-tp" x="360" y="216" text-anchor="middle">mTLS + limit_req + HSTS</text>
+      </g>
+      <g class="fc-boxw" data-e="api-a">
+        <rect class="fc-box" x="270" y="300" width="180" height="60"/>
+        <text class="fc-nm" x="360" y="320" text-anchor="middle">api-a (FastAPI)</text>
+        <text class="fc-tp" x="360" y="338" text-anchor="middle">MiddlewareE2E stream</text>
+        <text class="fc-tp" x="360" y="351" text-anchor="middle">+ assina / verifica Ed25519</text>
+      </g>
+      <g class="fc-boxw" data-e="db-a">
+        <rect class="fc-box" x="500" y="400" width="150" height="54"/>
+        <text class="fc-nm" x="575" y="420" text-anchor="middle">db-a · PostgreSQL</text>
+        <text class="fc-tp" x="575" y="438" text-anchor="middle">ssl=on · append-only</text>
+      </g>
+      <g class="fc-boxw" data-e="mq-a">
+        <rect class="fc-box" x="500" y="474" width="150" height="54"/>
+        <text class="fc-nm" x="575" y="494" text-anchor="middle">rabbitmq-a</text>
+        <text class="fc-tp" x="575" y="512" text-anchor="middle">amqps 5671 only</text>
+      </g>
+      <g class="fc-boxw" data-e="s3-a">
+        <rect class="fc-box" x="500" y="548" width="150" height="54"/>
+        <text class="fc-nm" x="575" y="568" text-anchor="middle">minio-a · S3</text>
+        <text class="fc-tp" x="575" y="586" text-anchor="middle">https · buckets tjpa-*</text>
+      </g>
+      <g class="fc-boxw" data-e="vault-a">
+        <rect class="fc-box" x="500" y="622" width="150" height="54"/>
+        <text class="fc-nm" x="575" y="642" text-anchor="middle">vault-a</text>
+        <text class="fc-tp" x="575" y="660" text-anchor="middle">KV v2 · AppRole 60s</text>
+      </g>
+      <g class="fc-boxw" data-e="worker-a">
+        <rect class="fc-box" x="80" y="474" width="190" height="64"/>
+        <text class="fc-nm" x="175" y="494" text-anchor="middle">worker-a · esteira IA</text>
+        <text class="fc-tp" x="175" y="512" text-anchor="middle">MotorIA + residual + dedup</text>
+        <text class="fc-tp" x="175" y="525" text-anchor="middle">fail-closed</text>
+      </g>
+      <g class="fc-boxw" data-e="relay-a">
+        <rect class="fc-box" x="80" y="560" width="190" height="52"/>
+        <text class="fc-nm" x="175" y="580" text-anchor="middle">relay (task no lifespan)</text>
+        <text class="fc-tp" x="175" y="598" text-anchor="middle">outbox → broker · lease</text>
+      </g>
+      <g class="fc-boxw" data-e="sniff-a">
+        <rect class="fc-ghost" x="80" y="700" width="190" height="44"/>
+        <text class="fc-tp" x="175" y="718" text-anchor="middle" fill="#8b96ad">sniffer-a (netns api-a)</text>
+        <text class="fc-tp" x="175" y="734" text-anchor="middle" fill="#8b96ad">tcpdump → pcap PASS</text>
+      </g>
+      <g class="fc-boxw" data-e="nota-a">
+        <rect class="fc-ghost" x="300" y="700" width="350" height="90"/>
+        <text class="fc-tp" x="475" y="722" text-anchor="middle" fill="#8b96ad">claro só existe DENTRO dos processos:</text>
+        <text class="fc-tp" x="475" y="740" text-anchor="middle" fill="#8b96ad">disco S3 = quadros E2E · broker = ciphertext</text>
+        <text class="fc-tp" x="475" y="758" text-anchor="middle" fill="#8b96ad">postgres = metadados + hash (binário nunca entra)</text>
+        <text class="fc-tp" x="475" y="776" text-anchor="middle" fill="#8b96ad">trilha: UPDATE/DELETE barrado por trigger</text>
+      </g>
+
+      <!-- ===== NÓ B ===== -->
+      <rect class="fc-zone" x="710" y="140" width="660" height="750"/>
+      <text class="fc-zlabel" x="728" y="162" fill="#4fd1c5">NÓ B · mpfpa · interna-b (internal:true)</text>
+
+      <g class="fc-boxw" data-e="nginx-b">
+        <rect class="fc-box" x="950" y="176" width="180" height="56"/>
+        <text class="fc-nm" x="1040" y="197" text-anchor="middle">nginx-b :443</text>
+        <text class="fc-tp" x="1040" y="216" text-anchor="middle">mTLS + limit_req + HSTS</text>
+      </g>
+      <g class="fc-boxw" data-e="api-b">
+        <rect class="fc-box" x="950" y="300" width="180" height="60"/>
+        <text class="fc-nm" x="1040" y="320" text-anchor="middle">api-b (FastAPI)</text>
+        <text class="fc-tp" x="1040" y="338" text-anchor="middle">/v1/recebimentos: verifica</text>
+        <text class="fc-tp" x="1040" y="351" text-anchor="middle">identidade+destino+assinatura</text>
+      </g>
+      <g class="fc-boxw" data-e="db-b">
+        <rect class="fc-box" x="1180" y="400" width="150" height="54"/>
+        <text class="fc-nm" x="1255" y="420" text-anchor="middle">db-b · PostgreSQL</text>
+        <text class="fc-tp" x="1255" y="438" text-anchor="middle">ssl=on · append-only</text>
+      </g>
+      <g class="fc-boxw" data-e="mq-b">
+        <rect class="fc-box" x="1180" y="474" width="150" height="54"/>
+        <text class="fc-nm" x="1255" y="494" text-anchor="middle">rabbitmq-b</text>
+        <text class="fc-tp" x="1255" y="512" text-anchor="middle">amqps 5671 only</text>
+      </g>
+      <g class="fc-boxw" data-e="s3-b">
+        <rect class="fc-box" x="1180" y="548" width="150" height="54"/>
+        <text class="fc-nm" x="1255" y="568" text-anchor="middle">minio-b · S3</text>
+        <text class="fc-tp" x="1255" y="586" text-anchor="middle">https · buckets mpfpa-*</text>
+      </g>
+      <g class="fc-boxw" data-e="worker-b">
+        <rect class="fc-box" x="760" y="474" width="190" height="64"/>
+        <text class="fc-nm" x="855" y="494" text-anchor="middle">worker-b · esteira IA</text>
+        <text class="fc-tp" x="855" y="512" text-anchor="middle">MotorIA + residual + dedup</text>
+        <text class="fc-tp" x="855" y="525" text-anchor="middle">E2E_FONTE=env</text>
+      </g>
+      <g class="fc-boxw" data-e="sniff-b">
+        <rect class="fc-ghost" x="760" y="700" width="190" height="44"/>
+        <text class="fc-tp" x="855" y="718" text-anchor="middle" fill="#8b96ad">sniffer-b (netns api-b)</text>
+        <text class="fc-tp" x="855" y="734" text-anchor="middle" fill="#8b96ad">tcpdump → pcap PASS</text>
+      </g>
+      <g class="fc-boxw" data-e="nota-b">
+        <rect class="fc-ghost" x="980" y="700" width="350" height="90"/>
+        <text class="fc-tp" x="1155" y="722" text-anchor="middle" fill="#8b96ad">confirmação verificável (B/C):</text>
+        <text class="fc-tp" x="1155" y="740" text-anchor="middle" fill="#8b96ad">B sobe o binário no SEU storage, relê e</text>
+        <text class="fc-tp" x="1155" y="758" text-anchor="middle" fill="#8b96ad">recomputa SHA-256 — declarar não prova</text>
+        <text class="fc-tp" x="1155" y="776" text-anchor="middle" fill="#8b96ad">ack de volta a A sai assinado por B</text>
+      </g>
+
+      <!-- ===== ARESTAS WAN ===== -->
+      <path class="fc-edge e-mtls" data-e="e-peerA" marker-end="url(#a-b)" d="M620 96 C520 120, 400 140, 372 176"/>
+      <circle class="fc-num" cx="500" cy="122" r="9"/><text class="fc-numt" x="500" y="126">1</text>
+      <text class="fc-elabel" x="380" y="118">① criar ② upload ④ envio · mTLS+E2E</text>
+
+      <path class="fc-edge e-sig" data-e="e-peerB" marker-end="url(#a-v)" d="M780 96 C880 120, 1000 140, 1028 176"/>
+      <circle class="fc-num" cx="900" cy="122" r="9"/><text class="fc-numt" x="900" y="126">5</text>
+      <text class="fc-elabel" x="930" y="118">⑤ recebimentos · mTLS+E2E+Ed25519</text>
+
+      <!-- ===== hops internos A ===== -->
+      <path class="fc-edge e-http" data-e="e-ngxA" marker-end="url(#a-h)" d="M360 232 L360 300"/>
+      <text class="fc-elabel" x="368" y="270">HTTP + quadros E2E (payload segue cifrado)</text>
+      <path class="fc-edge e-http" data-e="e-ngxB" marker-end="url(#a-h)" d="M1040 232 L1040 300"/>
+      <text class="fc-elabel" x="1048" y="270">HTTP + quadros E2E</text>
+
+      <path class="fc-edge e-tls" data-e="e-apidbA" marker-end="url(#a-c)" d="M450 330 C490 350, 540 370, 570 400"/>
+      <circle class="fc-num" cx="512" cy="366" r="9"/><text class="fc-numt" x="512" y="370">3</text>
+      <path class="fc-edge e-tls" data-e="e-apimqA" marker-end="url(#a-c)" d="M360 360 C360 440, 420 470, 500 498"/>
+      <path class="fc-edge e-tls" data-e="e-apis3A" marker-end="url(#a-c)" d="M450 345 C520 390, 560 460, 572 548"/>
+      <path class="fc-edge e-tls" data-e="e-apivaultA" marker-end="url(#a-c)" d="M350 360 C360 500, 430 560, 505 630"/>
+      <text class="fc-elabel" x="462" y="388">③ trilha+outbox (1 tx) · pgsql/amqps/s3 — TLS medido</text>
+
+      <path class="fc-edge e-e2e" data-e="e-relaymqA" marker-end="url(#a-g)" d="M270 585 C340 580, 430 545, 505 522"/>
+      <text class="fc-elabel" x="282" y="568">outbox→publish · msg=E2E</text>
+      <path class="fc-edge e-tls" data-e="e-relaydbA" marker-end="url(#a-c)" d="M270 575 C360 560, 460 500, 530 454"/>
+      <text class="fc-elabel" x="300" y="530">claim lease</text>
+
+      <path class="fc-edge e-e2e" data-e="e-mqwkA" marker-end="url(#a-g)" d="M500 505 L270 505"/>
+      <circle class="fc-num" cx="385" cy="505" r="9"/><text class="fc-numt" x="385" y="509">7</text>
+      <text class="fc-elabel" x="278" y="496">⑦ consume · msg=E2E</text>
+      <path class="fc-edge e-tls" data-e="e-wks3A" marker-end="url(#a-c)" d="M270 528 C340 550, 420 565, 500 572"/>
+      <circle class="fc-num" cx="390" cy="552" r="9"/><text class="fc-numt" x="390" y="556">8</text>
+      <text class="fc-elabel" x="300" y="546">⑧ baixa/grava cifrado</text>
+      <path class="fc-edge e-tls" data-e="e-wkvaultA" marker-end="url(#a-c)" d="M175 538 C175 680, 330 660, 500 650"/>
+      <text class="fc-elabel" x="186" y="660">AppRole login → KV</text>
+      <path class="fc-edge e-tls" data-e="e-wkdbA" marker-end="url(#a-c)" d="M175 474 C175 420, 330 400, 500 424"/>
+      <text class="fc-elabel" x="190" y="428">trilha dedup (1 vez)</text>
+
+      <!-- envelope de saída A→peer -->
+      <path class="fc-edge e-sig" data-e="e-envio" marker-end="url(#a-v)" d="M450 310 C560 280, 590 180, 605 96"/>
+      <circle class="fc-num" cx="560" cy="230" r="9"/><text class="fc-numt" x="560" y="234">4</text>
+      <text class="fc-elabel" x="472" y="230">④ envelope ASSINADO (metadados, sem binário)</text>
+
+      <!-- hops internos B -->
+      <path class="fc-edge e-tls" data-e="e-apidbB" marker-end="url(#a-c)" d="M1130 330 C1170 350, 1220 370, 1250 400"/>
+      <circle class="fc-num" cx="1192" cy="366" r="9"/><text class="fc-numt" x="1192" y="370">6</text>
+      <text class="fc-elabel" x="1140" y="388">⑥ ingresso RECEBIDA + trilha</text>
+      <path class="fc-edge e-tls" data-e="e-apimqB" marker-end="url(#a-c)" d="M1040 360 C1040 440, 1100 470, 1180 498"/>
+      <path class="fc-edge e-tls" data-e="e-apis3B" marker-end="url(#a-c)" d="M1130 345 C1200 390, 1240 460, 1252 548"/>
+      <circle class="fc-num" cx="1198" cy="470" r="9"/><text class="fc-numt" x="1198" y="474">9</text>
+      <text class="fc-elabel" x="1160" y="462">⑨ upload B + recomputa hash</text>
+
+      <path class="fc-edge e-e2e" data-e="e-mqwkB" marker-end="url(#a-g)" d="M1180 505 L950 505"/>
+      <path class="fc-edge e-tls" data-e="e-wks3B" marker-end="url(#a-c)" d="M950 528 C1020 550, 1100 565, 1180 572"/>
+      <path class="fc-edge e-tls" data-e="e-wkdbB" marker-end="url(#a-c)" d="M855 474 C855 420, 1010 400, 1180 424"/>
+
+      <!-- ack de volta -->
+      <path class="fc-edge e-sig" data-e="e-ack" marker-end="url(#a-v)" d="M950 288 C800 250, 640 250, 452 290"/>
+      <circle class="fc-num" cx="700" cy="256" r="9"/><text class="fc-numt" x="700" y="260">10</text>
+      <text class="fc-elabel" x="606" y="250">⑩ ack B→A assinado Ed25519 (vai pela WAN via nginx)</text>
+    </svg>
+
+    <div class="legend">
+      <span><i style="background:#5b8cff"></i>borda: TLS 1.3 + mTLS</span>
+      <span><i style="background:#5d6880"></i>hop interno HTTP (payload segue E2E)</span>
+      <span><i style="background:#4fd1c5"></i>link interno TLS (pgsql/amqps/https)</span>
+      <span><i style="background:#d4af37"></i>mensagem = quadros AEAD</span>
+      <span><i style="background:#a78bfa"></i>payload assinado Ed25519 + AEAD</span>
+      <span>①→⑩ ordem do ciclo de vida</span>
+    </div>
+    <div class="detail-panel" id="fcpanel"></div>
+  </div>
+
+  <!-- ===== TABELA DE TECNOLOGIAS ===== -->
+  <h2>Cada tecnologia — e o que ela faz <span style="color:var(--gold)">aqui</span></h2>
+  <h3 class="sub">Não o que o marketing diz: a função concreta dentro desta arquitetura. <span class="tag provado">medido</span> = prova dinâmica executada · <span class="tag contrato">contrato</span> = configuração verificada · <span class="tag novo">v3</span> = endurecimento desta rodada.</h3>
+  <div class="card" style="overflow-x:auto">
+  <table class="techtab">
+    <thead><tr><th>tecnologia</th><th>camada</th><th>o que faz na arquitetura</th><th>estado</th></tr></thead>
+    <tbody>
+    <tr><td>nginx 1.27</td><td>borda / proxy</td><td>Único ponto de entrada: publica 443, exige cert de cliente (<code>ssl_verify_client</code>), extrai o CN → <code>X-Cliente-Orgao</code>, zera <code>Authorization</code>, <code>limit_req</code> 50 r/s + HSTS. Termina o TLS do hop — o payload E2E atravessa intocado.</td><td><span class="tag provado">medido</span> <span class="tag novo">v3</span></td></tr>
+    <tr><td>TLS 1.3 + mTLS</td><td>transporte</td><td>Confidencialidade e autenticação mútua em <b>todo</b> link: borda (mTLS — a identidade é o certificado) e interna (CA dev da malha). 22+15 registros TLS medidos no pcap; sem-cert e CA forjada rejeitados no handshake.</td><td><span class="tag provado">medido</span></td></tr>
+    <tr><td>Ed25519</td><td>custódia / prova</td><td><code>app/assinatura.py</code>: assina o <b>envelope</b> (todos os campos, JSON canônico) e o <b>ack</b>. B verifica com a pública de <code>origem</code>; A aplica decisão só com a assinatura do <b>destino</b>. Autentica o conteúdo semântico — o E2E autentica o canal; camadas independentes.</td><td><span class="tag novo">v3</span></td></tr>
+    <tr><td>FastAPI + uvicorn</td><td>aplicação</td><td>Rotas <code>/v1/*</code> (tramitações, documentos, recebimentos, acks, verificar). Sem porta publicada. Erros sanitizados (422 sem eco do payload). <code>MiddlewareE2E</code> decifra <b>antes</b> do routing e sela a resposta.</td><td><span class="tag info">projeto</span></td></tr>
+    <tr><td>ChaCha20-Poly1305</td><td>envelope E2E</td><td>AEAD simétrico (RFC 8439) nos 3 pontos de I/O: HTTP (middleware), AMQP (<code>Message.body</code>), S3 (<code>ArmazenamentoCifrado</code>). Quadro v2 <code>0xE2|0x02|nonce|len|ts|ct</code> — ts no AAD, janela 300s. Substituiu JWT.</td><td><span class="tag provado">medido</span></td></tr>
+    <tr><td>Ingresso streaming</td><td>envelope E2E</td><td><code>abrir_stream_todas</code>: decifra quadro a quadro sem materializar o corpo; rejeita no frame 0 (assinatura AEAD/frescura/replay); <code>x-e2e-ct</code> em allowlist → 415. Upload de ~1 MiB atravessa sem buffer do ciphertext inteiro.</td><td><span class="tag novo">v3</span></td></tr>
+    <tr><td>PostgreSQL 16</td><td>persistência</td><td>Tramitações, outbox, idempotência, hash-chain — <b>e</b> <code>replay_nonces</code>: anti-replay atômico multi-réplica. Trigger append-only barra UPDATE/DELETE na trilha; <code>pg_advisory_xact_lock</code>+<code>UNIQUE(hash_anterior)</code> contra bifurcação. Binário nunca entra.</td><td><span class="tag provado">medido</span> <span class="tag novo">v3</span></td></tr>
+    <tr><td>RabbitMQ 3</td><td>mensageria</td><td>Outbox → broker intra-nó (handoff para a esteira de IA): fila quorum + delivery-limit + DLX, publisher-confirm, só amqps:5671. O corpo da mensagem é quadro E2E — o broker nunca vê claro. Dedup de efeito na trilha (<code>encadear_uma_vez</code>).</td><td><span class="tag provado">medido</span></td></tr>
+    <tr><td>MinIO</td><td>object storage</td><td>Buckets por órgão <code>&lt;org&gt;-docs</code>/<code>-anonimizados</code> — isolamento por construção. HTTPS; objeto gravado são quadros E2E. <b>v3:</b> presença física é pré-condição de enviar/confirmar; confirmar recomputa SHA-256 dos bytes.</td><td><span class="tag provado">medido</span></td></tr>
+    <tr><td>HashiCorp Vault 1.18</td><td>segredos</td><td>KV v2 <code>secret/isaci/e2e</code> {atual,anterior_N} — a E2E_CHAVE nunca vive em env/repo. <b>v3:</b> AppRole — token de 60s para a leitura (root fica no init); sem credencial = boot falha. Rotação sela-com-atual/abre-com-todas.</td><td><span class="tag provado">medido</span> <span class="tag novo">v3</span></td></tr>
+    <tr><td>ClienteE2E + httpx</td><td>emissor</td><td><code>app/cliente_e2e.py</code>: sela todo request (multipart inteiro), mTLS via SSLContext explícito, <code>x-e2e-ct</code> com o content-type real, decifra a resposta. Par em claro sob E2E obrigatório = erro, sem downgrade.</td><td><span class="tag info">projeto</span></td></tr>
+    <tr><td>MotorIA (porta)</td><td>IA permutável</td><td><code>anonimizar(bytes)→bytes</code>: stub/demo/ollama/langchain via <code>IA_ENGINE</code>. POC medida: cascata regex+LLM local (overlap F1 1,000). ADR-0011: produção exige NER discriminativo — a porta já o isola. Worker fail-closed sem config válida.</td><td><span class="tag contrato">POC</span></td></tr>
+    <tr><td>Docker Compose</td><td>orquestração</td><td><code>deploy/malha</code>: 2 nós espelhados + vault + peer + sniffers. <code>internal:true</code> = sem rota de saída; <code>borda</code> é a WAN. Contrato normativo verificado estaticamente por <code>test_isolamento.py</code>.</td><td><span class="tag provado">medido</span></td></tr>
+    <tr><td>tcpdump + prova_pcap</td><td>evidência</td><td>Sniffer dentro do netns da API (a bridge não é hub). Assert: registros TLS presentes + busca binária de sentinela/caso_cnj/JSON/credenciais → zero hits. É a diferença entre "criptografado" e <b>provado</b> criptografado.</td><td><span class="tag provado">medido</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout">
+    <p><b>Como ler o desenho:</b> o binário nunca cruza a WAN — atravessa só na <b>subida</b> ② (peer→nginx de A, dentro de quadros E2E sobre mTLS). O que viaja entre órgãos ④⑤⑩ são metadados + hash <b>assinados Ed25519</b> e selados AEAD. Cada hop interno é TLS real medido no pcap; o claro só existe dentro dos processos api/worker. Em roxo, a camada de custódia nova: ela prova <b>quem</b> emitiu o conteúdo — o AEAD prova que o conteúdo não foi lido; juntas, autoria + sigilo.</p>
+  </div>
+
+  <footer>iSACI · fluxograma autônomo · gerado 05/11/2026 · docs/fluxograma-arquitetura.html · fonte da verdade: deploy/malha + app/*</footer>
+</main>
+
+<script>
+const FC={
+peer:['peer — cliente do órgão A','ClienteE2E + cert CN=tjpa na rede <code>borda</code>. Sela todo request (inclusive o multipart do binário) antes de qualquer byte sair. É também o <b>correio</b>: carrega o envelope assinado de A e reposta em B.'],
+'nginx-a':['nginx-a · ①②④','Única porta do nó A. TLS 1.3 + mTLS: verifica o cert, CN→<code>X-Cliente-Orgao</code>. <code>limit_req</code> 50 r/s + HSTS. Termina o TLS do hop — o payload E2E segue cifrado até a API.'],
+'api-a':['api-a · ③④','MiddlewareE2E abre o envelope ANTES do routing, <b>quadro a quadro (streaming)</b>. Rotas /v1/*: criar, upload (gate estado+magic bytes+SHA-256), envio (exige objeto no storage), <b>assina o envelope Ed25519</b>, verifica assinatura do ack.'],
+'db-a':['db-a · ③','PostgreSQL ssl=on. Tramitações + outbox + idempotência + hash-chain + <code>replay_nonces</code>. Trigger append-only (0007) barra UPDATE/DELETE; advisory lock + UNIQUE(hash_anterior) contra bifurcação. Binário nunca entra.'],
+'mq-a':['rabbitmq-a','Só amqps:5671. Fila quorum + delivery-limit + DLX → poison message vira <code>falha_anonimizacao</code> na trilha. Message.body = quadro E2E — o broker só vê ciphertext.'],
+'s3-a':['minio-a','HTTPS. Buckets <code>tjpa-docs</code> e <code>tjpa-docs-anonimizados</code>. ArmazenamentoCifrado grava quadros E2E — nem o disco vê claro. Presença física é pré-condição de enviar/confirmar.'],
+'vault-a':['vault-a · AppRole','KV v2 <code>secret/isaci/e2e</code>. api/worker fazem login AppRole (role_id+secret_id em /segredos ro) → token 60s → leem a chave. Root token não vai para os contêineres; sem credencial = boot falha.'],
+'worker-a':['worker-a · ⑦⑧','Consome amqps → baixa o objeto cifrado → MotorIA.anonimizar → gate pii_residual (residual>0 = falha, sem gravação) → grava anonimizado cifrado → trilha UMA vez (dedup). Fail-closed sem DATABASE_URL/IA_ENGINE.'],
+'relay-a':['relay','Task no lifespan da API: claim da outbox por lease → publish com publisher-confirm → PROCESSADO pós-ACK. Falha → backoff; esgotou → ESGOTADO + falha_outbox na trilha.'],
+'sniff-a':['sniffer-a','tcpdump dentro do netns da API: 22 registros TLS, zero payload legível — prova de NIC, não de config.'],
+'nota-a':['o que cada repositório guarda','Disco S3: quadros E2E. Broker: ciphertext. Postgres: metadados + hashes (binário nunca entra — não existe coluna). Trilha: UPDATE/DELETE barrado por trigger.'],
+'nginx-b':['nginx-b · ⑤','Mesma política de A. Recebe o POST /v1/recebimentos com o envelope selado E assinado por A.'],
+'api-b':['api-b · ⑤⑥⑨⑩','/v1/recebimentos verifica na ordem: chamador==env.origem → destino==mpfpa → <b>assinatura Ed25519</b> válida → eco/ingresso. Confirmar exige o binário no storage de B + recomputa SHA-256; o ack de volta a A sai assinado por B.'],
+'db-b':['db-b · ⑥','PostgreSQL ssl=on + append-only. A trilha de B encadeia o recebimento na mesma tx do estado.'],
+'mq-b':['rabbitmq-b','amqps-only — idem A.'],
+'s3-b':['minio-b · ⑨','B sobe o binário no SEU bucket antes de confirmar — confirmação sem bytes locais é 409.'],
+'worker-b':['worker-b','Mesma esteira de A (chave por env — caminho já provado).'],
+'sniff-b':['sniffer-b','netns do api-b — 15 registros TLS, zero payload legível.'],
+'nota-b':['confirmação verificável','A novidade da rodada: "dizer que recebeu" não é evidência — B precisa dos bytes no próprio storage, relê e recomputa SHA-256. O ack assinado prova para A que a decisão veio do destino.'],
+'e-peerA':['①②④ peer → nginx-a','mTLS + E2E: criar (metadados+hash), upload (binário selado, SHA-256 verificado no stream), envio (só se o objeto existir).'],
+'e-peerB':['⑤ peer → nginx-b','O corpo é o ENVELOPE assinado por A: metadados + hash + destino — nunca o binário.'],
+'e-ngxA':['nginx-a → api-a','HTTP interno carregando quadros E2E — por desenho (claro só dentro do processo).'],
+'e-ngxB':['nginx-b → api-b','Idem.'],
+'e-apidbA':['③ api-a → db-a','pgsql TLS: tramitação + trilha + outbox no MESMO commit (evento só existe se o estado existir).'],
+'e-apimqA':['api-a → rabbitmq-a','amqps — publicação via relay/outbox sob TLS; body = quadro E2E.'],
+'e-apis3A':['api-a → minio-a','HTTPS S3 — upload do binário gravado como quadros E2E.'],
+'e-apivaultA':['api-a → vault-a','HTTPS — AppRole login → token 60s → leitura do KV.'],
+'e-relaymqA':['relay → rabbitmq-a','Publish com confirm; marca PROCESSADO só pós-ACK do broker.'],
+'e-relaydbA':['relay → db-a','Claim atômico da outbox por lease (relay caído não trava a linha; N réplicas seguras).'],
+'e-mqwkA':['⑦ rabbitmq-a → worker-a','Consume amqps — mensagem entregue é quadro E2E.'],
+'e-wks3A':['⑧ worker-a → minio-a','HTTPS — baixa bruto cifrado, grava anonimizado cifrado.'],
+'e-wkvaultA':['worker-a → vault-a','HTTPS — AppRole: login → token curto → GET KV (medido no boot).'],
+'e-wkdbA':['worker-a → db-a','pgsql TLS — encadear_uma_vez: doc_anonimizado/falha_* gravados UMA vez sob redelivery.'],
+'e-envio':['④ api-a → peer','O /envio devolve metadados + hash + destino + <b>assinatura Ed25519 de A</b>, selado E2E.'],
+'e-apidbB':['⑥ api-b → db-b','Ingresso RECEBIDA: estado + linha de trilha no mesmo commit.'],
+'e-apimqB':['api-b → rabbitmq-b','amqps — idem A.'],
+'e-apis3B':['⑨ api-b → minio-b','B arquiva o binário no próprio bucket — pré-condição da confirmação.'],
+'e-mqwkB':['rabbitmq-b → worker-b','amqps + quadro E2E — idem A.'],
+'e-wks3B':['worker-b → minio-b','HTTPS S3 — idem A.'],
+'e-wkdbB':['worker-b → db-b','pgsql TLS — idem A.'],
+'e-ack':['⑩ ack B→A','A decisão de B volta a A assinada pelo destino: A só transita EM_TRANSITO→CONFIRMADA/RECUSADA com a assinatura válida — ack forjado não move o caso.']
+};
+document.querySelectorAll('.fc-edge,.fc-boxw').forEach(el=>{
+  el.addEventListener('click',ev=>{
+    ev.stopPropagation();
+    document.querySelectorAll('.fc-edge,.fc-box').forEach(x=>x.classList.remove('hot'));
+    el.classList.add('hot');
+    const d=FC[el.dataset.e];if(!d)return;
+    const p=document.getElementById('fcpanel');
+    p.innerHTML=`<h4>${d[0]}</h4><p>${d[1]}</p>`;
+    p.classList.add('on');
+    p.scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+});
+</script>
+</body>
+</html>
