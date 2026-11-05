@@ -14,10 +14,13 @@ from fastapi.testclient import TestClient
 from app.main import create_app
 from app.storage import ArmazenamentoMemoria
 from tests.identidade import hdr
+from tests.smoke.conftest import assinantes_teste
 from tests.smoke.dbutil import mk_repo
 
 DOC = b"EXCELENTISSIMO SENHOR DOUTOR JUIZ - processo via HTTP."
 HASH_DOC = hashlib.sha256(DOC).hexdigest()
+
+ASS = assinantes_teste()
 
 
 @pytest.fixture
@@ -26,7 +29,8 @@ def ca():
     # (portal), que é onde as rotas executam — exigência do asyncpg.
     with TestClient(create_app(
             "tjpa", repo_factory=lambda: mk_repo("a"),
-            storage=ArmazenamentoMemoria("tjpa"))) as c:
+            storage=ArmazenamentoMemoria("tjpa"),
+            assinante=ASS["tjpa"])) as c:
         yield c
 
 
@@ -34,7 +38,8 @@ def ca():
 def cb():
     with TestClient(create_app(
             "mpf.pa", repo_factory=lambda: mk_repo("b"),
-            storage=ArmazenamentoMemoria("mpf.pa"))) as c:
+            storage=ArmazenamentoMemoria("mpf.pa"),
+            assinante=ASS["mpf.pa"])) as c:
         yield c
 
 
@@ -49,7 +54,7 @@ def payload(caso):
 
 def fluxo_http(ca, cb, payload):
     """T9: cria (metadados) -> upload multipart -> envia (só
-    metadados) -> recebe -> confirma -> ack."""
+    metadados) -> recebe -> B arquiva os bytes -> confirma -> ack."""
     r = ca.post("/v1/tramitacoes", json=payload, headers=hdr("tjpa"))
     assert r.status_code == 201, r.text
     tid = r.json()["id"]
@@ -59,8 +64,13 @@ def fluxo_http(ca, cb, payload):
                  headers=hdr("tjpa"))
     assert up.status_code == 201, up.text
     env = ca.post(f"/v1/tramitacoes/{tid}/envio", headers=hdr("tjpa")).json()
-    rec = cb.post("/v1/recebimentos", json=env, headers=hdr("mpf.pa"))
+    rec = cb.post("/v1/recebimentos", json=env, headers=hdr("tjpa"))
     assert rec.status_code == 200 and rec.json()["recebido"] is True
+    up_b = cb.post(f"/v1/documentos/{tid}/upload",
+                   files={"arquivo": ("peca.pdf", DOC,
+                                      "application/pdf")},
+                   headers=hdr("mpf.pa"))
+    assert up_b.status_code == 201, up_b.text
     conf = cb.post(f"/v1/tramitacoes/{tid}/confirmacao", headers=hdr("mpf.pa"),
                    json=dict(tramitacao_id=tid, decisao="aceita",
                              hash_documento_recebido=
@@ -101,10 +111,12 @@ class TestFluxoHTTP:
                       headers=hdr("tjpa"))
         assert env.status_code == 409
 
-    def test_adulteracao_do_hash_pega_na_confirmacao(
+    def test_adulteracao_do_hash_pega_na_assinatura(
             self, ca, cb, payload):
-        """Envelope adulterado (hash trocado): recebido como
-        metadado, mas a confirmação com o hash REAL explode."""
+        """Envelope adulterado (hash trocado em trânsito): a
+        assinatura Ed25519 cobre todos os campos — o MITM explode
+        no INGRESSO com 409, antes de virar registro. A camada de
+        bytes segue provada no nível serviço (test_fluxo_e2e)."""
         r = ca.post("/v1/tramitacoes", json=payload,
                     headers=hdr("tjpa"))
         tid = r.json()["id"]
@@ -114,14 +126,8 @@ class TestFluxoHTTP:
                       headers=hdr("tjpa")).json()
         env["hash_documento_sha256"] = "0" * 64      # MITM
         rec = cb.post("/v1/recebimentos", json=env,
-                      headers=hdr("mpf.pa")).json()
-        assert rec["recebido"] is True
-        conf = cb.post(f"/v1/tramitacoes/{tid}/confirmacao",
-                       headers=hdr("mpf.pa"),
-                       json=dict(tramitacao_id=tid, decisao="aceita",
-                                 hash_documento_recebido=payload[
-                                     "hash_documento_sha256"]))
-        assert conf.status_code == 409
+                      headers=hdr("tjpa"))
+        assert rec.status_code == 409
 
     def test_idempotencia_http(self, ca, payload):
         a = ca.post("/v1/tramitacoes", json=payload, headers=hdr("tjpa"))

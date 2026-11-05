@@ -11,24 +11,25 @@ MVP. Categorias:
 
 | Item | Categoria | Referência | Risco |
 |---|---|---|---|
-| `receber` não autentica o `origem` declarado no envelope — confia no canal. Depende de mTLS no túnel entre nós (ADR-0007), ainda não implementado | dados reais | `app/service.py` `receber`; `docs/adr/0007-rede-isolada-e-tuneis.md` | órgão forja envelope em nome de terceiro |
-| RBAC/ABAC — JWT carrega só `orgao_id`, sem roles/escopos | produção | `app/deps.py` | privilégio excessivo dentro do órgão |
+| ~~`receber` não autentica o `origem` declarado~~ **resolvido 05/11:** `receber` exige `org == env.origem` (o contrato do envelope, ADR-0007) — quem posta é o remetente com o cert dele; 409 uniforme antes do carregar, sem oráculo | dados reais | `app/service.py` `receber` | órgão forja envelope em nome de terceiro |
+| RBAC/ABAC — identidade mTLS carrega só o CN do órgão, sem roles/escopos (JWT removido; OIDC segue opção para identidade humana — emenda ADR-0006) | produção | `app/deps.py` | privilégio excessivo dentro do órgão |
 | Credencial única MinIO acessa todos os buckets — sem policy por órgão | dados reais | `app/storage.py` | nó comprometido lê bruto de todos |
-| Rotação de chave via JWKS e `kid` — hoje `JWT_PUBLIC_KEY` única, rotacionar = redeploy | produção | `app/deps.py` | chave vazada exige janela de indisponibilidade |
-| Revogação de token — validação offline não consulta denylist; mitigar com TTL curto | produção | `app/deps.py` | token furtado vale até o `exp` |
-| Ordem das checagens é propriedade de segurança não codificada (análise §4.1): participação (404) → papel (404) → estado (409) só vale por convenção de escrita — reordenar `enviar`/`confirmar`/`aplicar_confirmacao` vaza existência/status a terceiros | dados reais | `app/service.py` `enviar`, `confirmar`, `aplicar_confirmacao` | terceiro descobre que o caso existe |
-| `org` é confiado dentro do serviço (§4.8): `NoTramitacao` não autentica — a identidade só é vinculada ao JWT em `deps.orgao_atual`; qualquer chamada interna futura com `org` forjado contorna toda a autorização | dados reais | `app/service.py` `NoTramitacao`; `app/deps.py` | endpoint interno futuro vira bypass de soberania |
-| Envelope, ack e confirmação trafegam sem assinatura (§5.5): `origem`, `status` e `hash_documento_recebido` são declarados e confiados — a cadeia de custódia repousa na honestidade dos pares até existir assinatura + mTLS (ADR-0007) | dados reais | `app/service.py` `receber`, `aplicar_confirmacao`, `confirmar` | par forja decisão/hash sem prova |
-| Hash da confirmação é auto-declarado por B (§4.7): `confirmar` compara `hash_documento_recebido` com o valor registrado — declaração contra declaração, não recomputação sobre bytes; o teste do caminho feliz usa o `hash_doc` do próprio envelope como valor (eco). Um destino que não recomputa bytes passa igual | dados reais | `app/service.py` `confirmar`; `tests/smoke/test_fluxo_e2e.py` | confirmação afirma integridade sem prová-la |
+| ~~Rotação de chave via JWKS e `kid`~~ **obsoleto 05/11:** JWT removido da borda (mTLS puro); rotação E2E é por `ChavesE2E{atual,anteriores}` no cofre | produção | `app/cofre.py` | — |
+| ~~Revogação de token~~ **obsoleto 05/11:** sem token a revogar na borda; revogação de cert é problema de PKI (CRL/OCSP no nginx — dívida nova, não implementada) | produção | `deploy/nginx.conf` | cert comprometido aceito até expirar/revogar |
+| ~~Ordem das checagens por convenção~~ **resolvido 05/11:** sequência participação→papel→nó centralizada em `NoTramitacao._autorizar` — call site que reordenar quebra num lugar só | dados reais | `app/service.py` `_autorizar` | terceiro descobre que o caso existe |
+| `org` é confiado dentro do serviço (§4.8): `NoTramitacao` não autentica — a identidade vem do mTLS em `deps.orgao_atual` (JWT→cert); qualquer chamada interna futura com `org` forjado contorna a autorização. **Mitigado 05/11:** a confiança agora converge num método (`_autorizar`), mas `org` segue parâmetro confiável | dados reais | `app/service.py` `NoTramitacao`; `app/deps.py` | endpoint interno futuro vira bypass de soberania |
+| ~~Envelope, ack e confirmação trafegam sem assinatura (§5.5)~~ **resolvido 05/11 (B):** Ed25519 em `app/assinatura.py` — `EnvelopeRecebimento.assinatura` cobre todos os demais campos (JSON canônico ordenado); `receber` verifica contra a pública de `env.origem`, `ConfirmacaoOut` sai assinado pelo destino e `aplicar_confirmacao` só aplica com a assinatura dele — fail-closed onde o par existe (`ORG_SIGN_SEED_B64`+`ORGAO_PUBKEYS_JSON`); ausente = dev sem verificação | dados reais | `app/assinatura.py`; `app/service.py` `receber`, `aplicar_confirmacao`, `confirmar` | par forja decisão/hash sem prova |
+| ~~Envelope sem `destino`~~ **resolvido 05/11 (B):** campo `destino` no `EnvelopeRecebimento`; `receber` rejeita `env.destino != self.orgao` — envelope mal-endereçado não vira registro | dados reais | `app/schemas/tramitacao.py`; `app/service.py` `receber` | envelope re-direcionado registrava no nó errado |
+| ~~Hash da confirmação é auto-declarado por B (§4.7)~~ **resolvido 05/11 (B):** `confirmar` exige os bytes no storage de B, relê e recomputa SHA-256 contra o registrado — tudo antes de `_transitar`; declarar sem bytes verificados é 409 | dados reais | `app/service.py` `confirmar`; `tests/smoke/test_seguranca_b.py` | confirmação afirma integridade sem prová-la |
 
 ## Integridade da trilha
 
 | Item | Categoria | Referência | Risco |
 |---|---|---|---|
 | Cadeia refutável por quem escreve no Postgres — sem assinatura por entrada nem âncora externa | dados reais | `app/repository.py` `encadear` | DBA reescreve e re-encadeia a trilha |
-| Assinatura Ed25519 por linha + endpoint `GET /trilha/{id}/verificar` | dados reais | idem | sem prova a terceiros |
-| Fork por corrida: `encadear` lê topo e insere filho na mesma tx — falta `UNIQUE(hash_anterior)` + serialização | dados reais | `app/repository.py` `encadear` | bifurcação silenciosa da cadeia |
-| `tramitacoes.hash_cadeia` fica obsoleto após eventos fora do `_commit` (§4.13): `encadear` via `tx` no worker (`processar_evento`/`registrar_falha`) e no relay (`outbox_falhar` → `falha_outbox:`) não atualiza o campo — `consultar` devolve um topo anterior ao real | dados reais | `app/repository.py` `encadear`; `app/worker.py`; `app/repository.py` `outbox_falhar` | verificação do topo do caso usa elo antigo |
+| ~~Endpoint de verificação~~ **parcial 05/11 (B):** `GET /v1/tramitacoes/{id}/verificar` rejoga a cadeia elo a elo (`repo.verificar`) e aponta a 1ª divergência — auditoria autônoma sem confiar no topo. Assinatura Ed25519 **por linha** da trilha segue aberta (prova a terceiros exigiria a assinatura persistida por evento) | dados reais | `app/repository.py` `verificar`; `app/service.py` `verificar_trilha`; `app/main.py` | sem prova a terceiros |
+| ~~Fork por corrida~~ **resolvido 05/11:** `pg_advisory_xact_lock` no `encadear` serializa a extensão (Postgres; sqlite serializa por arquivo) + `UNIQUE(hash_anterior)` migração 0006 como backstop — quem burlar a trava vira `ErroConflitoTrilha` 409 | dados reais | `app/repository.py` `encadear` | bifurcação silenciosa da cadeia |
+| ~~`tramitacoes.hash_cadeia` obsoleto~~ **resolvido 05/11:** `encadear` agora atualiza `tramitacoes.hash_cadeia` em todo caminho — worker/relay fora do `_commit` não deixam o topo denormalizado para trás | dados reais | `app/repository.py` `encadear` | verificação do topo do caso usa elo antigo |
 
 ## Anonimização (LGPD)
 
@@ -36,12 +37,12 @@ MVP. Categorias:
 |---|---|---|---|
 | Rescan determinístico pós-NER (CPF/CNPJ/RG/e-mail/telefone residual na saída) | dados reais | `app/motor_langchain.py` `anonimizar` | `doc_anonimizado` gravado sobre saída defeituosa |
 | Validação estrutural da saída LLM (diff/simetria — só a tag deve diferir) | dados reais | `app/motor_langchain.py` `_limpar` | modelo induzido devolve texto arbitrário |
-| Gate de residual: `residuais > 0` em `app/metricas.py` deve bloquear a gravação no bucket anonimizado e registrar `falha_anonimizacao` — hoje a métrica só observa (item 3, sem gate por decisão de escopo) | dados reais | `app/metricas.py` `medir`; `app/worker.py` `processar_evento` | PII residual vaza para o bucket anonimizado sob `doc_anonimizado` na trilha |
+| ~~Gate de residual~~ **resolvido (estava implementado):** `app/pii_residual.py` faz o re-scan da saída e o worker bloqueia a gravação com `falha_anonimizacao:{id}:residual_pii` — `metricas.medir` continua só observando (nunca levanta, por desenho). Limite declarado: cobre só os formatos/contextos codificados, não é prova de ausência de PII | dados reais | `app/pii_residual.py`; `app/worker.py` `processar_evento` | formatos não cobertos ainda podem passar |
 | Rescan parcial: saída **ilegível** já vira `falha_anonimizacao` sem gravação — implementado | dados reais | `app/worker.py` | — |
 | Persistência das métricas de anonimização — hoje ficam só em log + `_registro` em memória do worker; para avaliar o MVP é preciso gravá-las em arquivo/coletor consultável | demo (avaliação do MVP) | `app/metricas.py` `_registro` | sem histórico, não há como comparar execuções |
 | `substituidas` por tipo é proxy (delta detectadas−residuais): a tag `[ANONIMIZADO_LGPD]` não carrega o tipo substituído, então um tipo pode "pagar" a conta de outro — atribuição real exige saída estruturada do NER | dados reais | `app/metricas.py` `medir` | métrica por tipo pode mascarar recall ruim de um tipo específico |
 | Métricas de recall por tipo de entidade (N2) | dados reais | — | sem evidência quantitativa de qualidade |
-| Magic bytes / validação de formato real do upload | dados reais | `app/service.py` `upload_documento` | executável nomeado `.pdf` entra na esteira |
+| ~~Magic bytes / validação de formato real do upload~~ **resolvido 05/11 (B):** `_formato_documento_ok` confere o cabeçalho (512B) — PDF/office(zip)/PNG/JPEG/texto UTF-8 entram; MZ/ELF/shebang e binários não-decodificáveis não | dados reais | `app/service.py` `upload_documento` | executável nomeado `.pdf` entra na esteira |
 | Sandbox do parser PDF + antivírus (ClamAV) | produção | `app/worker.py` | PDF hostil explora pypdf |
 | Metadados de DOCX/imagem (hoje só PDF; reconstrução fpdf2 já descarta metadados por acidente) | dados reais | `app/motor_langchain.py` | autoria/data vazam no anonimizado |
 | LLM local (vLLM/Ollama na rede interna) como default soberano — `openai`/`google` mandam o documento para egress externo | dados reais | `app/motor_de_env` `IA_LLM` | documento sai do perímetro soberano |
@@ -53,26 +54,91 @@ MVP. Categorias:
 
 | Item | Categoria | Referência | Risco |
 |---|---|---|---|
-| Dedup do evento `doc_anonimizado:{id}` em redelivery (at-least-once grava duplicata na trilha) | dados reais | `app/worker.py` | trilha com evento duplicado |
+| ~~Dedup do evento `doc_anonimizado:{id}` em redelivery~~ **resolvido 05/11 (B):** `Tx.encadear_uma_vez` deduplica dentro da tx (mesma trava consultiva) — worker (anonimizado + falhas + DLQ) e `outbox_falhar` gravam efeito uma única vez sob at-least-once | dados reais | `app/repository.py` `encadear_uma_vez`; `app/worker.py` | trilha com evento duplicado |
 | Versionamento no bucket anonimizado + evento `doc_reprocessado:vN` | produção | `app/storage.py` `garantir` | reprocessamento destrói anonimizado anterior |
 | Worker/RabbitMQ/MinIO ausentes do `deploy/compose.yaml` soberano | demo | `deploy/compose.yaml` | topologia de produção não reflete o desenho |
 | DLQ: dono, runbook de triagem, retenção e alerta de profundidade | produção | `app/worker.py` drain DLQ | falha fica invisível por tempo indeterminado |
 | Criptografia em repouso (volume Postgres/MinIO, DEK por caso, serviço `cofre` declarado não implementado) | dados reais | `deploy/compose.yaml` | disco roubado expõe documentos |
-| TLS/mTLS serviço-a-serviço na rede interna | produção | `deploy/compose.yaml` | lateral movement dentro da `interna` |
-| Rate limiting (nginx/API) | produção | `deploy/compose.yaml` | abuso da API pública |
+| ~~TLS/mTLS serviço-a-serviço na rede interna~~ **resolvido 05/11 (malha):** TLS real em todos os links da `interna` provado em `deploy/malha/` com pcap — rabbitmq 5671 amqps, postgres ssl=on, minio https, vault https, CA privada (`TLS_CA_BUNDLE`) | produção | `deploy/malha/`; `app/tls_interno.py` | lateral movement dentro da `interna` |
+| ~~Rate limiting (nginx/API)~~ **resolvido 05/11 (B):** `limit_req_zone` por IP a 50 r/s com `burst=100 nodelay` no `deploy/nginx.conf` — varredura/reenvio em massa enfileirado na borda | produção | `deploy/nginx.conf` | abuso da API pública |
 | Backup Postgres/MinIO + RPO/RTO documentado | produção | — | perda de caso sem recuperação |
 | Retenção/eliminação: TTL do bruto pós-anonimização, purge de outbox, fluxo de exclusão LGPD (direito do titular) — **decisão do encarregado/DPO** | dados reais | — | retenção além do necessário viola LGPD |
 | `caso_cnj` em claro em eventos/outbox/consulta — número de processo é metadado sob sigilo; pseudonimizar ou não é **pendência do encarregado/DPO**, não decisão de engenharia (a métrica deliberadamente não conta CNJ como PII, sem afirmar que é inofensivo) | dados reais | `app/schemas/tramitacao.py` | metadado sensível vaza entre nós |
-| Ack B→A perdido: B confirmou mas `POST /v1/tramitacoes/{id}/acks` nunca chega a A — a projeção em A fica EM_TRANSITO sem fechamento local. Mitigação parcial: o eco idempotente de `receber` informa `status` atual de B **ao cliente que chamou** — não atualiza a tramitação de A (que só transita via `aplicar_confirmacao`, invocada por B). Re-entrega do ack exige prova de autoria — implementar quando houver assinatura sobre `ConfirmacaoOut` + mTLS entre nós (ADR-0007) | dados reais | `app/service.py` `aplicar_confirmacao`; `tests/smoke/test_reconciliacao.py` | origem nunca encerra o caso |
+| Ack B→A perdido: B confirmou mas `POST /v1/tramitacoes/{id}/acks` nunca chega a A — a projeção em A fica EM_TRANSITO sem fechamento local. Mitigação parcial: o eco idempotente de `receber` informa `status` atual de B **ao cliente que chamou**. **Desbloqueado 05/11 (B):** o ack já sai assinado Ed25519 pelo destino (`ConfirmacaoOut.assinatura`) — a prova de autoria para re-entrega existe; falta o mecanismo de re-entrega em si (retry/pull do ack pendente) | dados reais | `app/service.py` `aplicar_confirmacao`; `tests/smoke/test_reconciliacao.py` | origem nunca encerra o caso |
 | `RecebimentoOut` tem dois formatos: primeiro ingresso traz `hash_cadeia` preenchido e `status="recebida"`; o eco de duplicata traz `status` atual e `hash_cadeia` **ausente** (prova interna da trilha, omitida por decisão). O cliente distingue eco por `hash_cadeia is None` | produção | `app/schemas/tramitacao.py` `RecebimentoOut`; `app/service.py` `_eco_recebimento` | cliente que não distingue eco trata reentrega como ingresso novo |
-| `enviar` transita o registro antes de conferir o storage (§4.2): `_transitar(EM_TRANSITO)` precede `storage.existe` — hoje inofensivo (o dict mutado é descartado no erro), mas o padrão "muta depois valida" depende do descarte do `rec` não persistido | produção | `app/service.py` `enviar` | refactor futuro persiste estado mutado |
-| `upload_documento` não consulta status (§4.4): bytes sobem com a tramitação em qualquer estado — inclusive após `CONFIRMADA`; a regra "upload só entre CRIADA e EM_TRANSITO" não existe | dados reais | `app/service.py` `upload_documento` | documento trocado após decisão do destino |
-| `confirmar` tem dupla fonte da mesma regra (§4.6): checa `status is RECEBIDA` e depois `_transitar` repete via `TRANSICOES` — podem divergir se o mapa mudar | produção | `app/service.py` `confirmar` | guarda e mapa dizem coisas diferentes |
-| Nomes de bucket duplicados como literais (§4.9): `"docs"`/`"docs-anonimizados"` inline em `_storage_de_env` vs. `NOME_BRUTOS`/`NOME_ANONIMIZADOS` no worker — divergência quebra a esteira silenciosamente | produção | `app/main.py` `_storage_de_env`; `app/worker.py` | esteira lê/grava no bucket errado sem erro |
-| Chave de objeto = `str(tramitacao_id)` em serviço e worker (§4.10) — convenção partilhada sem constante única | produção | `app/service.py`; `app/worker.py` | divergência de formato perde objetos |
-| Flags da esteira por prefixo lexical (§4.11): `doc_anonimizado:`/`falha_anonimizacao:`/`falha_outbox:` escritos por worker/relay e lidos por `consultar` via `startswith` — acoplamento por convenção de string, sem registro único dos prefixos | produção | `app/service.py` `consultar`; `app/worker.py`; `app/repository.py` `outbox_falhar` | prefixo divergente apaga falha da consulta |
+| ~~`enviar` transita antes de conferir o storage~~ **resolvido 05/11:** reordenado — `storage.existe` valida antes de `_transitar`; mutação sempre por último | produção | `app/service.py` `enviar` | — |
+| ~~`upload_documento` não consulta status (§4.4)~~ **resolvido 05/11 (B):** gate explícito — bytes só sobem em `CRIADA` (origem) e `RECEBIDA` (destino arquivando); EM_TRANSITO (já tem objeto como pré-condição) e terminais recusam | dados reais | `app/service.py` `upload_documento`; `tests/smoke/test_seguranca_b.py` | documento trocado após decisão do destino |
+| ~~`confirmar` com dupla guarda~~ **resolvido 05/11:** fonte única `TRANSICOES` via `_transitar` (a checagem explícita de RECEBIDA saiu; `motivo` na recusa já é do schema) | produção | `app/service.py` `confirmar` | — |
+| ~~Nomes de bucket como literais~~ **resolvido 05/11:** `app/constantes.py` — `BUCKET_BRUTOS`/`BUCKET_ANONIMIZADOS` únicos para `_storage_de_env` e worker | produção | `app/constantes.py` | — |
+| ~~Chave de objeto sem constante~~ **resolvido 05/11:** `chave_objeto(tid)` em `app/constantes.py` — serviço e worker compartilham o formato | produção | `app/constantes.py` | — |
+| ~~Flags da esteira por prefixo lexical~~ **resolvido 05/11:** prefixos e geradores `ev_*` centralizados em `app/constantes.py` — quem grava e quem lê (`startswith` em `consultar`) usam a mesma fonte | produção | `app/constantes.py` | — |
 | Residual do relay (§4.14): publish pode duplicar se o relay cair entre o ACK do broker e `outbox_marcar` — tolerado (at-least-once, consumidor idempotente) | produção | `app/relay.py` `relay_pass` | evento entregue duas vezes ao consumidor |
 | Migração `0005_outbox_retry` **não verificada em Postgres real** (`TEST_DB_URL` ausente na sessão): coluna + índice revisados por leitura e DDL compilada; executar `alembic upgrade head` num Postgres de verdade antes de dados reais | dados reais | `alembic/versions/0005_outbox_retry.py` | migração pode falhar no deploy soberano |
-| Bifurcação da hash-chain por concorrência (item 1B da revisão): `encadear` lê o topo e insere sem `UNIQUE(hash_anterior)` — duas tx paralelas derivam do mesmo elo e a cadeia bifurca sem alarme. Escritores hoje: serviço (`_commit`), worker (`processar_evento`/`registrar_falha`) **e relay** (`outbox_falhar` → `falha_outbox:`). Correção: `UNIQUE(hash_anterior)` em `trilha_auditoria` + retry da tx perdedora; eficaz só em Postgres (isolamento real — sqlite serializa writes por arquivo) | dados reais | `app/repository.py` `encadear`; `app/models.py` `Trilha` | duas linhas afirmam o mesmo elo — a cadeia deixa de ser linear sem ninguém notar |
+| ~~Bifurcação da hash-chain por concorrência~~ **resolvido 05/11:** `pg_advisory_xact_lock` serializa a leitura-do-topo+insert na mesma tx (Postgres) + `UNIQUE(hash_anterior)` migração 0006 como backstop — a tx perdedora vira `ErroConflitoTrilha` (409), nunca bifurca em silêncio. sqlite segue protegida por serialização de arquivo | dados reais | `app/repository.py` `encadear`; `app/models.py` `Trilha` | — |
 | Eventos `ESGOTADO` na outbox: terminais e registrados na hash-chain (`falha_outbox:{tid}`, visível via `consultar`), mas sem alerta ativo, sem endpoint de re-drain e **sem runbook de triagem** — a operação depende de alguém consultar o caso. Implementar alarme quando houver observabilidade consolidada | dados reais | `app/relay.py`; `app/repository.py` `outbox_falhar` | despacho morto só é notado por consulta individual |
 | ESGOTADO sem trilha (falha do `encadear` isolada pelo savepoint): o estado terminal comita, mas sem o evento `falha_outbox:{tid}` — `consultar` não reflete o esgotamento e o caso aparece como em processamento. Mitigação atual: warning no log (`outbox_falhar`). Ação necessária: estado de inconsistência consultável ou reprocessamento da trilha | dados reais | `app/repository.py` `outbox_falhar`; `app/service.py` `consultar` | caso esgotado parece vivo na consulta |
+
+## Resolvido — rodada B/C (05/11): endurecimento de segurança
+
+Camada de custódia criptográfica + gates físicos + fail-closed de
+operação. Cada item provado em `tests/smoke/test_seguranca_b.py` no
+ponto onde a brecha morria.
+
+- **Assinatura Ed25519 de envelope e ack** (`app/assinatura.py`):
+  JSON canônico sobre todos os campos exceto `assinatura`.
+  `receber` verifica contra a pública de `env.origem`;
+  `aplicar_confirmacao` contra a do destino do caso. Fail-closed
+  onde `ORG_SIGN_SEED_B64`+`ORGAO_PUBKEYS_JSON` existem; sem par
+  configurado = dev sem verificação (mesma política do cofre E2E).
+  Novas envs: `ORG_SIGN_SEED_B64`, `ORG_SIGN_SEED_FILE`,
+  `ORGAO_PUBKEYS_JSON`, `ORGAO_PUBKEYS_FILE`.
+- **Envelope endereçado**: `destino` obrigatório;
+  `env.destino != self.orgao` → 409 antes de gravar.
+- **Confirmação verificável**: B só confirma após storage +
+  releitura + recomputação de SHA-256 — "dizer que recebeu" não
+  prova; os bytes provam.
+- **Upload com gate**: somente `CRIADA`/`RECEBIDA`; magic bytes
+  (PDF/office/PNG/JPEG/texto) — executável/script não entra.
+- **Replay compartilhado multi-réplica**: `ReplayCache` em
+  processo substituído por `replay_nonces` no Postgres
+  (claim atômico por PK + varredura oportunista de expirados —
+  sem sweeper). O bug de claim por tentativa-de-chave no
+  `abrir_todas` corrigido de brinde.
+- **Ingresso E2E streaming**: `abrir_stream_todas` — corpo
+  decifrado quadro a quadro, rejeição precoce no frame 0,
+  requests não-E2E passam direto; `x-e2e-ct` em allowlist
+  (json + multipart) → 415 para o resto. Corpos grandes não
+  materializam mais o ciphertext inteiro.
+- **Resposta 100% selada**: cobertura E2E no egresso já provada
+  por `test_e2e_cobertura.py` (todas as rotas `/v1/`).
+- **Verificação autônoma da trilha**: `repo.verificar` rejoga
+  elo a elo; `GET /v1/tramitacoes/{id}/verificar` expõe
+  (participante-only, mesma autorização da consulta). Trigger
+  append-only no Postgres (migração 0007) barra UPDATE/DELETE
+  na trilha por mecanismo, não convenção.
+- **Dedup de efeito**: `Tx.encadear_uma_vez` — worker,
+  `outbox_falhar` e DLQ gravam `doc_anonimizado:`/`falha_*:`
+  uma única vez sob at-least-once.
+- **Borda**: `BORDA_SEGREDO` (opcional) — quando definido exige
+  `X-Borda-Segredo` conferido em `hmac.compare_digest`;
+  `X-Cliente-Orgao` validado no formato `OrgaoID` (401 opaco
+  para malformado). nginx: `limit_req` 50 r/s + HSTS.
+- **Fail-closed de operação**: worker exige `DATABASE_URL` +
+  `IA_ENGINE` válidos (SystemExit — sem stub silencioso);
+  `E2E_FONTE=vault` sem credencial utilizável = boot falha.
+  AppRole preferido (`VAULT_ROLE_ID[_FILE]`/`VAULT_SECRET_ID[_FILE]`)
+  com token curto (TTL 60s) para a leitura do KV; `VAULT_TOKEN[_FILE]`
+  segue como fallback dev. Malha provisiona policy `e2e-leitura` +
+  role `no-a` e monta os segredos em `/segredos` ro.
+
+### Pendente da rodada B/C
+
+- Assinatura Ed25519 **por linha** da trilha (prova a terceiros
+  fora do nó) — a verificação elo a elo existe; a assinatura
+  persistida por evento não.
+- CRL/OCSP no nginx (cert comprometido aceito até expirar).
+- Mecanismo de re-entrega do ack pendente (a prova de autoria
+  já existe; falta o retry/pull).
+- Decisões jurídicas (DPO): pseudonimização/reidentificação,
+  `caso_cnj` em claro, retenção. Não implementadas — aguardam
+  decisão fora do código.

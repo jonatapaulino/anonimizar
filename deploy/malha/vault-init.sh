@@ -32,6 +32,24 @@ vault operator unseal "$KEY"
 export VAULT_TOKEN="$TOK"
 vault secrets enable -path=secret kv-v2 2>/dev/null || true
 vault kv put secret/isaci/e2e atual="$E2E_SEED"
-printf '%s' "$TOK" > /segredos/vault_token
-chmod 600 /segredos/vault_token
-echo "vault-init: secret/isaci/e2e semeado (atual rotacionavel)"
+
+# AppRole do nó (caminho de produção): policy de leitura só no
+# path do segredo E2E + role com token de vida curta. O root
+# token é escopo do init/seed — a api/worker NÃO o recebe mais;
+# levam só role_id/secret_id em arquivos montados ro.
+vault policy write e2e-leitura - <<'EOF'
+path "secret/data/isaci/e2e" {
+  capabilities = ["read"]
+}
+EOF
+vault auth enable approle 2>/dev/null || true
+vault write auth/approle/role/no-a \
+  token_policies="e2e-leitura" \
+  token_ttl="60s" token_max_ttl="120s" \
+  secret_id_ttl="0" secret_id_num_uses=0
+vault read -field=role_id auth/approle/role/no-a/role-id \
+  > /segredos/role_id
+vault write -f -field=secret_id auth/approle/role/no-a/secret-id \
+  > /segredos/secret_id
+chmod 600 /segredos/role_id /segredos/secret_id
+echo "vault-init: secret/isaci/e2e semeado + approle no-a criado"

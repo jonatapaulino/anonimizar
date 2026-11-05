@@ -17,14 +17,17 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Protocol
 
-from sqlalchemy import and_, or_, select, update
+from sqlalchemy import and_, delete, or_, select, text, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
                                     create_async_engine)
 
-from app.errors import ErroConflitoIdempotencia
+from app.constantes import ev_falha_outbox
+from app.errors import (ErroConflitoIdempotencia,  # noqa: F401
+                        ErroConflitoTrilha)
 from app.models import (Base, Idempotencia, OutboxEvento,
-                        StatusOutbox, Tramitacao, Trilha)
+                        ReplayNonce, StatusOutbox, Tramitacao,
+                        Trilha)
 from app.schemas.comum import ModoTramitacao, StatusTramitacao
 
 GENESIS = b"TRAMITACAO-GENESIS"
@@ -41,6 +44,11 @@ class Tx(Protocol):
     async def idem(self, origem: str, chave: str,
                    tid: uuid.UUID): ...
     async def encadear(self, tid: uuid.UUID, evento: str) -> str: ...
+    async def encadear_uma_vez(self, tid: uuid.UUID,
+                               evento: str) -> str | None: ...
+    """Idempotente: evento já presente na trilha do tid (redelivery
+    AMQP) não é regravado — a checagem roda DENTRO da tx, atrás da
+    mesma trava que serializa a extensão."""
     async def outbox(self, tipo_evento: str, payload: dict): ...
     """Grava o evento na outbox na MESMA tx (ADR-0013)."""
 
@@ -72,14 +80,27 @@ class Repositorio(Protocol):
                             max_tentativas: int): ...
     """tentativas++; esgotou => ESGOTADO + falha_outbox:{tid} na
     trilha — mesma tx; senão ERRO + backoff exponencial."""
+    async def replay_visto(self, nonce_hex: str,
+                           expira_ms: int) -> bool: ...
+    """Anti-replay COMPARTILHADO do ingresso E2E (multi-réplica):
+    INSERT-if-absent atômico — True se o nonce já foi visto."""
+    async def verificar(self) -> dict: ...
+    """Rejoga a hash-chain inteira elo a elo e devolve
+    {integro, linhas, divergencia_seq, topo_recomputado}."""
 
 
 def _mapear_integridade(e: IntegrityError) -> Exception:
-    """PK/UNIQUE(orgao, chave) de idempotência -> erro de domínio;
-    todo o resto propaga. asyncpg expõe constraint_name direto;
-    psycopg2 via .diag; sqlite só no texto. Casa só violação de
-    unicidade (pkey/unique) — FK na mesma tabela NÃO é conflito
-    de idempotência. A mensagem de domínio nunca carrega SQL."""
+    """Violações conhecidas -> erros de domínio; todo o resto
+    propaga. asyncpg expõe constraint_name direto; psycopg2 via
+    .diag; sqlite só no texto.
+      - UNIQUE(orgao, chave) de idempotência -> ErroConflitoIdem.
+      - UNIQUE(hash_anterior) da trilha -> ErroConflitoTrilha:
+        dois escritores derivaram do mesmo elo (a trava do
+        encadear deveria ter serializado — só ocorre por caminho
+        fora do repositório).
+    Casa só violação de unicidade (pkey/unique) — FK na mesma
+    tabela NÃO é conflito de idempotência. A mensagem de domínio
+    nunca carrega SQL."""
     nome = getattr(e.orig, "constraint_name", None)          # asyncpg
     if nome is None:
         diag = getattr(e.orig, "diag", None)                  # psycopg2
@@ -88,6 +109,9 @@ def _mapear_integridade(e: IntegrityError) -> Exception:
     if "idempotencia" in txt and ("pkey" in txt or "unique" in txt):
         return ErroConflitoIdempotencia(
             "chave de idempotência já utilizada")
+    if "uq_trilha_hash_anterior" in txt:
+        return ErroConflitoTrilha(
+            "conflito de encadeamento na trilha de auditoria")
     return e
 
 
@@ -132,6 +156,21 @@ class _TxSQL:
                                 tramitacao_id=tid, criado_em=_agora()))
 
     async def encadear(self, tid: uuid.UUID, evento: str) -> str:
+        """Estende a cadeia — ÚNICA por nó (o topo é o da tabela
+        inteira, intercalando casos; verificação de um caso exige
+        a trilha toda). Defesa contra bifurcação por corrida:
+          1) pg_advisory_xact_lock serializa a extensão no
+             Postgres — um escritor de cada vez deriva o topo
+             (sqlite serializa writes por arquivo — mesmo efeito,
+             trava omitida por dialect);
+          2) UNIQUE(hash_anterior) é o backstop no schema — quem
+             burlar a trava falha no INSERT (ErroConflitoTrilha).
+        Atualiza `tramitacoes.hash_cadeia` junto — escritores fora
+        de `_commit` (worker/relay) não deixam o topo denormalizado
+        obsoleto."""
+        if self.s.get_bind().dialect.name == "postgresql":
+            await self.s.execute(
+                text("SELECT pg_advisory_xact_lock(7291)"))
         ant = await self.s.scalar(
             select(Trilha.hash_cadeia)
             .order_by(Trilha.seq.desc()).limit(1))
@@ -143,7 +182,25 @@ class _TxSQL:
         self.s.add(Trilha(tramitacao_id=tid, evento=evento,
                           hash_anterior=ant_hex, hash_cadeia=topo,
                           criado_em=_agora()))
+        t = await self.s.get(Tramitacao, tid)
+        if t is not None:
+            t.hash_cadeia = topo
         return topo
+
+    async def encadear_uma_vez(self, tid: uuid.UUID,
+                               evento: str) -> str | None:
+        """Dedup do consumo at-least-once: se o evento já está na
+        trilha (redelivery AMQP reprocessou efeito idempotente),
+        não regrava — None sinaliza o no-op. A checagem vive na
+        mesma tx: sob a trava consultiva ela é race-free — dois
+        consumidores não atravessam a extensão simultaneamente."""
+        existe = await self.s.scalar(
+            select(Trilha.seq).where(
+                Trilha.tramitacao_id == tid,
+                Trilha.evento == evento).limit(1))
+        if existe is not None:
+            return None
+        return await self.encadear(tid, evento)
 
     async def outbox(self, tipo_evento: str, payload: dict):
         """Evento na outbox dentro desta tx — atômico com a
@@ -306,9 +363,9 @@ class RepositorioSQL:
                     # inexistente) e ESGOTADO comita mesmo assim
                     try:
                         async with tx.s.begin_nested():
-                            await tx.encadear(
+                            await tx.encadear_uma_vez(
                                 uuid.UUID(str(tid)),
-                                f"falha_outbox:{tid}")
+                                ev_falha_outbox(tid))
                             await tx.s.flush()
                     except Exception:
                         log.warning(
@@ -320,6 +377,53 @@ class RepositorioSQL:
                              cap_s)
                 ev.proximo_retry_em = \
                     agora + timedelta(seconds=espera)
+
+    # ---------- anti-replay compartilhado (ingresso E2E) ----------
+    async def replay_visto(self, nonce_hex: str,
+                           expira_ms: int) -> bool:
+        """Claim atômico do nonce do quadro E2E — substitui o
+        ReplayCache processo-local quando o nó roda multi-réplica:
+        INSERT-if-absent; PK violada = já visto = replay (True).
+        A varredura de linhas expiradas viaja no mesmo insert
+        (amortizada — sem sweeper dedicado)."""
+        async with self.sm() as s:
+            try:
+                s.add(ReplayNonce(nonce=nonce_hex,
+                                  expira_ms=expira_ms,
+                                  visto_em=_agora()))
+                await s.execute(
+                    delete(ReplayNonce).where(
+                        ReplayNonce.expira_ms < expira_ms))
+                await s.commit()
+                return False
+            except IntegrityError:
+                await s.rollback()
+                return True
+
+    # ---------- verificação da hash-chain ----------
+    async def verificar(self) -> dict:
+        """Rejoga a cadeia inteira: para cada linha recomputa
+        sha256(anterior‖evento) e confere `hash_anterior` E
+        `hash_cadeia`. A primeira divergência aponta
+        `divergencia_seq` — evidência de adulteração ou de linha
+        inserida fora do encadeamento."""
+        async with self.sm() as s:
+            rs = await s.scalars(
+                select(Trilha).order_by(Trilha.seq))
+            ant_b, ant_hex, n = GENESIS, GENESIS.hex(), 0
+            for r in rs:
+                n += 1
+                topo = hashlib.sha256(
+                    ant_b + r.evento.encode()).hexdigest()
+                if r.hash_anterior != ant_hex or \
+                        r.hash_cadeia != topo:
+                    return dict(integro=False, linhas=n,
+                                divergencia_seq=r.seq,
+                                topo_recomputado=topo)
+                ant_b, ant_hex = bytes.fromhex(topo), topo
+            return dict(integro=True, linhas=n,
+                        divergencia_seq=None,
+                        topo_recomputado=ant_hex)
 
 
 def repo_from_url(url: str) -> RepositorioSQL:

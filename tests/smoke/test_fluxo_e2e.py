@@ -18,11 +18,14 @@ DOC = b"EXCELENTISSIMO SENHOR DOUTOR JUIZ - processo de teste."
 async def fluxo_completo(org_a, org_b, payload):
     """Helper: executa o caminho feliz e devolve os artefatos.
     T9: upload físico entre criar e enviar — o envelope é só
-    metadados."""
+    metadados. B arquiva os bytes recebidos ANTES de confirmar —
+    a confirmação recomputa o SHA-256 do que está no storage de
+    B; declarar sem os bytes não fecha o caso."""
     out_a = await org_a.criar(payload)
     await org_a.upload_documento(out_a.id, FakeUpload(DOC), org_a.orgao)
     env = (await org_a.enviar(out_a.id, org_a.orgao)).model_dump(mode="json")
-    rec = await org_b.receber(env, org_b.orgao)
+    rec = await org_b.receber(env, "tjpa")
+    await org_b.upload_documento(out_a.id, FakeUpload(DOC), org_b.orgao)
     conf = await org_b.confirmar(dict(
         tramitacao_id=out_a.id, decisao="aceita",
         hash_documento_recebido=(
@@ -56,7 +59,7 @@ class TestCaminhoFeliz:
         env = (await org_a.enviar(out.id, org_a.orgao)).model_dump(mode="json")
         assert (await org_a.obter(out.id)).status == \
             StatusTramitacao.EM_TRANSITO
-        rec = await org_b.receber(env, org_b.orgao)
+        rec = await org_b.receber(env, "tjpa")
         assert rec.recebido
         assert (await org_b.obter(out.id)).status == \
             StatusTramitacao.RECEBIDA
@@ -76,35 +79,48 @@ class TestGateFisico:
 
 
 class TestIntegridade:
-    """T9 deslocou a verificação de bytes para o storage: quem
-    adultera o hash no envelope é pego quando o arquivo real é
-    conferido — no upload local ou na confirmação do destino."""
+    """Defesa em profundidade da integridade, nas três camadas:
+      1) assinatura Ed25519 — envelope adulterado em trânsito
+         não chega nem a existir como registro;
+      2) digest do upload — bytes divergentes do hash declarado
+         não entram no storage;
+      3) recomputação na confirmação — sem bytes verificados no
+         storage de B, o caso não fecha."""
 
     async def test_hash_adulterado_no_envelope(
             self, org_a, org_b, payload_criacao):
+        """MITM no envelope assinado: trocar o hash invalida a
+        assinatura — a adulteração explode no INGRESSO, antes de
+        qualquer registro. Sem a camada de assinatura, a verificação
+        de bytes pegaria depois (teste seguinte)."""
         out = await org_a.criar(payload_criacao)
         await org_a.upload_documento(out.id, FakeUpload(DOC), org_a.orgao)
         env = (await org_a.enviar(out.id, org_a.orgao)).model_dump(mode="json")
         env["hash_documento_sha256"] = "0" * 64   # MITM no envelope
-        rec = await org_b.receber(env, org_b.orgao)
-        assert rec.recebido is True          # metadados íntegros
-        # a adulteração explode quando B confirma com o hash real
-        with pytest.raises(ErroFluxo, match="difere do recebido"):
-            await org_b.confirmar(dict(
-                tramitacao_id=out.id, decisao="aceita",
-                hash_documento_recebido=out.hash_documento_sha256), org_b.orgao)
+        with pytest.raises(ErroFluxo, match="assinatura"):
+            await org_b.receber(env, "tjpa")
 
     async def test_doc_real_nao_casa_com_hash_adulterado(
             self, org_a, org_b, payload_criacao):
+        """Camada de bytes: envelope íntegro, mas o documento que
+        B recebeu não casa com o hash declarado — o upload de B
+        rejeita e a confirmação não tem base para fechar."""
         out = await org_a.criar(payload_criacao)
         await org_a.upload_documento(out.id, FakeUpload(DOC), org_a.orgao)
         env = (await org_a.enviar(out.id, org_a.orgao)).model_dump(mode="json")
-        env["hash_documento_sha256"] = "0" * 64
-        await org_b.receber(env, org_b.orgao)
-        # se B subir o arquivo verdadeiro, o hash gravado (0*64)
-        # diverge do real — upload rejeitado
+        await org_b.receber(env, "tjpa")
+        # bytes errados não entram: digest diverge do declarado
         with pytest.raises(ErroFluxo, match="difere"):
-            await org_b.upload_documento(out.id, FakeUpload(DOC), org_b.orgao)
+            await org_b.upload_documento(
+                out.id, FakeUpload(b"documento adulterado"),
+                org_b.orgao)
+        # e sem os bytes verificados no storage de B, declarar
+        # o hash certo não confirma nada
+        with pytest.raises(ErroFluxo, match="não está no storage"):
+            await org_b.confirmar(dict(
+                tramitacao_id=out.id, decisao="aceita",
+                hash_documento_recebido=out.hash_documento_sha256),
+                org_b.orgao)
 
 
 class TestIdempotencia:
@@ -137,12 +153,16 @@ class TestMaquinaDeEstados:
 
     async def test_confirmar_duas_vezes_falha(self, org_a, org_b,
                                               payload_criacao):
+        """Re-confirmação de caso fechado: mesmo com o hash
+        correto e os bytes no storage, CONFIRMADA é terminal —
+        o mapa de transições é a última linha de defesa."""
         out, env, rec, conf = await fluxo_completo(
             org_a, org_b, payload_criacao)
-        with pytest.raises(ErroFluxo, match="RECEBIDA"):
+        with pytest.raises(ErroFluxo, match="transição ilegal"):
             await org_b.confirmar(dict(
                 tramitacao_id=out.id, decisao="aceita",
-                hash_documento_recebido=conf.hash_cadeia), org_b.orgao)
+                hash_documento_recebido=out.hash_documento_sha256),
+                org_b.orgao)
 
     async def test_terminal_nao_transita(self, org_a, org_b,
                                          payload_criacao):
@@ -158,7 +178,8 @@ class TestRecusa:
         out = await org_a.criar(payload_criacao)
         await org_a.upload_documento(out.id, FakeUpload(DOC), org_a.orgao)
         env = (await org_a.enviar(out.id, org_a.orgao)).model_dump(mode="json")
-        await org_b.receber(env, org_b.orgao)
+        await org_b.receber(env, "tjpa")
+        await org_b.upload_documento(out.id, FakeUpload(DOC), org_b.orgao)
         conf = await org_b.confirmar(dict(
             tramitacao_id=out.id, decisao="recusada",
             motivo="fora da competência",
@@ -173,7 +194,7 @@ class TestRecusa:
         out = await org_a.criar(payload_criacao)
         await org_a.upload_documento(out.id, FakeUpload(DOC), org_a.orgao)
         env = (await org_a.enviar(out.id, org_a.orgao)).model_dump(mode="json")
-        await org_b.receber(env, org_b.orgao)
+        await org_b.receber(env, "tjpa")
         with pytest.raises(ErroFluxo, match="difere do recebido"):
             await org_b.confirmar(dict(
                 tramitacao_id=out.id, decisao="aceita",

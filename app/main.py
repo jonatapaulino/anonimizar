@@ -24,7 +24,7 @@ from app.deps import ErroAuth, orgao_atual
 from app.schemas.tramitacao import (
     ConfirmacaoCreate, ConfirmacaoOut, ConsultaTramitacaoOut,
     EnvelopeRecebimento, ErroOut, RecebimentoOut,
-    TramitacaoCreate, TramitacaoOut,
+    TramitacaoCreate, TramitacaoOut, VerificacaoOut,
 )
 import asyncio
 import logging
@@ -56,6 +56,7 @@ def _storage_de_env(orgao: str, anonimizados: bool = False):
     url = os.environ.get("MINIO_URL")
     if not url:
         return None
+    from app.constantes import BUCKET_ANONIMIZADOS, BUCKET_BRUTOS
     from app.storage import (ArmazenamentoCifrado,
                              ArmazenamentoMinIO, bucket_para)
     st = ArmazenamentoMinIO(
@@ -63,8 +64,8 @@ def _storage_de_env(orgao: str, anonimizados: bool = False):
         os.environ.get("MINIO_PASS", ""),
         secure=url.startswith("https"),
         nome_bucket=bucket_para(
-            orgao, "docs-anonimizados" if anonimizados
-            else "docs"),
+            orgao, BUCKET_ANONIMIZADOS if anonimizados
+            else BUCKET_BRUTOS),
         ca_bundle=os.environ.get("TLS_CA_BUNDLE"))
     # E2E no objeto: com chave no cofre, o bucket só guarda
     # quadros AEAD — claro jamais toca o disco do MinIO nem a
@@ -77,7 +78,8 @@ def _storage_de_env(orgao: str, anonimizados: bool = False):
 
 def create_app(orgao: str, repo: Repositorio = None,
                repo_factory=None, publicador=None,
-               storage=None, storage_anon=None) -> FastAPI:
+               storage=None, storage_anon=None,
+               assinante=None) -> FastAPI:
     """Um app por nó — cada órgão sobe a sua instância soberana.
 
     Duas formas de injeção:
@@ -93,11 +95,18 @@ def create_app(orgao: str, repo: Repositorio = None,
     `storage`: ArmazenamentoPort — bucket por órgão (MinIO em
     produção, memória em teste). Se omitido e MINIO_URL estiver
     definida, constrói ArmazenamentoMinIO para o órgão.
+    `assinante`: par Ed25519 + diretório de públicas dos pares
+    (assinatura de envelope/ack). Omitido, vem de
+    `assinante_de_env()` — ORG_SIGN_SEED_B64 + ORGAO_PUBKEYS_JSON;
+    sem as envs, o nó não assina nem verifica (dev/teste).
     """
     storage = storage if storage is not None else \
         _storage_de_env(orgao)
     storage_anon = storage_anon if storage_anon is not None else \
         _storage_de_env(orgao, anonimizados=True)
+    if assinante is None:
+        from app.assinatura import assinante_de_env
+        assinante = assinante_de_env()
     # TTL do gate passivo de reenvio (reconciliação A->B) —
     # configurável por nó via env; default 1h.
     ttl_reenvio = float(
@@ -107,9 +116,11 @@ def create_app(orgao: str, repo: Repositorio = None,
         if app.state.no is None:
             e, r = await repo_factory()
             app.state.engine = e
+            app.state.replay_db = r   # anti-replay compartilhado
             app.state.no = NoTramitacao(orgao, r, storage,
                                         storage_anon,
-                                        ttl_reenvio_s=ttl_reenvio)
+                                        ttl_reenvio_s=ttl_reenvio,
+                                        assinante=assinante)
         if storage is not None:
             await storage.garantir()
         if storage_anon is not None:
@@ -168,8 +179,13 @@ def create_app(orgao: str, repo: Repositorio = None,
         obrigatorio=os.environ.get("E2E_OBRIGATORIO") == "1")
     app.state.no = (NoTramitacao(orgao, repo, storage,
                                  storage_anon,
-                                 ttl_reenvio_s=ttl_reenvio)
+                                 ttl_reenvio_s=ttl_reenvio,
+                                 assinante=assinante)
                     if repo else None)
+    # anti-replay compartilhado do ingresso E2E: o repo injetado
+    # já é o store multi-réplica (replay_nonces); sem repo (dev)
+    # o middleware cai no ReplayCache processo-local.
+    app.state.replay_db = repo
     app.state.engine = None
     app.state.relay_task = None
     app.state.relay_pub = None
@@ -225,6 +241,16 @@ def create_app(orgao: str, repo: Repositorio = None,
         (CNJ) — mesmo path, dispatch no serviço. Resposta inclui
         trilha encadeada e flags da esteira; isolamento por órgão."""
         return await no.consultar(ident, org)
+
+    @app.get("/v1/tramitacoes/{ident}/verificar",
+             response_model=VerificacaoOut)
+    async def verificar(ident: str, org: str = Depends(orgao_atual),
+                        no: NoTramitacao = Depends(no_atual)):
+        """Auditoria autônoma da hash-chain: rejoga elo a elo e
+        aponta a primeira divergência — o topo denormalizado não é
+        a prova, o replay da cadeia é. Mesma autorização da
+        consulta (só origem/destino do caso verificam)."""
+        return await no.verificar_trilha(ident, org)
 
     @app.post("/v1/tramitacoes/{tid}/envio",
               response_model=EnvelopeRecebimento)

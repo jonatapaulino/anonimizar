@@ -78,17 +78,30 @@ class TramitacaoOut(BaseModel):
 class EnvelopeRecebimento(BaseModel):
     """Pacote em trânsito A→B — METADADOS apenas (T9): o binário
     vive no object storage do nó, nunca no envelope nem no banco.
-    `origem` é DECLARADA aqui e deve ser conferida contra a
-    identidade mTLS do canal (ADR-0007) na implementação."""
+
+    Três amarras de autenticidade (a ordem de conferência no nó
+    receptor é a mesma daqui):
+      `origem`  — declarada e conferida contra a identidade mTLS
+                  do canal (ADR-0007): quem posta é o emissor;
+      `destino` — o nó que recebe confere se o envelope lhe é
+                  endereçado (mal-endereçado não vira registro);
+      `assinatura` — Ed25519 do emissor sobre todos os demais
+                  campos (canônico JSON ordenado): adulterar
+                  qualquer campo em trânsito quebra a assinatura
+                  antes de o envelope tocar a persistência.
+    """
     model_config = ConfigDict(frozen=True)
 
     tramitacao_id: uuid.UUID
     origem: OrgaoID
+    destino: OrgaoID
     caso_cnj: CasoCNJ
     modo: ModoTramitacao
     hash_documento_sha256: HashSHA256
     enviado_em: datetime
     requer_anonimizacao_lgpd: bool = False   # vem do criador
+    assinatura: str | None = None            # Ed25519 b64 — ausente
+                                             # só em dev sem chaves
 
 
 class RecebimentoOut(BaseModel):
@@ -154,14 +167,32 @@ class ConsultaTramitacaoOut(TramitacaoOut):
     trilha: list[EventoTrilhaOut] = []
 
 
+class VerificacaoOut(BaseModel):
+    """Resultado do replay da hash-chain do nó: cada elo é
+    recomputado (sha256(anterior‖evento)) e comparado ao gravado.
+    `divergencia_seq` é a primeira linha adulterada, se houver —
+    uma cadeia global adulterada invalida a evidência do caso.
+    `topo_recomputado` é o digest do último elo recomputado
+    (GENESIS.hex() quando a trilha está vazia — por isso `str`,
+    não HashSHA256)."""
+    integro: bool
+    linhas: int
+    divergencia_seq: int | None = None
+    topo_recomputado: str
+
+
 class ConfirmacaoOut(BaseModel):
-    """Ack final — origem aplica e encerra a tramitação."""
+    """Ack final — origem aplica e encerra a tramitação.
+    `assinatura` Ed25519 do destino sobre os demais campos: a
+    decisão só vale com a chave do órgão que a emitiu — um ack
+    re-entregue ou forjado por terceiro não autoriza transição."""
     model_config = ConfigDict(use_enum_values=True)
 
     tramitacao_id: uuid.UUID
     status: StatusTramitacao           # CONFIRMADA ou RECUSADA
     confirmado_em: datetime
     hash_cadeia: HashSHA256
+    assinatura: str | None = None      # Ed25519 b64 do destino
 
 
 class ErroOut(BaseModel):

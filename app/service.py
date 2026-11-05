@@ -11,9 +11,15 @@ upload multipart → hash conferido → arquivo no object storage do
 o arquivo físico presente — não se tramita o que não existe.
 """
 import hashlib
+import hmac
 import tempfile
 import uuid
 
+from app.constantes import (PREFS_FALHA_ESTEIRA,
+                            PREF_DOC_ANONIMIZADO, chave_objeto,
+                            ev_ack, ev_confirma, ev_criada,
+                            ev_doc_arquivado, ev_em_transito,
+                            ev_recebida, ev_reenvio)
 from app.errors import (ErroConflitoIdempotencia, ErroFluxo,  # noqa: F401
                         ErroLimiteDocumento, ErroNaoEncontrado)
 from app.repository import Repositorio
@@ -22,7 +28,7 @@ from app.schemas.comum import (MAX_DOC_BYTES, TRANSICOES,
 from app.schemas.tramitacao import (
     ConfirmacaoCreate, ConfirmacaoOut, ConsultaTramitacaoOut,
     EnvelopeRecebimento, EventoTrilhaOut, RecebimentoOut,
-    TramitacaoCreate, TramitacaoOut,
+    TramitacaoCreate, TramitacaoOut, VerificacaoOut,
 )
 
 
@@ -31,26 +37,55 @@ def _agora():
     return datetime.now(timezone.utc)
 
 
+def _formato_documento_ok(cabeca: bytes) -> bool:
+    """Magic bytes do formato documental — executáveis e binários
+    arbitrários não entram na esteira. Cobre os formatos do
+    corpus (pdf/office/imagem) e texto puro; não é antivírus —
+    o parser hostil continua sendo dívida de sandbox própria."""
+    if cabeca.startswith((b"%PDF-", b"PK\x03\x04",
+                         b"\x89PNG\r\n\x1a\n", b"\xff\xd8\xff")):
+        return True     # pdf, office(zip), png, jpeg
+    if cabeca.startswith((b"MZ", b"\x7fELF", b"#!")):
+        return False    # executáveis e scripts
+    try:
+        cabeca.decode("utf-8")
+        return True     # texto puro (txt/md/json do corpus real)
+    except UnicodeDecodeError:
+        return False
+
+
 class NoTramitacao:
     """Um nó por órgão; origem e destino são o mesmo serviço em
-    papéis diferentes — cada órgão roda a sua instância soberana."""
+    papéis diferentes — cada órgão roda a sua instância soberana.
+
+    `assinante`: par Ed25519 + diretório de públicas dos pares
+    (app/assinatura.py). Configurado, envelope e ack são
+    assinados na emissão e verificados na recepção — fail-closed;
+    ausente (dev/teste), o nó não assina nem verifica."""
 
     def __init__(self, orgao: str, repo: Repositorio,
                  storage=None, storage_anon=None,
-                 ttl_reenvio_s: float = 3600):
+                 ttl_reenvio_s: float = 3600, assinante=None):
         self.orgao, self.repo = orgao, repo
         self.storage, self.storage_anon = storage, storage_anon
         self.ttl_reenvio_s = ttl_reenvio_s
+        self.assinante = assinante
 
-    @staticmethod
-    def _envelope(rec: dict, tid: uuid.UUID) -> EnvelopeRecebimento:
-        """Envelope de trânsito — só metadados + hash (T9)."""
-        return EnvelopeRecebimento(
+    def _envelope(self, rec: dict, tid: uuid.UUID) -> EnvelopeRecebimento:
+        """Envelope de trânsito — só metadados + hash (T9), com
+        `destino` endereçado ao nó e `assinatura` Ed25519 sobre
+        todos os campos quando o par de chaves está configurado."""
+        env = EnvelopeRecebimento(
             tramitacao_id=tid, origem=rec["origem"],
+            destino=rec["destino"],
             caso_cnj=rec["caso_cnj"], modo=rec["modo"],
             hash_documento_sha256=rec["hash_doc"],
             enviado_em=_agora(),
             requer_anonimizacao_lgpd=rec["requer_anonimizacao_lgpd"])
+        if self.assinante is not None:
+            env = env.model_copy(
+                update={"assinatura": self.assinante.assinar(env)})
+        return env
 
     @staticmethod
     def _ev_lgpd(rec: dict) -> tuple[str, dict]:
@@ -105,7 +140,8 @@ class NoTramitacao:
             criado_em=_agora(), atualizado_em=_agora())
         async with self.repo.transacao() as tx:
             await tx.salvar(rec)
-            rec["hash_cadeia"] = await tx.encadear(tid, f"criada:{tid}")
+            rec["hash_cadeia"] = await tx.encadear(
+                tid, ev_criada(tid))
             await tx.salvar(rec)
             await tx.idem(origem, c.idempotency_key, tid)
         return self._out(rec)
@@ -113,20 +149,18 @@ class NoTramitacao:
     async def enviar(self, tid: uuid.UUID,
                      org: str) -> EnvelopeRecebimento:
         rec = await self._carregar(tid)
-        self._checar_participacao(rec, org)          # 404 terceiro
-        self._checar_papel(rec, org, "origem")       # 404 destino
-        if org != self.orgao:
-            raise ErroFluxo("identidade autenticada não é este nó")
-        self._transitar(rec, StatusTramitacao.EM_TRANSITO)
+        self._autorizar(rec, org, "origem", exige_no=True)
         # sem arquivo físico não se tramita: o envelope é só
         # metadados — quem recebe precisa de um hash que de fato
-        # aponte para bytes verificados no storage da origem
+        # aponte para bytes verificados no storage da origem.
+        # Valida ANTES de transitar: mutação sempre por último.
         if self.storage is None:
             raise ErroFluxo("armazenamento não configurado")
-        if not await self.storage.existe(str(tid)):
+        if not await self.storage.existe(chave_objeto(tid)):
             raise ErroFluxo(
                 "documento não está no storage — faça o upload")
-        await self._commit(rec, tid, f"em_transito:{tid}")
+        self._transitar(rec, StatusTramitacao.EM_TRANSITO)
+        await self._commit(rec, tid, ev_em_transito(tid))
         return self._envelope(rec, tid)
 
     async def reenviar(self, tid: uuid.UUID,
@@ -141,10 +175,7 @@ class NoTramitacao:
         reemissão de mensagem, não mudança de fase. Idempotente
         por construção: o envelope é rederivado do registro."""
         rec = await self._carregar(tid)
-        self._checar_participacao(rec, org)          # 404 terceiro
-        self._checar_papel(rec, org, "origem")       # 404 destino
-        if org != self.orgao:
-            raise ErroFluxo("identidade autenticada não é este nó")
+        self._autorizar(rec, org, "origem", exige_no=True)
         if rec["status"] is not StatusTramitacao.EM_TRANSITO:
             raise ErroFluxo(
                 f"reenvio exige EM_TRANSITO, estado={rec['status']}")
@@ -159,15 +190,15 @@ class NoTramitacao:
                 f"EM_TRANSITO (decorridos {decorrido:.0f}s)")
         if self.storage is None:
             raise ErroFluxo("armazenamento não configurado")
-        if not await self.storage.existe(str(tid)):
+        if not await self.storage.existe(chave_objeto(tid)):
             raise ErroFluxo(
                 "documento não está no storage — faça o upload")
         async with self.repo.transacao() as tx:
             self._transitar(rec, StatusTramitacao.CRIADA)
-            await tx.encadear(tid, f"reenvio:{tid}")
+            await tx.encadear(tid, ev_reenvio(tid))
             self._transitar(rec, StatusTramitacao.EM_TRANSITO)
             rec["hash_cadeia"] = await tx.encadear(
-                tid, f"em_transito:{tid}")
+                tid, ev_em_transito(tid))
             await tx.salvar(rec)
         return self._envelope(rec, tid)
 
@@ -178,12 +209,18 @@ class NoTramitacao:
         destino. Qualquer outro (inclusive a própria origem)
         -> 404 opaco."""
         rec = await self._carregar(tid)
-        self._checar_participacao(rec, org)          # 404 terceiro
-        self._checar_papel(rec, org, "destino")      # 404 origem
+        self._autorizar(rec, org, "destino")         # 404 terceiro/origem
         if conf.tramitacao_id != tid:
             raise ErroFluxo("ack refere outra tramitação")
+        # ack assinado pelo DESTINO do caso: quando o par de
+        # chaves está configurado, a decisão só vale com a
+        # assinatura dele — re-entrega ou forja não autoriza.
+        if self.assinante is not None and \
+                not self.assinante.verificar(rec["destino"], conf):
+            raise ErroFluxo("assinatura do ack inválida — "
+                            "decisão não é do destino do caso")
         self._transitar(rec, StatusTramitacao(conf.status))
-        await self._commit(rec, tid, f"conf:{tid}:{conf.status}")
+        await self._commit(rec, tid, ev_ack(tid, conf.status))
         return self._out(rec)
 
     # ---------- destino (Órgão B) ----------
@@ -195,10 +232,34 @@ class NoTramitacao:
         Duplicata de canal (reentrega at-least-once ou reenvio do
         item 1): tid já conhecido => eco idempotente via
         `_eco_recebimento` — não regride estado nem duplica
-        trilha."""
+        trilha.
+
+        A origem declarada É a origem autenticada (o contrato do
+        envelope — ADR-0007 — já previa a conferência): quem posta
+        é o nó emissor, com o cert mTLS DO REMETENTE, não do
+        destino — a rota abaixa em B mas quem fala é A.
+
+        Amarras antes de qualquer consulta ao banco — o 409 é
+        uniforme e não vaza existência do tid:
+          1) identidade do canal == origem declarada;
+          2) `env.destino` == ESTE nó — envelope mal-endereçado
+             (ou re-direcionado) não vira registro;
+          3) assinatura Ed25519 válida para `env.origem` quando o
+             par de chaves está configurado — envelope adulterado
+             (qualquer campo) é rejeitado como inválido."""
         env = (envelope if isinstance(envelope, EnvelopeRecebimento)
                else EnvelopeRecebimento(**envelope))
         tid = env.tramitacao_id
+        if org != env.origem:
+            raise ErroFluxo(
+                "identidade autenticada diverge da origem "
+                "declarada no envelope")
+        if env.destino != self.orgao:
+            raise ErroFluxo(
+                "envelope não é endereçado a este nó")
+        if self.assinante is not None and \
+                not self.assinante.verificar(env.origem, env):
+            raise ErroFluxo("assinatura do envelope inválida")
         ant = await self.repo.carregar(tid)
         if ant is not None:
             return self._eco_recebimento(ant, env, org)
@@ -213,7 +274,7 @@ class NoTramitacao:
         async with self.repo.transacao() as tx:
             await tx.salvar(rec)
             rec["hash_cadeia"] = await tx.encadear(
-                tid, f"recebida:{tid}")
+                tid, ev_recebida(tid))
             await tx.salvar(rec)
         return RecebimentoOut(
             tramitacao_id=tid, recebido=True,
@@ -238,8 +299,9 @@ class NoTramitacao:
         interna da trilha — não é insumo do chamador). Terceiro
         recebe 404 antes de qualquer resposta: o eco não vira
         oráculo de existência/status para quem não participa."""
-        self._checar_participacao(rec, org)
-        if env.hash_documento_sha256 != rec["hash_doc"]:
+        self._autorizar(rec, org)
+        if not hmac.compare_digest(env.hash_documento_sha256,
+                                   rec["hash_doc"]):
             raise ErroFluxo(
                 "envelope diverge da tramitação registrada")
         return RecebimentoOut(
@@ -254,27 +316,68 @@ class NoTramitacao:
         if org != rec[papel]:
             raise ErroNaoEncontrado("tramitação desconhecida")
 
+    def _autorizar(self, rec: dict, org: str,
+                   papel: str | None = None,
+                   exige_no: bool = False) -> None:
+        """Autorização ordenada — a SEQUÊNCIA é propriedade de
+        segurança: participação (404) → papel (404) → identidade
+        do nó (409). Terceiro e participante-com-papel-errado
+        recebem o MESMO 404 — existência e papel não viram
+        oráculo. Centralizada aqui por mecanismo: antes vivia por
+        convenção de escrita e reordenar um call site vazava
+        estado a terceiros."""
+        self._checar_participacao(rec, org)
+        if papel is not None:
+            self._checar_papel(rec, org, papel)
+        if exige_no and org != self.orgao:
+            raise ErroFluxo("identidade autenticada não é este nó")
+
     async def confirmar(self, payload, org: str) -> ConfirmacaoOut:
+        """Destino fecha o caso — a integridade NÃO se amarra ao
+        declarado: o nó recomputa SHA-256 dos bytes no PRÓPRIO
+        storage e exige que confiram com o hash registrado E com
+        o `hash_documento_recebido` declarado. Sem os bytes
+        verificados no bucket, confirmar é 409 — "dizer que
+        recebeu" não é evidência de recebimento. A verificação
+        precede `_transitar` (mesma disciplina do enviar:
+        valida antes, muta por último). O ack sai assinado
+        quando o par de chaves está configurado."""
         c = (payload if isinstance(payload, ConfirmacaoCreate)
              else ConfirmacaoCreate(**payload))
         rec = await self._carregar(c.tramitacao_id)
-        self._checar_participacao(rec, org)          # 404 terceiro
-        self._checar_papel(rec, org, "destino")      # 404 origem
-        if rec["status"] is not StatusTramitacao.RECEBIDA:
-            raise ErroFluxo(
-                f"confirmação exige RECEBIDA, estado={rec['status']}")
-        if c.hash_documento_recebido != rec["hash_doc"]:
-            raise ErroFluxo("hash declarado difere do recebido")
+        self._autorizar(rec, org, "destino")         # 404 terceiro/origem
         novo = (StatusTramitacao.CONFIRMADA
                 if c.decisao.value == "aceita"
                 else StatusTramitacao.RECUSADA)
+        if not hmac.compare_digest(rec["hash_doc"],
+                                  c.hash_documento_recebido):
+            raise ErroFluxo("hash declarado difere do recebido")
+        if self.storage is None:
+            raise ErroFluxo("armazenamento não configurado")
+        chave = chave_objeto(c.tramitacao_id)
+        if not await self.storage.existe(chave):
+            raise ErroFluxo(
+                "documento não está no storage do nó — "
+                "confirmação exige os bytes verificados")
+        h_doc = hashlib.sha256()
+        async for parte in self.storage.abrir(chave):
+            h_doc.update(parte)
+        if not hmac.compare_digest(h_doc.hexdigest(),
+                                  rec["hash_doc"]):
+            raise ErroFluxo(
+                "hash dos bytes em storage diverge do "
+                "registrado — transporte adulterado?")
         self._transitar(rec, novo)
         h = await self._commit(
             rec, c.tramitacao_id,
-            f"confirma:{c.tramitacao_id}:{novo}")
-        return ConfirmacaoOut(
+            ev_confirma(c.tramitacao_id, novo))
+        out = ConfirmacaoOut(
             tramitacao_id=c.tramitacao_id, status=novo,
             confirmado_em=_agora(), hash_cadeia=h)
+        if self.assinante is not None:
+            out = out.model_copy(
+                update={"assinatura": self.assinante.assinar(out)})
+        return out
 
     async def obter(self, tid: uuid.UUID) -> TramitacaoOut:
         return self._out(await self._carregar(tid))
@@ -292,8 +395,9 @@ class NoTramitacao:
             tid = None
         rec = (await self.repo.carregar(tid) if tid is not None
                else await self.repo.por_caso(org, str(ident)))
-        if rec is None or org not in (rec["origem"], rec["destino"]):
+        if rec is None:
             raise ErroNaoEncontrado("tramitação desconhecida")
+        self._autorizar(rec, org)
         trilha = await self.repo.trilha(rec["id"])
         evs = [t["evento"] for t in trilha]
         return ConsultaTramitacaoOut(
@@ -307,11 +411,30 @@ class NoTramitacao:
             metadados=rec["metadados"],
             requer_anonimizacao_lgpd=rec["requer_anonimizacao_lgpd"],
             anonimizacao_concluida=any(
-                e.startswith("doc_anonimizado:") for e in evs),
+                e.startswith(PREF_DOC_ANONIMIZADO) for e in evs),
             anonimizacao_falhou=any(
-                e.startswith(("falha_anonimizacao:",
-                              "falha_outbox:")) for e in evs),
+                e.startswith(PREFS_FALHA_ESTEIRA) for e in evs),
             trilha=[EventoTrilhaOut(**t) for t in trilha])
+
+    async def verificar_trilha(self, ident: str,
+                               org: str) -> VerificacaoOut:
+        """Rejoga a hash-chain do nó (mesmo `ident` de
+        `consultar`, mesma autorização 404→papel→nó). `integro`
+        False + `divergencia_seq` aponta a primeira linha
+        adulterada — auditoria autônoma, sem confiar no topo
+        denormalizado. A cadeia é global por nó: a divergência
+        num caso invalida a evidência dos demais."""
+        try:
+            tid = uuid.UUID(str(ident))
+        except (ValueError, AttributeError, TypeError):
+            tid = None
+        rec = (await self.repo.carregar(tid) if tid is not None
+               else await self.repo.por_caso(org, str(ident)))
+        if rec is None:
+            raise ErroNaoEncontrado("tramitação desconhecida")
+        self._autorizar(rec, org)
+        v = await self.repo.verificar()
+        return VerificacaoOut(**v)
 
     # ---------- storage físico (T8) ----------
     def _checar_participacao(self, rec: dict, org: str):
@@ -329,7 +452,17 @@ class NoTramitacao:
         chunks alimentam o hash e um spool em disco — nunca o
         arquivo inteiro em RAM."""
         rec = await self._carregar(tid)
-        self._checar_participacao(rec, org)   # 404 antes do spool
+        self._autorizar(rec, org)             # 404 antes do spool
+        # Gate de estado: bytes só sobem onde ainda são
+        # necessários — CRIADA (origem arquivando) e RECEBIDA
+        # (destino arquivando o que recebeu). EM_TRANSITO já tem
+        # o objeto como pré-condição; terminais recusam — upload
+        # após CONFIRMADA não passa.
+        if rec["status"] not in (StatusTramitacao.CRIADA,
+                                StatusTramitacao.RECEBIDA):
+            raise ErroFluxo(
+                f"upload exige CRIADA ou RECEBIDA, "
+                f"estado={rec['status']}")
         if self.storage is None:
             raise ErroFluxo("armazenamento não configurado")
         h = hashlib.sha256()
@@ -344,17 +477,23 @@ class NoTramitacao:
             tmp.write(chunk)
         tmp.seek(0)
         digest = h.hexdigest()
-        if digest != rec["hash_doc"]:
+        if not hmac.compare_digest(digest, rec["hash_doc"]):
             raise ErroFluxo("hash do upload difere do registrado")
+        # Gate de formato — magic bytes do cabeçalho: executáveis
+        # e binários não-documentais não entram na esteira.
+        cabeca = tmp.read(512)
+        tmp.seek(0)
+        if not _formato_documento_ok(cabeca):
+            raise ErroFluxo("formato de documento não permitido")
         await self.storage.garantir()
-        chave = str(tid)
+        chave = chave_objeto(tid)
         # Duplicata exige arquivo + evento commitado: o órfão
         # (guardou, tx falhou) NÃO é duplicata — o re-upload repara
         # trilha e outbox sem regravar o binário. Sob corrida dois
         # uploads podem ver arquivado=False e gravar dois eventos —
         # mesma tolerância at-least-once já documentada da esteira.
         arquivado = any(
-            t["evento"] == f"doc_arquivado:{tid}"
+            t["evento"] == ev_doc_arquivado(tid)
             for t in await self.repo.trilha(tid))
         if await self.storage.existe(chave):
             if arquivado:
@@ -366,7 +505,8 @@ class NoTramitacao:
             h_st = hashlib.sha256()
             async for c in self.storage.abrir(chave):
                 h_st.update(c)
-            if h_st.hexdigest() != rec["hash_doc"]:
+            if not hmac.compare_digest(h_st.hexdigest(),
+                                       rec["hash_doc"]):
                 raise ErroFluxo(
                     "objeto em storage diverge do declarado")
         else:
@@ -379,7 +519,7 @@ class NoTramitacao:
         rec["atualizado_em"] = _agora()
         async with self.repo.transacao() as tx:
             rec["hash_cadeia"] = await tx.encadear(
-                tid, f"doc_arquivado:{tid}")
+                tid, ev_doc_arquivado(tid))
             await tx.salvar(rec)
             if rec["requer_anonimizacao_lgpd"]:
                 await tx.outbox(*self._ev_lgpd(rec))
@@ -390,25 +530,25 @@ class NoTramitacao:
                               org: str):
         """Devolve iterador async de chunks para StreamingResponse."""
         rec = await self._carregar(tid)
-        self._checar_participacao(rec, org)
+        self._autorizar(rec, org)
         if self.storage is None:
             raise ErroFluxo("armazenamento não configurado")
-        if not await self.storage.existe(str(tid)):
+        if not await self.storage.existe(chave_objeto(tid)):
             raise ErroNaoEncontrado("documento não está no storage")
-        return self.storage.abrir(str(tid))
+        return self.storage.abrir(chave_objeto(tid))
 
     async def abrir_anonimizado(self, tid: uuid.UUID, org: str):
         """Versão sanitizada — bucket `*-docs-anonimizados` do nó
         que rodou a esteira (a origem do documento). Mesma regra
         de isolamento da consulta."""
         rec = await self._carregar(tid)
-        self._checar_participacao(rec, org)   # antes do storage:
+        self._autorizar(rec, org)             # antes do storage:
         if self.storage_anon is None:         # config não vaza
             raise ErroFluxo("storage anonimizado não configurado")
-        if not await self.storage_anon.existe(str(tid)):
+        if not await self.storage_anon.existe(chave_objeto(tid)):
             raise ErroNaoEncontrado(
                 "documento anonimizado não disponível")
-        return self.storage_anon.abrir(str(tid))
+        return self.storage_anon.abrir(chave_objeto(tid))
 
     def _out(self, rec: dict) -> TramitacaoOut:
         return TramitacaoOut(

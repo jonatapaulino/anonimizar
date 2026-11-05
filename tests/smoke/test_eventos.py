@@ -87,7 +87,7 @@ class TestEmissao:
         out = await org_a.criar(payload_criacao)
         await org_a.upload_documento(out.id, FakeUpload(DOC), org_a.orgao)
         env = (await org_a.enviar(out.id, org_a.orgao)).model_dump(mode="json")
-        rec = await org_b.receber(env, org_b.orgao)
+        rec = await org_b.receber(env, "tjpa")
         assert rec.recebido
         # A emitiu (tem o arquivo); B não emitiu (não tem)
         assert len(await _outbox(org_a.repo._engine)) == 1
@@ -102,7 +102,7 @@ class TestEmissao:
         out = await org_a.criar(payload_criacao)
         await org_a.upload_documento(out.id, FakeUpload(DOC), org_a.orgao)
         env = (await org_a.enviar(out.id, org_a.orgao)).model_dump(mode="json")
-        await org_b.receber(env, org_b.orgao)
+        await org_b.receber(env, "tjpa")
         await org_b.upload_documento(out.id, FakeUpload(DOC), org_b.orgao)
         linhas = await _outbox(org_b.repo._engine)
         assert len(linhas) == 1

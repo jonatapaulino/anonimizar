@@ -24,13 +24,13 @@ import json
 import logging
 import os
 
+from app.constantes import (BUCKET_ANONIMIZADOS, BUCKET_BRUTOS,
+                            ev_doc_anonimizado,
+                            ev_falha_anonimizacao)
 from app.events import PublicadorRabbitMQ, declarar_topologia_ia
 from app.storage import ArmazenamentoMinIO, bucket_para
 
 log = logging.getLogger("tramitacao.worker")
-
-NOME_BRUTOS = "docs"
-NOME_ANONIMIZADOS = "docs-anonimizados"
 
 
 class StubMotorIA:
@@ -75,10 +75,20 @@ class DemoMotorIA(StubMotorIA):
 
 
 def motor_de_env():
-    """IA_ENGINE=stub (padrão, zero tokens) | demo (regex LGPD
-    local) | langchain (LLM real via app/motor_langchain.py) |
-    ollama (LLM local soberano via app/motor_ollama.py)."""
-    engine = os.environ.get("IA_ENGINE", "stub")
+    """IA_ENGINE=stub | demo (regex LGPD local) | langchain (LLM
+    real via app/motor_langchain.py) | ollama (LLM local soberano
+    via app/motor_ollama.py).
+
+    Fail-closed: a escolha é EXPLÍCITA — IA_ENGINE ausente aborta.
+    O stub devolve os bytes originais: subir a esteira sem engine
+    configurada gravaria o documento em claro no bucket
+    anonimizado em toda saída sem PII coberta pelo gate residual
+    — um default inseguro não pode ser silencioso."""
+    engine = os.environ.get("IA_ENGINE")
+    if engine is None:
+        raise SystemExit(
+            "IA_ENGINE não definida — escolha explícita do motor "
+            "é obrigatória (stub devolve o documento em claro)")
     if engine == "langchain":
         from app.motor_langchain import LangChainMotorIA
         return LangChainMotorIA.de_env()
@@ -87,7 +97,9 @@ def motor_de_env():
         return MotorOllama.de_env()
     if engine == "demo":
         return DemoMotorIA(atraso=0.5)
-    return StubMotorIA()
+    if engine == "stub":
+        return StubMotorIA()
+    raise SystemExit(f"IA_ENGINE desconhecida: {engine}")
 
 
 class FabricaStorages:
@@ -100,9 +112,10 @@ class FabricaStorages:
 
     async def par(self, orgao: str):
         if orgao not in self._cache:
-            o = self._fazer(orgao, bucket_para(orgao, NOME_BRUTOS))
+            o = self._fazer(orgao, bucket_para(orgao,
+                                               BUCKET_BRUTOS))
             d = self._fazer(orgao, bucket_para(orgao,
-                                               NOME_ANONIMIZADOS))
+                                               BUCKET_ANONIMIZADOS))
             await o.garantir()
             await d.garantir()
             self._cache[orgao] = (o, d)
@@ -152,9 +165,9 @@ async def processar_evento(payload: dict, st_origem, st_dest,
         # sem requeue/DLQ. doc_anonimizado seria registro falso.
         if repo is not None:
             async with repo.transacao() as tx:
-                await tx.encadear(
+                await tx.encadear_uma_vez(
                     _uuid.UUID(doc),
-                    f"falha_anonimizacao:{doc}:saida_ilegivel")
+                    ev_falha_anonimizacao(doc, "saida_ilegivel"))
         log.warning("worker: %s saída ilegível — "
                     "falha_anonimizacao (sem retry)", doc)
         return doc
@@ -165,17 +178,17 @@ async def processar_evento(payload: dict, st_origem, st_dest,
     if total_res:
         if repo is not None:
             async with repo.transacao() as tx:
-                await tx.encadear(
+                await tx.encadear_uma_vez(
                     _uuid.UUID(doc),
-                    f"falha_anonimizacao:{doc}:residual_pii")
+                    ev_falha_anonimizacao(doc, "residual_pii"))
         log.warning("worker: %s residual_pii %s — "
                     "falha_anonimizacao (sem retry)", doc, por_tipo)
         return doc
     await st_dest.guardar(doc, io.BytesIO(anonimizado))
     if repo is not None:
         async with repo.transacao() as tx:
-            await tx.encadear(_uuid.UUID(doc),
-                              f"doc_anonimizado:{doc}")
+            await tx.encadear_uma_vez(
+                _uuid.UUID(doc), ev_doc_anonimizado(doc))
     log.info("worker: %s anonimizado (%d bytes) de %s",
              doc, len(anonimizado), payload.get("orgao_origem"))
     return doc
@@ -242,8 +255,8 @@ async def registrar_falha(payload: dict, repo) -> None:
     import uuid as _uuid
     doc = payload["id_documento"]
     async with repo.transacao() as tx:
-        await tx.encadear(_uuid.UUID(doc),
-                          f"falha_anonimizacao:{doc}")
+        await tx.encadear_uma_vez(
+            _uuid.UUID(doc), ev_falha_anonimizacao(doc))
 
 
 async def um_ciclo_dlq(dlq, repo) -> bool:
@@ -288,14 +301,16 @@ async def main():
         os.environ.get("MINIO_USER", "edvar"),
         os.environ.get("MINIO_PASS", "")))
     motor = motor_de_env()                      # IA_ENGINE
-    # feedback: trilha no banco do nó — opcional p/ dev sem DB
-    repo = None
+    # feedback: trilha no banco do nó — OBRIGATÓRIO. Um worker
+    # sem DATABASE_URL anonimizava em silêncio e nunca marcava
+    # falhas — a esteira não pode operar invisível à auditoria.
     url_db = os.environ.get("DATABASE_URL")
-    if url_db:
-        from app.repository import repo_from_url
-        repo = repo_from_url(url_db)
-    else:
-        log.warning("worker: DATABASE_URL ausente — sem trilha")
+    if not url_db:
+        raise SystemExit(
+            "DATABASE_URL não definida — o worker não opera "
+            "sem a trilha de auditoria (fail-closed)")
+    from app.repository import repo_from_url
+    repo = repo_from_url(url_db)
 
     async def _drenar_dlq():
         """Mensagens mortas pela delivery-limit: registra a falha
@@ -313,10 +328,7 @@ async def main():
                     log.error("dlq: %s — drop (sem requeue)", e)
                     await m.nack(requeue=False)
 
-    task_dlq = (asyncio.create_task(_drenar_dlq())
-                if repo is not None else None)
-    if task_dlq is None:
-        log.warning("worker: sem repo — DLQ acumula p/ inspeção")
+    task_dlq = asyncio.create_task(_drenar_dlq())
     log.info("worker: escutando %s (prefetch=1, DLX ativo)",
              queue.name)
     try:
@@ -330,8 +342,7 @@ async def main():
                     log.warning("worker: %s — nack/requeue", e)
                     await m.nack(requeue=True)
     finally:
-        if task_dlq is not None:
-            task_dlq.cancel()
+        task_dlq.cancel()
         await fabrica.fechar()
         await conn.close()
 

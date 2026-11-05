@@ -4,7 +4,9 @@
 # TLS em todos os links internos, Vault com TLS, mTLS na borda,
 # envelope E2E atravessando nginx->api->broker/storage.
 #
-# Nó A: prova E2E_FONTE=vault (cofre real). Nó B: E2E_FONTE=env
+# Nó A: prova E2E_FONTE=vault (cofre real) via AppRole — o root
+# token fica no vault-init; api/worker logam com role_id/secret_id
+# em arquivo e recebem client_token de 60 s. Nó B: E2E_FONTE=env
 # (mesmo par de chaves — a simetria A<->B é o desenho).
 # `peer` simula o emissor do órgão A: fala https+mTLS com os dois
 # nginx e selar/abrir com a chave do par.
@@ -64,7 +66,10 @@ services:
       E2E_FONTE: vault
       VAULT_ADDR: https://vault-a:8200
       VAULT_KV_PATH: isaci/e2e
-      VAULT_TOKEN_FILE: /segredos/vault_token
+      # AppRole (produção): role/secret em arquivos ro — a api
+      # não recebe o root token do seed; token curto por login.
+      VAULT_ROLE_ID_FILE: /segredos/role_id
+      VAULT_SECRET_ID_FILE: /segredos/secret_id
     command: >
       sh -c "alembic upgrade head &&
              uvicorn app.servidor:app --host 0.0.0.0 --port 8000"
@@ -148,7 +153,8 @@ services:
       E2E_FONTE: vault
       VAULT_ADDR: https://vault-a:8200
       VAULT_KV_PATH: isaci/e2e
-      VAULT_TOKEN_FILE: /segredos/vault_token
+      VAULT_ROLE_ID_FILE: /segredos/role_id
+      VAULT_SECRET_ID_FILE: /segredos/secret_id
     volumes:
       - ./certs/ca.crt:/run/certs/ca.crt:ro
       - segredos:/segredos:ro

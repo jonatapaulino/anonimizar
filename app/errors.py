@@ -19,3 +19,11 @@ class ErroConflitoIdempotencia(ErroFluxo):
 class ErroLimiteDocumento(ErroFluxo):
     """Upload excedeu MAX_DOC_BYTES — mapeada para 413. Corta no
     meio do stream: o excesso nunca chega ao spool."""
+
+
+class ErroConflitoTrilha(ErroFluxo):
+    """Dois escritores derivaram do mesmo elo da hash-chain
+    (UNIQUE(hash_anterior) violada). Com a trava consultiva do
+    encadear isso só ocorre por caminho fora do repositório —
+    mapeada para 409 sanitizado; a cadeia nunca bifurca em
+    silêncio."""

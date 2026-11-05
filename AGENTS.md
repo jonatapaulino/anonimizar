@@ -129,9 +129,12 @@ revisto, harness `p8_metricas.py`, emenda 04/11-04b em
    anterior_1..N}`, cache TTL), rotação sela-com-atual/abre-com-
    todas em middleware/broker/storage/cliente; `CofrePseudonimos`
    (mapa ent_id→rótulo como objeto E2E no storage do nó).
+   AppRole + TLS ao Vault **feito** (05/11/2026): `VAULT_ROLE_ID`
+   `[_FILE]`/`VAULT_SECRET_ID[_FILE]` preferido (token curto 60s),
+   `VAULT_TOKEN[_FILE]` só dev; malha provisiona policy `e2e-
+   leitura` + role `no-a`, segredos em `/segredos` ro.
    Pendente: **decisão jurídica de reidentificação** (ver ata em
-   `docs/atas/`), motor emitir `ent_id`+mapa (integração), AppRole
-   + TLS ao Vault, cache de replay compartilhado p/ multi-réplica.
+   `docs/atas/`), motor emitir `ent_id`+mapa (integração).
 4. ~~mTLS na fronteira A↔B~~ **feito** (04/11/2026): JWT removido
    (reprovado — XSS); identidade = certificado de cliente verificado
    no nginx (`deploy/nginx.conf`, `scripts/gerar_certs_mtls.py`) →
@@ -151,10 +154,12 @@ revisto, harness `p8_metricas.py`, emenda 04/11-04b em
        frescura `E2E_JANELA_MS` (300 s) + `ReplayCache` de nonces
        no ingresso HTTP; AMQP só frescura (redelivery legítima
        repete o envelope); S3/DLQ sem janela (repouso/forense não
-       expira). Dívida: cache é processo-local — multi-réplica
-       exige store compartilhado;
-   (c) **ingress stream** — `abrir` materializa o corpo: upload
-       multipart grande atravessa num quadro só;
+       expira). ~~Dívida: cache é processo-local~~ **feito**
+       (05/11/2026): `replay_nonces` no Postgres — claim atômico
+       por PK multi-réplica + varredura oportunista de expirados;
+   (c) ~~**ingress stream**~~ **feito** (05/11/2026):
+       `abrir_stream_todas` decifra quadro a quadro sem
+       materializar o corpo; `x-e2e-ct` em allowlist;
    (d) ~~TLS interno + tcpdump~~ **feito** (05/11/2026): malha
        executável `deploy/malha/` — DOIS nós (tjpa+mpfpa), TLS
        real em todos os links (rabbitmq TLS-only 5671, postgres
@@ -169,6 +174,17 @@ revisto, harness `p8_metricas.py`, emenda 04/11-04b em
        magia E2E no hop nginx→api, ZERO bytes legíveis no fio
        (sentinela/caso_cnj/JSON/credenciais). Ressalva do modelo:
        o hop nginx→api é HTTP em claro na `interna` carregando
-       quadros E2E (headers legíveis, payload não — é o desenho).
+       quadros E2E (headers legíveis, payload não — é o desenho);
+   (e) **custódia assinada + gates físicos** — **feito**
+       (05/11/2026): Ed25519 envelope/ack (`app/assinatura.py`,
+       verificação fail-closed com `ORG_SIGN_*`/`ORGAO_PUBKEYS_*`),
+       `destino` no envelope, confirmar recomputa SHA-256 dos
+       bytes no storage de B, upload só em CRIADA/RECEBIDA +
+       magic bytes, `repo.verificar` + `GET /verificar` (replay
+       elo a elo), trigger append-only PG (migração 0007),
+       `encadear_uma_vez` dedup de efeito, worker fail-closed
+       (`DATABASE_URL`+`IA_ENGINE`), `BORDA_SEGREDO`, nginx
+       limit_req+HSTS. Detalhe: `docs/divida-tecnica.md`
+       "rodada B/C".
 5. Corpus real (Etapa 3) — depende das exclusões jurídicas.
 6. Gates não avaliados: utility TAB ≥0,85, latência.

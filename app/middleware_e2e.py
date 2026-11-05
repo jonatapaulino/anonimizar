@@ -21,7 +21,7 @@ from __future__ import annotations
 import json
 import logging
 
-from app.cofre import ChavesE2E, abrir_todas
+from app.cofre import ChavesE2E, abrir_stream_todas
 from app.crypto_e2e import (CT_E2E, ErroCripto, FluxoSelador,
                             ReplayCache, janela_de_env)
 
@@ -29,9 +29,16 @@ log = logging.getLogger("tramitacao.e2e")
 
 _PREFIXO_PROTEGIDO = "/v1/"
 
-# anti-replay de ingresso: nonces do quadro 0 dentro da janela
-# (processo-local — multi-réplica exigiria cache compartilhado)
+# anti-replay de ingresso: nonces do quadro 0 dentro da janela.
+# Processo-local (uma réplica / dev) — `app.state.replay_db`
+# (repo.replay_visto) o substitui em multi-réplica, com claim
+# atômico compartilhado no Postgres.
 _REPLAY = ReplayCache()
+
+# content-types claros aceitos dentro do envelope — o par declara
+# em x-e2e-ct; tudo fora da lista é 415 (o roteador só entende
+# JSON de comando e multipart de upload)
+_CTS_CLAROS = (b"application/json", b"multipart/form-data")
 
 
 class MiddlewareE2E:
@@ -58,29 +65,58 @@ class MiddlewareE2E:
             await self.app(scope, receive, send)
             return
 
-        # ---- ingresso: junta e decifra o corpo antes do roteador
-        partes = []
-        while True:
-            m = await receive()
-            partes.append(m.get("body", b""))
-            if not m.get("more_body"):
-                break
-        corpo = b"".join(partes)
+        # ---- ingresso: decifra o corpo STREAMING antes do
+        # roteador — não materializa mais (divida-tecnica §4.c).
+        # A decisão de segurança acontece no quadro 0 (selo,
+        # janela e replay decidem ali): puxar o primeiro bloco
+        # claro aqui preserva o 400 precoce para TODA rejeição;
+        # o restante decifra lazy — upload de 20 MiB atravessa
+        # quadro a quadro sem nunca existir inteiro em RAM.
         headers = {k: v for k, v in scope.get("headers", [])}
         ct = headers.get(b"content-type", b"").split(b";")[0].strip()
         vio_e2e = ct == CT_E2E.encode()
+        stream = None
+        primeiro = None
 
         if vio_e2e:
+            async def _fonte_cifrada():
+                while True:
+                    m = await receive()
+                    b = m.get("body", b"")
+                    if b:
+                        yield b
+                    if not m.get("more_body"):
+                        break
+
+            replay_db = getattr(
+                getattr(scope.get("app"), "state", None),
+                "replay_db", None)
+            stream = abrir_stream_todas(
+                self.chaves, _fonte_cifrada(),
+                janela_ms=janela_de_env(),
+                replay=None if replay_db is not None else _REPLAY,
+                replay_db=replay_db)
             try:
-                corpo = abrir_todas(
-                    self.chaves, corpo,
-                    janela_ms=janela_de_env(), replay=_REPLAY)
+                primeiro = await stream.__anext__()
+            except StopAsyncIteration:
+                primeiro = b""
             except ErroCripto:
                 log.warning("e2e: selo inválido em %s", path)
                 await _responder(send, 400)
                 return
             ct_real = headers.get(b"x-e2e-ct")
-            if ct_real:
+            if ct_real is None:
+                if primeiro:
+                    log.warning(
+                        "e2e: corpo claro sem x-e2e-ct em %s", path)
+                    await _responder(send, 415)
+                    return
+            elif ct_real.split(b";")[0].strip() not in _CTS_CLAROS:
+                log.warning(
+                    "e2e: content-type claro recusado em %s", path)
+                await _responder(send, 415)
+                return
+            else:
                 headers[b"content-type"] = ct_real
             headers.pop(b"content-length", None)
             scope["headers"] = list(headers.items())
@@ -89,15 +125,27 @@ class MiddlewareE2E:
             await _responder(send, 415)
             return
 
-        entregue = False
-
-        async def receive_claro():
-            nonlocal entregue
-            if entregue:
-                return {"type": "http.request", "body": b""}
-            entregue = True
-            return {"type": "http.request", "body": corpo,
-                    "more_body": False}
+        if vio_e2e:
+            async def receive_claro():
+                nonlocal primeiro
+                if primeiro is not None:
+                    b, primeiro = primeiro, None
+                    return {"type": "http.request", "body": b,
+                            "more_body": True}
+                try:
+                    b = await stream.__anext__()
+                    return {"type": "http.request", "body": b,
+                            "more_body": True}
+                except StopAsyncIteration:
+                    return {"type": "http.request", "body": b"",
+                            "more_body": False}
+                # ErroCripto mid-stream propaga — o handler falha e
+                # o except abaixo devolve 500 (a janela e o selo já
+                # decidiram no quadro 0; quebra posterior é erro de
+                # transporte, não nova decisão de segurança)
+        else:
+            receive_claro = receive      # claro: passa direto —
+                                         # nada de materializar
 
         # ---- egresso: cifra quadro a quadro quando o par fala E2E
         cifrar = vio_e2e or self.obrigatorio

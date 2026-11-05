@@ -16,8 +16,9 @@ import enum
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import (JSON, Boolean, DateTime, Enum, ForeignKey,
-                        Integer, String, Uuid)
+from sqlalchemy import (JSON, BigInteger, Boolean, DateTime, Enum,
+                        ForeignKey, Integer, String,
+                        UniqueConstraint, Uuid)
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -55,6 +56,11 @@ class Tramitacao(Base):
 
 class Trilha(Base):
     __tablename__ = "trilha_auditoria"
+    # cada elo só tem UM filho: a cadeia é única por nó e a
+    # bifurcação por corrida falha aqui, nunca em silêncio
+    __table_args__ = (
+        UniqueConstraint("hash_anterior",
+                         name="uq_trilha_hash_anterior"),)
 
     seq: Mapped[int] = mapped_column(primary_key=True,
                                      autoincrement=True)
@@ -75,6 +81,24 @@ class Idempotencia(Base):
     tramitacao_id: Mapped[uuid.UUID] = mapped_column(
         Uuid, ForeignKey("tramitacoes.id"))
     criado_em: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True))
+
+
+class ReplayNonce(Base):
+    """Store COMPARTILHADO de anti-replay do ingresso E2E —
+    substitui o ReplayCache processo-local em implantações
+    multi-réplica (divida-tecnica §4.b): um nonce re-tocado em
+    outra réplica do mesmo nó é reconhecido aqui.
+
+    O INSERT-atômico é o claim (PK violada = nonce já visto =
+    replay); `expira_ms` guarda o fim da janela de frescura do
+    quadro para a varredura oportunista descartar linhas mortas."""
+    __tablename__ = "replay_nonces"
+
+    nonce: Mapped[str] = mapped_column(String(24),
+                                       primary_key=True)
+    expira_ms: Mapped[int] = mapped_column(BigInteger)
+    visto_em: Mapped[datetime] = mapped_column(
         DateTime(timezone=True))
 
 

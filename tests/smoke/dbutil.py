@@ -22,7 +22,7 @@ from app.repository import (RepositorioSQL, criar_tabelas,
                             repo_sqlite_memoria)
 
 # ordem respeita FKs (filhas primeiro)
-_TABELAS = ("outbox_eventos", "idempotencia",
+_TABELAS = ("replay_nonces", "outbox_eventos", "idempotencia",
             "trilha_auditoria", "tramitacoes")
 
 

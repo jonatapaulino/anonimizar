@@ -63,3 +63,25 @@ validar tokens de **qualquer issuer OIDC-compliant** via discovery
   o vínculo token↔certificado é o único controle efetivo de replay.
 - Incluído TTL curto obrigatório para tokens: a ausência de introspecção
   elimina revogação, e expiração curta é a mitigação por desenho.
+
+## Emenda 2026-11-05 — identidade da borda migrada para mTLS puro
+
+- **Supersede o mecanismo de borda**: o JWT de máquina (grant
+  `client_credentials`) foi implementado e depois **reprovado em
+  avaliação de segurança** — token portável é exfiltrável (XSS,
+  log, replay); o certificado de cliente não sai do SO/HSM do
+  órgão. A identidade inter-órgãos passou a ser **o CN do
+  certificado mTLS verificado no nginx** (`deploy/nginx.conf`),
+  propagada como `X-Cliente-Orgao` na rede interna — `deps.py`
+  confia no header porque só o nginx alcança `interna`.
+- A camada E2E (AEAD nos payloads, `crypto_e2e`) torna o JWT de
+  aplicação redundante para o plano de dados: mesmo um token
+  capturado não abre o envelope cifrado.
+- **O que permanece deste ADR**: a agnóstica de issuer e a
+  premissa de operação isolada continuam válidos; OIDC/Keycloak
+  segue como **opção para RBAC humano dentro do órgão** (grant
+  `authorization_code`), caminho não implementado — reabrir se
+  operadores/auditores precisarem de identidade individual.
+- Verificável: `tests/smoke/test_mtls_real.py` (handshake real),
+  `deploy/malha/` (dois nós com certs próprios), prova pcap em
+  `docs/relatorio_seguranca_e2e.md`.

@@ -121,15 +121,18 @@ class TestEnvelope:
     def test_envelope_valido(self, caso):
         e = EnvelopeRecebimento(
             tramitacao_id=uuid.uuid4(), origem="tjpa", caso_cnj=caso,
+            destino="mpf.pa",
             modo="anonimizacao", hash_documento_sha256="b" * 64,
             enviado_em=datetime.now(timezone.utc))
         assert e.origem == "tjpa"
+        assert e.destino == "mpf.pa"      # endereçado ao nó receptor
         # T9: o envelope é só metadados — nenhum campo de bytes
         assert not hasattr(e, "documento_b64")
 
     def test_envelope_imutavel(self, caso):
         e = EnvelopeRecebimento(
             tramitacao_id=uuid.uuid4(), origem="tjpa", caso_cnj=caso,
+            destino="mpf.pa",
             modo="anonimizacao", hash_documento_sha256="b" * 64,
             enviado_em=datetime.now(timezone.utc))
         with pytest.raises(ValidationError):

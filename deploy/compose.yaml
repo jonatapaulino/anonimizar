@@ -38,11 +38,14 @@ services:
       E2E_JANELA_MS: "300000"
       # Fonte das chaves E2E: env (dev) ou vault (produção).
       # vault: KV v2 {atual, anterior_1..N} — rotação propaga por
-      # cache TTL sem restart; VAULT_TOKEN é dev — produção:
-      # AppRole + TLS ao Vault (dívida de implantação).
+      # cache TTL sem restart. Produção: AppRole — VAULT_ROLE_ID
+      # (_FILE) + VAULT_SECRET_ID(_FILE), token curto por login;
+      # VAULT_TOKEN(_FILE) é fallback de dev/seed.
       E2E_FONTE: "env"
       VAULT_ADDR:
       VAULT_KV_PATH: "isaci/e2e"
+      VAULT_ROLE_ID_FILE:
+      VAULT_SECRET_ID_FILE:
       VAULT_TOKEN:
       # E2E_CHAVE (hex de 32B) injetada em runtime pelo Vault do
       # nó — passthrough do ambiente, nunca literal no repo.

@@ -156,7 +156,9 @@ class TestPropostaReenvio:
         CONFIRMADA -> RECEBIDA (era o vermelho da especificação)."""
         out, env = await _ate_em_transito(org_a, payload_criacao)
         env_d = env.model_dump(mode="json")
-        await org_b.receber(env_d, org_b.orgao)
+        await org_b.receber(env_d, "tjpa")
+        # B só confirma sobre bytes verificados no próprio storage
+        await org_b.upload_documento(out.id, FakeUpload(DOC), org_b.orgao)
         await org_b.confirmar(dict(
             tramitacao_id=out.id, decisao="aceita",
             hash_documento_recebido=(
@@ -166,7 +168,7 @@ class TestPropostaReenvio:
             StatusTramitacao.CONFIRMADA
         trilha_antes = await org_b.repo.trilha(out.id)
         # reentrega do MESMO envelope (duplicata do canal)
-        rec2 = await org_b.receber(env_d, org_b.orgao)
+        rec2 = await org_b.receber(env_d, "tjpa")
         assert rec2.recebido is True
         assert (await org_b.obter(out.id)).status == \
             StatusTramitacao.CONFIRMADA
@@ -182,14 +184,14 @@ class TestEcoRecebimento:
     async def _duplicata(self, org_a, org_b, payload):
         out, env = await _ate_em_transito(org_a, payload)
         env_d = env.model_dump(mode="json")
-        await org_b.receber(env_d, org_b.orgao)
+        await org_b.receber(env_d, "tjpa")
         return out, env_d
 
     async def test_eco_expoe_status_e_omite_hash_cadeia(
             self, org_a, org_b, payload_criacao):
         _out, env_d = await self._duplicata(org_a, org_b,
                                             payload_criacao)
-        eco = await org_b.receber(env_d, org_b.orgao)
+        eco = await org_b.receber(env_d, "tjpa")
         assert eco.recebido is True
         assert eco.status == StatusTramitacao.RECEBIDA
         assert eco.hash_cadeia is None
@@ -202,26 +204,30 @@ class TestEcoRecebimento:
         out, env_d = await self._duplicata(org_a, org_b,
                                            payload_criacao)
         antes = await org_b.repo.trilha(out.id)
-        await org_b.receber(env_d, org_b.orgao)
+        await org_b.receber(env_d, "tjpa")
         depois = await org_b.repo.trilha(out.id)
         assert len(antes) == len(depois)
 
     async def test_terceiro_nao_obtem_eco(
             self, org_a, org_b, payload_criacao):
-        """Um órgão fora do caso com um envelope capturado não
-        descobre nem existência nem status — 404 opaco."""
+        """Envelope capturado não abre o eco para quem não é a
+        origem: o portão de identidade (org == env.origem) dispara
+        ANTES do carregar — 409 uniforme para terceiro E para o
+        próprio destino, sem oráculo de existência do tid."""
         _out, env_d = await self._duplicata(org_a, org_b,
                                             payload_criacao)
-        with pytest.raises(ErroNaoEncontrado):
-            await org_b.receber(env_d, "tre-pa")
+        for impostor in ("tre-pa", org_b.orgao):
+            with pytest.raises(ErroFluxo, match="diverge"):
+                await org_b.receber(env_d, impostor)
 
     async def test_hash_divergente_em_tid_conhecido_e_conflito(
             self, org_a, org_b, payload_criacao):
-        """Participante com envelope adulterado para tid real:
-        divergência de hash => 409. A checagem de participação
-        vem antes — o 409 nunca é alcançável por terceiros."""
+        """Envelope adulterado para tid real: trocar o hash
+        invalida a assinatura — 409 no ingresso, antes mesmo do
+        carregar. O eco nem é alcançado: a camada de assinatura
+        é a fronteira mais externa e mais forte."""
         _out, env_d = await self._duplicata(org_a, org_b,
                                             payload_criacao)
         env_mau = dict(env_d, hash_documento_sha256="f" * 64)
-        with pytest.raises(ErroFluxo, match="diverge"):
+        with pytest.raises(ErroFluxo, match="assinatura"):
             await org_b.receber(env_mau, "tjpa")

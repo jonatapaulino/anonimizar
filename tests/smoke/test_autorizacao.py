@@ -11,17 +11,20 @@ from fastapi.testclient import TestClient
 from app.main import create_app
 from app.storage import ArmazenamentoMemoria
 from tests.identidade import hdr
-from tests.smoke.conftest import DOC, HASH_DOC
+from tests.smoke.conftest import DOC, HASH_DOC, assinantes_teste
 from tests.smoke.dbutil import mk_repo
 
 CASO = "5614226-41.2021.8.14.2679"
+
+ASS = assinantes_teste()
 
 
 @pytest.fixture
 def ca():
     with TestClient(create_app(
             "tjpa", repo_factory=lambda: mk_repo("a"),
-            storage=ArmazenamentoMemoria("tjpa"))) as c:
+            storage=ArmazenamentoMemoria("tjpa"),
+            assinante=ASS["tjpa"])) as c:
         yield c
 
 
@@ -30,7 +33,8 @@ def cb():
     """Nó B (PRODEPA) — precisa existir para receber/confirmar."""
     with TestClient(create_app(
             "prodepa", repo_factory=lambda: mk_repo("b"),
-            storage=ArmazenamentoMemoria("prodepa"))) as c:
+            storage=ArmazenamentoMemoria("prodepa"),
+            assinante=ASS["prodepa"])) as c:
         yield c
 
 
@@ -102,15 +106,22 @@ class TestAutorizacaoDocumento:
 
 def _ate_recebida(ca, cb, payload):
     """Fluxo feliz até RECEBIDA no nó B — ponto de partida dos
-    testes de confirmação/ack."""
+    testes de confirmação/ack. B arquiva os bytes no próprio
+    storage: a confirmação recomputa o SHA-256 do que está lá —
+    declarar sem os bytes não fecha o caso."""
     tid = _criar(ca, payload)
     assert _up(ca, tid).status_code == 201
     env = ca.post(f"/v1/tramitacoes/{tid}/envio",
                   headers=hdr("tjpa"))
     assert env.status_code == 200, env.text
     rec = cb.post("/v1/recebimentos", json=env.json(),
-                  headers=hdr("prodepa"))
+                  headers=hdr("tjpa"))
     assert rec.status_code == 200, rec.text
+    up_b = cb.post(f"/v1/documentos/{tid}/upload",
+                   files={"arquivo": ("peca.pdf", DOC,
+                                      "application/pdf")},
+                   headers=hdr("prodepa"))
+    assert up_b.status_code == 201, up_b.text
     return tid, env.json()
 
 
@@ -179,6 +190,36 @@ class TestAutorizacaoAcks:
                     headers=hdr("prodepa"), json=conf)
         assert r.status_code == 200
         assert r.json()["status"] == "confirmada"
+
+
+class TestAutorizacaoRecebimento:
+    """recebimentos: quem posta é a ORIGEM — em B abaixa o
+    envelope de A com o cert DE A (borda real, ver malha).
+    Identidade divergente da origem declarada => 409 uniforme
+    antes do carregar: sem oráculo de existência do tid."""
+
+    def _env(self, ca, payload):
+        tid = _criar(ca, payload)
+        assert _up(ca, tid).status_code == 201
+        return ca.post(f"/v1/tramitacoes/{tid}/envio",
+                       headers=hdr("tjpa")).json()
+
+    def test_origem_posta_ok(self, ca, cb, payload):
+        r = cb.post("/v1/recebimentos", json=self._env(ca, payload),
+                    headers=hdr("tjpa"))
+        assert r.status_code == 200
+
+    def test_destino_nao_posta_envelope_alheio(self, ca, cb,
+                                               payload):
+        r = cb.post("/v1/recebimentos", json=self._env(ca, payload),
+                    headers=hdr("prodepa"))
+        assert r.status_code == 409
+
+    def test_terceiro_nao_posta_envelope_alheio(self, ca, cb,
+                                                payload):
+        r = cb.post("/v1/recebimentos", json=self._env(ca, payload),
+                    headers=hdr("tre-pa"))
+        assert r.status_code == 409
 
 
 class TestAutorizacaoEnvio:
