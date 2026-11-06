@@ -35,13 +35,32 @@ anonimização e tramitação de documentos jurídicos. Repo privado:
 
 ## Comandos
 
-- Testes: `pytest -q` (suíte smoke/e2e — 285 verdes em 06/11/2026)
+- Testes: `pytest -q` (suíte smoke/e2e — 286 verdes em 06/11/2026)
 - Infra dev: `docker-compose.yml` (postgres+rabbitmq+minio);
   credenciais dev vêm de env (`edvar_dev`, `edvar_dev_minio`)
 - Malha real 2 nós: `docker compose -f deploy/malha/compose.malha.yaml
   up -d`; provas rodam no contêiner `peer`:
   `scripts/prova_malha.py` (A↔B), `scripts/prova_esteira_b.py`
   (esteira no nó destino), `scripts/prova_pcap.py` (pcap)
+- **Demonstração narrada** (apresentação — jornada completa do
+  documento A→B com evidências ao vivo):
+  `python scripts/demo_coordenador.py [--pausar]`
+  (orquestra `scripts/demo_fluxo_peer.py` no `peer` + evidências
+  de infra via docker exec; `deploy/malha/compose.demo.yaml`
+  troca os workers para `IA_ENGINE=demo` — regex LGPD
+  determinística que torna a anonimização VISÍVEL; NÃO é o
+  motor medido nem o de produção)
+- Malha: chaves Ed25519 de custódia (`ORG_SIGN_SEED_TJPA`/
+  `ORG_SIGN_SEED_MFPA`/`ORGAO_PUBKEYS_JSON`) vivem em
+  `deploy/malha/.env` (gitignored). Sem elas a malha sobe
+  retrocompatível — envelopes sem assinatura. Gerar par novo:
+  `python -c "import os,base64;from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey;from cryptography.hazmat.primitives.serialization import Encoding,PublicFormat;s=os.urandom(32);k=Ed25519PrivateKey.from_private_bytes(s);print('seed',base64.b64encode(s).decode());print('pub',base64.b64encode(k.public_key().public_bytes(Encoding.Raw,PublicFormat.Raw)).decode())"`
+  e o cert cliente do par receptor para o `peer` (CN=org) —
+  `openssl req -newkey rsa:2048 -nodes -keyout <org>.key -subj
+  "/CN=<org>/O=iSACI-dev" -out <org>.csr` +
+  `openssl x509 -req -in <org>.csr -CA ca.crt -CAkey ca.key
+  -CAcreateserial -out <org>.crt -days 365 -sha256`
+  em `deploy/malha/certs/` (o `peer` já monta tjpa/mpfpa/ca).
 - Relatório: `python scripts/relatorio_pdf.py`
   → `docs/relatorio_avaliacao.pdf` (edite a FONTE, não o PDF)
 - Relatório de arquitetura: `python scripts/relatorio_arquitetura_pdf.py`

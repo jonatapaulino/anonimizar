@@ -1,0 +1,24 @@
+# Override de DEMONSTRAÇÃO — troca o motor stub dos workers pelo
+# DemoMotorIA (app/worker.py): regex determinística de formatos
+# LGPD (CPF, e-mail, telefone, nome após rótulo de petição) que
+# substitui o PII por [ANONIMIZADO_LGPD].
+#
+# NÃO é o motor medido (cascata v2, F1 0,953 — fora da porta
+# MotorIA) nem aprovado para produção (ADR-0011). Serve para
+# mostrar a esteira COMPLETA com transformação visível: bytes
+# entram com PII, saem anonimizados no bucket <org>-docs-anonimizados.
+#
+# Uso:
+#   docker compose -f deploy/malha/compose.malha.yaml \
+#                  -f deploy/malha/compose.demo.yaml \
+#                  up -d worker-a worker-b
+# Reverter ao stub:
+#   docker compose -f deploy/malha/compose.malha.yaml \
+#                  up -d --force-recreate worker-a worker-b
+services:
+  worker-a:
+    environment:
+      IA_ENGINE: demo
+  worker-b:
+    environment:
+      IA_ENGINE: demo
