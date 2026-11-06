@@ -316,7 +316,7 @@ def main():
     r.tab(
         ["Prova", "Metodo", "Resultado"],
         [["Suite smoke/e2e", "pytest -q",
-          "284 verdes, 5 skipped, 4 xfailed"],
+          "285 verdes, 5 skipped, 4 xfailed"],
          ["Migracoes 0006/0007", "alembic upgrade no Postgres 16 "
           "real da malha", "aplicadas limpas (era divida "
           "aberta)"],
@@ -334,7 +334,18 @@ def main():
           "recomputado confere"],
          ["Cofre real", "worker-a via AppRole no Vault",
           "GET 200 no segredo isaci/e2e (E2E_FONTE=vault "
-          "provado)"]],
+          "provado)"],
+         ["Download E2E", "GET /download na malha travava: "
+          "receive_claro esgotado devolvia http.request infinito "
+          "e listen_for_disconnect girava (loop 100% CPU)",
+          "corrigido: delega ao receive real apos EOF; "
+          "download 200 na malha + regressao em teste"],
+         ["Esteira no no destino", "orgao_no = dono do storage "
+          "(era a origem do caso — worker de B buscaria bucket "
+          "errado); cada no anonimiza a propria copia",
+          "corrigido e provado na malha: trilha de B "
+          "recebida->doc_arquivado->doc_anonimizado; "
+          "download-anonimizado 200 (prova_esteira_b)"]],
         [34, 62, 84])
     r.ln(2)
     r.p(
@@ -384,9 +395,6 @@ def main():
         "Ack B->A tem prova de autoria (Ed25519) mas nao "
         "mecanismo de re-entrega - A pode ficar EM_TRANSITO "
         "apos B terminal",
-        "Esteira de anonimizacao no no B e ambigua: upload em B "
-        "dispara evento com orgao_origem=A - o worker de B busca "
-        "bucket de A no MinIO de B (a corrigir/decidir)",
         "Produto especificado != implementado: sem /v1/anonymize, "
         "sem cofre HMAC/DEK por caso, modo=pseudonimizacao e "
         "metadado inerte",

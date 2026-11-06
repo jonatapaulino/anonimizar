@@ -142,3 +142,34 @@ ponto onde a brecha morria.
 - Decisões jurídicas (DPO): pseudonimização/reidentificação,
   `caso_cnj` em claro, retenção. Não implementadas — aguardam
   decisão fora do código.
+
+## Resolvido — validação da malha (05/11): dois bugs do caminho real
+
+A prova B-side (`scripts/prova_esteira_b.py`) expôs e fechou dois
+defeitos que a suíte não alcançava — um semântico, um de
+concorrência no ASGI:
+
+- **`orgao_no` — dono do storage, não origem do caso.** O evento
+  `DocumentoProntoParaAnonimizacao` carregava `orgao_origem` =
+  origem da tramitação, e o worker resolvia o bucket local por
+  ele. Em A coincidia (origem == nó) e o bug era invisível; em B,
+  o worker buscaria `A-docs` no MinIO de B — miss, NACK até DLQ,
+  `falha_anonimizacao` na trilha. Renomeado para `orgao_no =
+  self.orgao`: cada nó anonimiza a **sua** cópia física. Prova
+  real: trilha de B `recebida → doc_arquivado → doc_anonimizado`
+  e `download-anonimizado` 200 no MinIO de B.
+- **`receive_claro` — loop de CPU em resposta streaming.**
+  `StreamingResponse` dispara `listen_for_disconnect`, que chama
+  `receive()` até ver `http.disconnect`. Com o stream E2E
+  esgotado, o wrapper devolvia `http.request` instantâneo para
+  sempre — a task girava sem suspender, o cancelamento do fim da
+  resposta nunca era entregue e o event loop ficava preso a
+  ~100% CPU: todo `GET /download` derrubava o nó (na malha, até
+  requests seguintes pendenturavam). Corrigido delegando ao
+  `receive` real após o EOF do corpo E2E — só o transporte
+  sinaliza o disconnect. Regressão coberta em
+  `test_cliente_e2e.py` (download E2E multi-quadro + nó vivo).
+- **`ClienteE2E` — resposta multi-quadro.** `abrir()` exigia
+  exatamente um quadro; downloads > CHUNK (64 KiB) chegam em N.
+  `_abrir_resposta` junta os quadros na ordem com a mesma
+  rotação de chaves de `abrir_todas`.
