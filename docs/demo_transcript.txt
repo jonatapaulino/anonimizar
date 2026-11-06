@@ -1,0 +1,296 @@
+# TRANSCRIPT REAL — demonstração executada em 06/11/2026 na malha de 2 nós
+# (tjpa + mpfpa, Docker). Regenerável: docker compose -f deploy/malha/compose.malha.yaml up -d
+# e depois: python scripts/demo_coordenador.py
+# IDs/hashes variam a cada execução — o conteúdo probatório não.
+
+
+========================================================================
+  iSACI / ANONIMIZAR — demonstração executável da arquitetura
+========================================================================
+  Cenário: uma petição com dados pessoais tramita do órgão A
+  (tjpa) para o órgão B (mpfpa) e é anonimizada no destino.
+
+  Dois nós REAIS em Docker, cada um com sua API, Postgres,
+  RabbitMQ (TLS), MinIO (HTTPS) e borda nginx com mTLS.
+  Todo payload atravessa envelopes AEAD ChaCha20-Poly1305 (E2E);
+  envelopes de tramitação são assinados Ed25519; a auditoria é
+  uma hash-chain append-only em cada nó.
+
+  O que você vai ver NÃO é descrição: cada passo executa a
+  chamada real e imprime a evidência que a prova.
+========================================================================
+PREPARAÇÃO — malha real + motor de demonstração
+========================================================================
+  workers -> IA_ENGINE=demo (regex LGPD determinística —
+  anonimização VISÍVEL; NÃO é o motor medido nem o de
+  produção — ressalva explícita no encerramento)
+  aguardando workers estabilizarem...
+  ok — demo pronta para iniciar
+
+
+========================================================================
+ATO 1 — REGISTRO E ARQUIVO NO NÓ ORIGEM
+========================================================================
+  A tramitação nasce com METADADOS + o SHA-256 declarado
+  do documento — o binário nunca entra nesta chamada.
+  Depois o upload: a API confere o hash byte a byte,
+  valida o formato e grava cifrado no MinIO de A.
+
+[passo 1] A registra o caso (metadados + hash):
+  {
+    "id": "30756541-f5d2-49fe-816d-f79b9e796a0c",
+    "caso_cnj": "3994520-02.2026.8.00.0001",
+    "origem": "tjpa",
+    "destino": "mpfpa",
+    "modo": "pseudonimizacao",
+    "status": "criada",
+    "hash_documento_sha256": "f092ab31410594ee8ab29cbd8d5c1fcec770ceeee7251fbb2cd40392d1926299",
+    "criado_em": "2026-11-06T19:48:40.989110Z",
+    "atualizado_em": "2026-11-06T19:48:40.989112Z",
+    "hash_cadeia": "bf8fcf1af9504c07b3f608658a13a003adbb5d449fdd13e0f6e97b8218539881"
+  }
+  
+    -> status CRIADA; hash declarado = âncora de integridade (o PDF/texto em si NÃO saiu daqui)
+
+[passo 2] A sobe o documento:
+  {
+    "id_documento": "30756541-f5d2-49fe-816d-f79b9e796a0c",
+    "sha256": "f092ab31410594ee8ab29cbd8d5c1fcec770ceeee7251fbb2cd40392d1926299",
+    "tamanho": 420
+  }
+  
+    -> SHA-256 conferido byte a byte; magic bytes do formato validados; objeto gravado no MinIO do nó A (quadros E2E — só ciphertext em repouso)
+  --- EVIDÊNCIA: schema real do Postgres do nó A — não existe coluna para bytes de documento
+                                Table "public.tramitacoes"
+            Column          |           Type           | Collation | Nullable | Default 
+  --------------------------+--------------------------+-----------+----------+---------
+   id                       | uuid                     |           | not null | 
+   caso_cnj                 | character varying(25)    |           | not null | 
+   origem                   | character varying(63)    |           | not null | 
+   destino                  | character varying(63)    |           | not null | 
+   modo                     | character varying(20)    |           | not null | 
+   status                   | character varying(15)    |           | not null | 
+   hash_documento_sha256    | character varying(64)    |           | not null | 
+   hash_cadeia              | character varying(64)    |           | not null | 
+   metadados                | json                     |           | not null | 
+   criado_em                | timestamp with time zone |           | not null | 
+   atualizado_em            | timestamp with time zone |           | not null | 
+   requer_anonimizacao_lgpd | boolean                  |           | not null | false
+  Indexes:
+      "tramitacoes_pkey" PRIMARY KEY, btree (id)
+      "ix_tramitacoes_caso_cnj" btree (caso_cnj)
+      "ix_tramitacoes_status" btree (status)
+  Referenced by:
+      TABLE "idempotencia" CONSTRAINT "idempotencia_tramitacao_id_fkey" FOREIGN KEY (tramitacao_id) REFERENCES tramitacoes(id)
+      TABLE "trilha_auditoria" CONSTRAINT "trilha_auditoria_tramitacao_id_fkey" FOREIGN KEY (tramitacao_id) REFERENCES tramitacoes(id)
+  -> note: NENHUMA coluna bytea/oid — o invariante é estrutural, não disciplinar.
+
+
+========================================================================
+ATO 2 — TRÂNSITO COM CUSTÓDIA — O QUE ATRAVESSA A FRONTEIRA
+========================================================================
+  O 'envelope' A->B carrega apenas metadados + hash +
+  assinatura Ed25519 de A — nunca bytes do documento.
+  Primeiro a prova negativa: adulteramos o hash em
+  trânsito e B deve recusar. Depois o envelope real.
+
+[passo 3] A emite o envelope (só metadados):
+  {
+    "tramitacao_id": "30756541-f5d2-49fe-816d-f79b9e796a0c",
+    "origem": "tjpa",
+    "destino": "mpfpa",
+    "caso_cnj": "3994520-02.2026.8.00.0001",
+    "modo": "pseudonimizacao",
+    "hash_documento_sha256": "f092ab31410594ee8ab29cbd8d5c1fcec770ceeee7251fbb2cd40392d1926299",
+    "enviado_em": "2026-11-06T19:48:41.880012Z",
+    "requer_anonimizacao_lgpd": true,
+    "assinatura": "SioSpr1HEuRiJ6MJMi7MtPw836+7F3yAAYFbLXpkmdyZo6yRfRzt8QHKHM2HKCloprxM9Xmn4YO9NXfop0veCg=="
+  }
+  
+    -> O ENVELOPE É SÓ METADADOS: hash + assinatura Ed25519 de A. Nenhum byte do documento atravessa aqui — prove: o campo 'assinatura' assina TODOS os demais campos.
+
+[passo 4] ATAQUE: hash adulterado em trânsito -> B:
+    POST /v1/recebimentos (hash adulterado) -> 409
+    resposta: {"erro":{"codigo":"conflito_de_fluxo","mensagem":"assinatura do envelope inválida"}}
+  
+    -> B verificou a assinatura Ed25519 de A sobre os campos ANTES de persistir — o campo adulterado quebra o selo e o envelope é recusado. Fail-closed.
+
+[passo 5] envelope legítimo -> B recebe:
+  {
+    "tramitacao_id": "30756541-f5d2-49fe-816d-f79b9e796a0c",
+    "recebido": true,
+    "status": "recebida",
+    "recebido_em": "2026-11-06T19:48:42.708088Z",
+    "motivo": null,
+    "hash_cadeia": "bc5f36861d134a6db4e4a2973c9c0a0f53bc789f06b4edb31cf25b2e6553028d"
+  }
+  
+    -> B conferiu: CN do certificado mTLS = 'tjpa' = envelope.origem; destino = 'mpfpa' = este nó; assinatura válida => projeção RECEBIDA registrada na trilha de B.
+
+========================================================================
+ATO 3 — ARQUIVO SOBERANO NO NÓ DESTINO
+========================================================================
+  B baixa os bytes de A pelo canal E2E e arquiva a
+  PRÓPRIA cópia no MinIO de B — cada instituição detém
+  o seu storage: é a soberania do desenho.
+
+[passo 6] B baixa o documento de A:
+    bytes recebidos: 420 | sha256: f092ab31410594ee8ab29cbd...
+  
+    -> B baixou de A pelo canal E2E: o storage de A guarda ciphertext; a API decifra em streaming; o envelope cifra de volta no fio; o cliente decifra — e os bytes batem com o hash declarado no passo 1.
+  --- EVIDÊNCIA: objeto cru no MinIO do nó A (leitura S3 direta, sem decifrar)
+  tamanho: 488 bytes
+  primeiros 48 bytes: e2 02 35 db 18 91 61 9a 03 83 51 f7 1c b2 00 00 01 a4 00 00 01 a1 b2 67 fb 1b 48 59 e1 12 8b 13 92 b0 9f 82 40 7d 3c 52 5c 4d d6 02 9b 72 36 b7
+  magia E2 (0xE2=quadro, 0x02=v2): True
+  sentinela legivel no objeto: False
+  -> o objeto em repouso começa com a magia do quadro
+     E2E (0xE2 0x02): ciphertext AEAD — a sentinela do
+     documento NÃO aparece. O claro só existe dentro
+     do processo que decifra.
+
+[passo 7] B arquiva a própria cópia:
+  {
+    "id_documento": "30756541-f5d2-49fe-816d-f79b9e796a0c",
+    "sha256": "f092ab31410594ee8ab29cbd8d5c1fcec770ceeee7251fbb2cd40392d1926299",
+    "tamanho": 420
+  }
+  
+    -> mesma disciplina do nó A: hash conferido contra o registrado, formato validado, cópia de B cifrada no MinIO de B — SOBERANIA: cada instituição guarda a sua cópia no seu próprio storage.
+  --- EVIDÊNCIA: objeto cru no MinIO do nó B (leitura S3 direta, sem decifrar)
+  tamanho: 488 bytes
+  primeiros 48 bytes: e2 02 0f 7a 68 43 8d 09 20 70 dc 1f 06 50 00 00 01 a4 00 00 01 a1 b2 68 05 e3 99 17 2c 59 da 22 5e 02 a9 9f 7f 65 69 52 47 b1 2d fb 4b ed 29 fd
+  magia E2 (0xE2=quadro, 0x02=v2): True
+  sentinela legivel no objeto: False
+
+========================================================================
+ATO 4 — FECHAMENTO DE CUSTÓDIA B -> A
+========================================================================
+  B recomputa o SHA-256 dos bytes no PRÓPRIO storage antes
+  de assinar o recebimento — evidência, não declaração.
+  A só aceita o ack se a assinatura for de B (Ed25519).
+
+[passo 8] B confirma com hash recomputado + assinatura:
+  {
+    "tramitacao_id": "30756541-f5d2-49fe-816d-f79b9e796a0c",
+    "status": "confirmada",
+    "confirmado_em": "2026-11-06T19:48:45.157891Z",
+    "hash_cadeia": "038e05902ba8c8c512c505eb5f76d534cf1f478a8fbd943b5ecdeaceb273d335",
+    "assinatura": "r1pDSmN6ajHnSftKcMEG31C0QZvyjoHeYr1UtITP6xysxjJ3FoyW1qUE27YWccfeVF6THmk5Ws5h3eNrAeYQCg=="
+  }
+  
+    -> 'dizer que recebeu' não basta: B recomputou o SHA-256 dos bytes no PRÓPRIO MinIO e exigiu que confira com o declarado antes de assinar o ack. O ack sai assinado Ed25519 — a decisão só vale com a chave de B.
+
+[passo 9] A aplica o ack assinado de B:
+  {
+    "id": "30756541-f5d2-49fe-816d-f79b9e796a0c",
+    "caso_cnj": "3994520-02.2026.8.00.0001",
+    "origem": "tjpa",
+    "destino": "mpfpa",
+    "modo": "pseudonimizacao",
+    "status": "confirmada",
+    "hash_documento_sha256": "f092ab31410594ee8ab29cbd8d5c1fcec770ceeee7251fbb2cd40392d1926299",
+    "criado_em": "2026-11-06T19:48:40.989110Z",
+    "atualizado_em": "2026-11-06T19:48:45.534054Z",
+    "hash_cadeia": "2af138c3c5aea84463f87356697a6ed247998b8823838ef236f2c9ce41abfd35"
+  }
+  
+    -> A verificou a assinatura do ack contra a chave pública de B e aplicou: status CONFIRMADA — ciclo de custódia A->B->A fechado com evidência.
+
+========================================================================
+ATO 5 — ANONIMIZAÇÃO SOBERANA EM B
+========================================================================
+  O upload em B também disparou um evento LGPD na outbox
+  de B: relay -> fila RabbitMQ TLS -> worker de B.
+  O worker baixa a cópia de B, anonimiza e só grava no
+  bucket 'anonimizados' depois do gate de PII residual.
+  Motor nesta demo: regex LGPD determinística — a remoção
+  é real e VISÍVEL no objeto de saída (ressalva no fim).
+
+[passo 10] aguardando a esteira assíncrona de B:
+    doc_anonimizado na trilha de B após 0s de espera
+
+[passo 11] trilha do caso nos dois nós:
+    Nó A (tjpa) — status=confirmada topo=2af138c3c5aea84463f8...
+      seq=42  criada:30756541-f5d2-49fe-816d-f79b9e796a0c  bf8fcf1af9504c07...
+      seq=43  doc_arquivado:30756541-f5d2-49fe-816d-f79b9e796a0c 72a51af69c2616e2...
+      seq=44  em_transito:30756541-f5d2-49fe-816d-f79b9e796a0c 4f2b572cb35ff155...
+      seq=45  doc_anonimizado:30756541-f5d2-49fe-816d-f79b9e796a0c 3bee39b38786d0b5...
+      seq=46  conf:30756541-f5d2-49fe-816d-f79b9e796a0c:confirmada 2af138c3c5aea844...
+    Nó B (mpfpa) — status=confirmada topo=038e05902ba8c8c512c5...
+      seq=22  recebida:30756541-f5d2-49fe-816d-f79b9e796a0c bc5f36861d134a6d...
+      seq=23  doc_arquivado:30756541-f5d2-49fe-816d-f79b9e796a0c 7cda3271d67405f2...
+      seq=24  doc_anonimizado:30756541-f5d2-49fe-816d-f79b9e796a0c d03eab6a7f4e4c56...
+      seq=25  confirma:30756541-f5d2-49fe-816d-f79b9e796a0c:confirmada 038e05902ba8c8c5...
+  
+    -> cada elo = sha256(elo anterior | evento): append-only, sem UPDATE/DELETE (trigger no Postgres). Adulterar uma linha quebra todos os elos seguintes.
+
+[passo 12] o objeto ANONIMIZADO no bucket de B:
+    ---------- CONTEÚDO ANONIMIZADO (bucket de B) -----
+    | PETICAO INICIAL — Processo 3994520-02.2026.8.00.0001
+    | Vara Civel da Comarca — envio eletronico sigiloso
+    | 
+    | Requerente: [ANONIMIZADO_LGPD], cpf [ANONIMIZADO_LGPD]
+    | E-mail de contato: [ANONIMIZADO_LGPD]
+    | Telefone: [ANONIMIZADO_LGPD]
+    | 
+    | DOS FATOS: a requerente narra que, em janeiro de 2026, ...
+    | DOS PEDIDOS: requer a procedencia do pedido com condenacao
+    | do reu, nos termos da fundamentacao. — DEMO-COORDENADOR-7X9
+    ---------------------------------------------------
+    tags [ANONIMIZADO_LGPD] no lugar do PII: 4
+  
+    -> worker de B baixou a cópia de B, aplicou o motor e só gravou depois do gate de PII residual (nome, CPF, e-mail e telefone removidos do objeto publicado).
+
+========================================================================
+ATO 6 — PROVAS FINAIS — AUDITORIA E RESISTÊNCIA
+========================================================================
+  1) replay da hash-chain elo a elo nos DOIS nós;
+  2) append-only: trigger no Postgres barra UPDATE/DELETE;
+  3) reenvio de pacote copiado: nonce E2E já visto -> 400.
+
+[passo 13] verificação da cadeia em A e em B:
+    nó A: integro=True linhas_rejogadas=46 topo=2af138c3c5aea84463f87356...
+    nó B: integro=True linhas_rejogadas=25 topo=038e05902ba8c8c512c505eb...
+  
+    -> auditoria AUTÔNOMA: cada elo foi recomputado do GENESIS e comparado ao gravado — a prova não é o topo, é o replay da cadeia inteira, nos DOIS nós.
+  --- EVIDÊNCIA: trilha_auditoria — trigger append-only no banco
+   trilha_append_only
+  -> trigger ativa: trilha_append_only — UPDATE/DELETE na trilha é barrado pelo próprio banco, não pela aplicação.
+
+[passo 14] prova de replay — mesmo quadro E2E 2x:
+    1ª entrega do quadro -> 200 | 2ª entrega IDÊNTICA -> 400
+  
+    -> o nonce do quadro AEAD é reivindicado atomicamente no Postgres (replay_nonces): um pacote copiado no fio e reentregue não executa a operação uma segunda vez — mesmo dentro da janela de frescura.
+
+========================================================================
+  RESUMO — o que ficou PROVADO em execução real
+========================================================================
+  [x] bytes nunca em envelopes/banco: envelope = metadados+hash;
+      schema do Postgres NÃO tem coluna binária
+  [x] confidencialidade: objeto cru no MinIO é ciphertext E2E
+      (magia 0xE2); TLS/mTLS em todos os links; E2E atravessa a borda
+  [x] integridade: SHA-256 conferido no upload, no download e
+      recomputado por B antes de assinar o recebimento
+  [x] autenticidade: envelope adulterado recusado (Ed25519);
+      ack só vale com a chave do destino; mTLS na borda
+  [x] soberania: cada nó guarda a própria cópia cifrada; B
+      anonimiza a SUA cópia no SEU storage
+  [x] anonimização: PII visivelmente removido do objeto publicado
+      (tags [ANONIMIZADO_LGPD]); gate residual fail-closed
+  [x] auditoria: hash-chain íntegra rejogada nos dois nós;
+      trigger append-only no Postgres
+  [x] resistência: replay de pacote rejeitado pelo cache de
+      nonces no Postgres
+
+  RESSALVAS (o que a demo NÃO prova — honestidade técnica):
+  - o motor em execução é o DemoMotorIA (regex determinística):
+    prova a ESTEIRA completa, não a qualidade do modelo. O
+    resultado medido da cascata v2 (NER F1 0,953; reidentificação
+    0/360 — corpus sintético) está em docs/metricas.md e ainda
+    não está plugado na porta MotorIA (próximo passo do projeto).
+  - re-entrega/reconciliação do ack B->A: a assinatura existe e
+    foi exercida; o mecanismo de re-entrega é item do roadmap.
+  - corpus real, gates de utility/latência e decisões jurídicas
+    (reidentificação, caso_cnj em claro) permanecem abertos.
+========================================================================
+
