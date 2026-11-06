@@ -70,6 +70,10 @@ services:
       # não recebe o root token do seed; token curto por login.
       VAULT_ROLE_ID_FILE: /segredos/role_id
       VAULT_SECRET_ID_FILE: /segredos/secret_id
+      # custódia assinada: seed Ed25519 do nó + diretório de
+      # públicas dos pares (dev — seeds no .env gitignored)
+      ORG_SIGN_SEED_B64: ${ORG_SIGN_SEED_TJPA}
+      ORGAO_PUBKEYS_JSON: ${ORGAO_PUBKEYS_JSON}
     command: >
       sh -c "alembic upgrade head &&
              uvicorn app.servidor:app --host 0.0.0.0 --port 8000"
@@ -225,6 +229,9 @@ services:
       RABBITMQ_URL: amqps://edvar:edvar_dev@rabbitmq-b:5671
       MINIO_URL: https://minio-b:9000
       E2E_FONTE: env
+      # custódia assinada (mesmo diretório de públicas de A)
+      ORG_SIGN_SEED_B64: ${ORG_SIGN_SEED_MFPA}
+      ORGAO_PUBKEYS_JSON: ${ORGAO_PUBKEYS_JSON}
     command: >
       sh -c "alembic upgrade head &&
              uvicorn app.servidor:app --host 0.0.0.0 --port 8000"
@@ -330,5 +337,8 @@ services:
     volumes:
       - ./certs/tjpa.crt:/run/certs/tjpa.crt:ro
       - ./certs/tjpa.key:/run/certs/tjpa.key:ro
+      - ./certs/mpfpa.crt:/run/certs/mpfpa.crt:ro
+      - ./certs/mpfpa.key:/run/certs/mpfpa.key:ro
       - ./certs/ca.crt:/run/certs/ca.crt:ro
       - ../../scripts/prova_malha.py:/run/prova_malha.py:ro
+      - ../../scripts/demo_fluxo_peer.py:/run/demo_fluxo_peer.py:ro
