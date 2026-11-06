@@ -35,11 +35,17 @@ anonimização e tramitação de documentos jurídicos. Repo privado:
 
 ## Comandos
 
-- Testes: `pytest -q` (suíte smoke/e2e)
-- Ambiente local: `docker-compose.yml` (api+pg+rabbitmq+minio+worker
-  +relay); credenciais dev vêm de env (`edvar_dev`, `edvar_dev_minio`)
+- Testes: `pytest -q` (suíte smoke/e2e — 285 verdes em 06/11/2026)
+- Infra dev: `docker-compose.yml` (postgres+rabbitmq+minio);
+  credenciais dev vêm de env (`edvar_dev`, `edvar_dev_minio`)
+- Malha real 2 nós: `docker compose -f deploy/malha/compose.malha.yaml
+  up -d`; provas rodam no contêiner `peer`:
+  `scripts/prova_malha.py` (A↔B), `scripts/prova_esteira_b.py`
+  (esteira no nó destino), `scripts/prova_pcap.py` (pcap)
 - Relatório: `python scripts/relatorio_pdf.py`
   → `docs/relatorio_avaliacao.pdf` (edite a FONTE, não o PDF)
+- Relatório de arquitetura: `python scripts/relatorio_arquitetura_pdf.py`
+  → `docs/relatorio_arquitetura_v2.pdf` (idem)
 - Apresentação: `python scripts/apresentacao_pdf.py`
   → `docs/apresentacao_arquitetura.pdf` (idem; HTML é a fonte manual)
 
@@ -185,6 +191,34 @@ revisto, harness `p8_metricas.py`, emenda 04/11-04b em
        `encadear_uma_vez` dedup de efeito, worker fail-closed
        (`DATABASE_URL`+`IA_ENGINE`), `BORDA_SEGREDO`, nginx
        limit_req+HSTS. Detalhe: `docs/divida-tecnica.md`
-       "rodada B/C".
-5. Corpus real (Etapa 3) — depende das exclusões jurídicas.
-6. Gates não avaliados: utility TAB ≥0,85, latência.
+       "rodada B/C";
+   (f) ~~validação da esteira no nó destino + download E2E~~
+       **feito** (06/11/2026): prova real B-side
+       (`scripts/prova_esteira_b.py`) — B baixa os bytes de A,
+       arquiva no próprio MinIO e anonimiza a SUA cópia: trilha
+       `recebida→doc_arquivado→doc_anonimizado` + objeto em
+       `mpfpa-docs-anonimizados` (download-anonimizado 200).
+       Dois bugs reais fechados na rodada: `orgao_no` no evento
+       (dono do storage local, não a origem do caso — worker de
+       B buscaria o bucket de A) e `receive_claro` em loop de
+       CPU no download E2E — após o EOF do stream ele delega ao
+       `receive` real (só o transporte sinaliza
+       `http.disconnect`; antes girava a ~100% CPU e derrubava
+       o nó). `ClienteE2E` passou a aceitar resposta
+       multi-quadro (downloads > CHUNK). Detalhe:
+       `docs/divida-tecnica.md` "validação da malha".
+5. Próximo marco funcional — anonimização real na porta:
+   a cascata v2 medida (F1 0,953, reident 0/360) vive em
+   `scripts/`, fora da porta `MotorIA` (deploy roda
+   stub/`IA_ENGINE` single-pass). Plugá-la decide a forma do
+   motor soberano — ADR-0011 segue: caminho aprovado = NER
+   discriminativo medido no mesmo gate; regex+Ollama = desvio
+   POC. Também pendente: ack B→A já sai assinado mas falta o
+   mecanismo de re-entrega (retry/pull) — A pode ficar
+   EM_TRANSITO após B terminal.
+6. Corpus real (Etapa 3) — depende das exclusões jurídicas.
+7. Gates não avaliados: utility TAB ≥0,85, latência/overhead.
+   Backlog operacional completo em `docs/divida-tecnica.md`
+   (CRL/OCSP, runbook DLQ+ESGOTADO, retenção LGPD, backup,
+   sandbox de parser, metadados DOCX/imagem, assinatura por
+   linha da trilha, índice `replay_nonces.expira_ms`).
