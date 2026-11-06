@@ -136,7 +136,7 @@ class TestGateWorker:
                  f"processo {CASO}.").encode()
         await org_a.storage.guardar(doc, io.BytesIO(bruto))
         await processar_evento(
-            {"id_documento": doc, "orgao_origem": "tjpa",
+            {"id_documento": doc, "orgao_no": "tjpa",
              "id_processo": CASO}, org_a.storage, st_dest,
             StubMotorIA(atraso=0), repo=org_a.repo)
         assert not await st_dest.existe(doc)          # não grava
@@ -156,7 +156,7 @@ class TestGateWorker:
                  f"nesta data.").encode()
         await org_a.storage.guardar(doc, io.BytesIO(bruto))
         await processar_evento(
-            {"id_documento": doc, "orgao_origem": "tjpa",
+            {"id_documento": doc, "orgao_no": "tjpa",
              "id_processo": CASO}, org_a.storage, st_dest,
             StubMotorIA(atraso=0), repo=org_a.repo)
         assert not await st_dest.existe(doc)
@@ -174,7 +174,7 @@ class TestGateWorker:
                  f"valor R$ 10.000,00.").encode()
         await org_a.storage.guardar(doc, io.BytesIO(bruto))
         await processar_evento(
-            {"id_documento": doc, "orgao_origem": "tjpa",
+            {"id_documento": doc, "orgao_no": "tjpa",
              "id_processo": CASO}, org_a.storage, st_dest,
             StubMotorIA(atraso=0), repo=org_a.repo)
         assert await st_dest.existe(doc)              # grava
@@ -195,7 +195,7 @@ class TestGateWorker:
         with caplog.at_level(logging.WARNING,
                              "tramitacao.worker"):
             await processar_evento(
-                {"id_documento": doc, "orgao_origem": "tjpa",
+                {"id_documento": doc, "orgao_no": "tjpa",
                  "id_processo": CASO}, org, dest,
                 StubMotorIA(atraso=0))
         msg = " ".join(r.getMessage() for r in caplog.records)

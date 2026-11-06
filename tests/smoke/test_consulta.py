@@ -142,7 +142,7 @@ class TestE2EComWorker:
         # engine/repo das rotas; motor stub, zero tokens
         ca.portal.call(
             processar_evento,
-            {"id_documento": tid, "orgao_origem": "tjpa",
+            {"id_documento": tid, "orgao_no": "tjpa",
              "id_processo": CASO},
             st, st_anon, StubMotorIA(atraso=0), no.repo)
         d = ca.get(f"/v1/tramitacoes/{tid}",

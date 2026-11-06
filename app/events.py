@@ -28,7 +28,7 @@ log = logging.getLogger("tramitacao.eventos")
 class DocumentoProntoParaAnonimizacao:
     """Documento persistido aguardando anonimização LGPD."""
     id_documento: uuid.UUID
-    orgao_origem: str
+    orgao_no: str              # dono do storage — nó que detém os bytes
     id_processo: str                       # caso_cnj — escopo HMAC
     emitido_em: datetime = field(
         default_factory=lambda: datetime.now(timezone.utc))
@@ -54,10 +54,10 @@ class PublicadorLog:
     """Dev local: log estruturado simulando o envio à fila."""
     async def publicar(self, evento) -> None:
         log.info("evento_publicado tipo=%s id_documento=%s "
-                 "orgao_origem=%s id_processo=%s",
+                 "orgao_no=%s id_processo=%s",
                  getattr(evento, "evento", type(evento).__name__),
                  getattr(evento, "id_documento", None),
-                 getattr(evento, "orgao_origem", None),
+                 getattr(evento, "orgao_no", None),
                  getattr(evento, "id_processo", None))
 
 

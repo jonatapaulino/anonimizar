@@ -87,12 +87,16 @@ class NoTramitacao:
                 update={"assinatura": self.assinante.assinar(env)})
         return env
 
-    @staticmethod
-    def _ev_lgpd(rec: dict) -> tuple[str, dict]:
+    def _ev_lgpd(self, rec: dict) -> tuple[str, dict]:
         """Payload do evento — só ids (documento/PII nunca saem
-        no barramento; a esteira busca pelo id no nó soberano)."""
+        no barramento; a esteira busca pelo id no nó soberano).
+        `orgao_no` é o dono do storage onde o binário acabou de
+        ser arquivado — ESTE nó (o worker resolve os próprios
+        buckets locais por ele). Não confundir com `origem` do
+        caso: em B a projeção tem origem=A, mas quem detém a
+        cópia física é B — cada nó anonimiza a sua."""
         return ("DocumentoProntoParaAnonimizacao", dict(
-            id_documento=str(rec["id"]), orgao_origem=rec["origem"],
+            id_documento=str(rec["id"]), orgao_no=self.orgao,
             id_processo=rec["caso_cnj"]))
 
     def _transitar(self, rec: dict, novo: StatusTramitacao):

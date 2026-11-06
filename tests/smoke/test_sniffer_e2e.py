@@ -227,7 +227,7 @@ class TestFronteiraAmqp:
         pub = PublicadorRabbitMQ("amqps://x", chave=CHAVE)
         pub._ex = ExStub()                 # injeta sem conectar
         await pub.publicar({"id_documento": "d-1",
-                            "orgao_origem": "tjpa",
+                            "orgao_no": "tjpa",
                             "marcador": SENTINELA})
         msg, rk = capturado[0]
         assert rk == PublicadorRabbitMQ.RK_ANON

@@ -45,7 +45,7 @@ class TestEmissao:
                                      "StatusOutbox.PENDENTE")
         assert ev["tentativas"] == 0
         assert ev["payload"]["id_documento"] == str(out.id)
-        assert ev["payload"]["orgao_origem"] == "tjpa"
+        assert ev["payload"]["orgao_no"] == "tjpa"
         assert ev["payload"]["id_processo"] == \
             payload_criacao["caso_cnj"]
 
@@ -93,11 +93,13 @@ class TestEmissao:
         assert len(await _outbox(org_a.repo._engine)) == 1
         assert await _outbox(org_b.repo._engine) == []
 
-    async def test_upload_no_destino_emite_com_origem(
+    async def test_upload_no_destino_emite_com_orgao_no(
             self, org_a, org_b, payload_criacao):
         """Quando B sobe o arquivo para o SEU storage (ex.: após
-        buscar no nó A), a esteira de B é notificada — com
-        orgao_origem correta."""
+        buscar no nó A), a esteira de B é notificada — e o evento
+        carrega orgao_no=B (dono do storage), NÃO a origem do
+        caso. Caso contrário o worker de B buscaria o bucket de A
+        no MinIO de B — miss garantido (bug corrigido 05/11)."""
         payload_criacao["requer_anonimizacao_lgpd"] = True
         out = await org_a.criar(payload_criacao)
         await org_a.upload_documento(out.id, FakeUpload(DOC), org_a.orgao)
@@ -106,7 +108,7 @@ class TestEmissao:
         await org_b.upload_documento(out.id, FakeUpload(DOC), org_b.orgao)
         linhas = await _outbox(org_b.repo._engine)
         assert len(linhas) == 1
-        assert linhas[0]["payload"]["orgao_origem"] == "tjpa"
+        assert linhas[0]["payload"]["orgao_no"] == "mpf.pa"
 
 
 class TestHigiene:
@@ -117,5 +119,5 @@ class TestHigiene:
         await org_a.upload_documento(out.id, FakeUpload(DOC), org_a.orgao)
         ev = (await _outbox(org_a.repo._engine))[0]
         assert set(ev["payload"]) == {"id_documento",
-                                      "orgao_origem", "id_processo"}
+                                      "orgao_no", "id_processo"}
         assert "EXCELENTISSIMO" not in str(ev["payload"])

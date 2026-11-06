@@ -516,7 +516,7 @@ class TestDedupEfeito:
         st_dst = ArmazenamentoMemoria(
             "tjpa", nome_bucket="tjpa-docs-anonimizados")
         doc = str(out.id)
-        ev = {"id_documento": doc, "orgao_origem": "tjpa",
+        ev = {"id_documento": doc, "orgao_no": "tjpa",
               "id_processo": out.caso_cnj}
         motor = StubMotorIA(atraso=0)
         await processar_evento(ev, org_a.storage, st_dst, motor,

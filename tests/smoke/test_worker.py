@@ -54,7 +54,7 @@ class TestPipeline:
         await org.guardar(doc, io.BytesIO(DOC))   # seed bruto
         motor = MotorRapido()
         await processar_evento(
-            {"id_documento": doc, "orgao_origem": "tjpa",
+            {"id_documento": doc, "orgao_no": "tjpa",
              "id_processo": CASO}, org, dest, motor)
         assert motor.chamados == [len(DOC)]
         # resultado no bucket *-docs-anonimizados, mesma chave
@@ -67,7 +67,7 @@ class TestPipeline:
         doc = str(uuid.uuid4())
         await org.guardar(doc, io.BytesIO(DOC))
         motor = MotorRapido()
-        ev = {"id_documento": doc, "orgao_origem": "tjpa",
+        ev = {"id_documento": doc, "orgao_no": "tjpa",
               "id_processo": CASO}
         await processar_evento(ev, org, dest, motor)
         await processar_evento(ev, org, dest, motor)   # re-entrega
@@ -82,7 +82,7 @@ class TestPipeline:
         await org.guardar(doc, io.BytesIO(DOC))
         with pytest.raises(RuntimeError, match="fora do ar"):
             await processar_evento(
-                {"id_documento": doc, "orgao_origem": "tjpa",
+                {"id_documento": doc, "orgao_no": "tjpa",
                  "id_processo": CASO}, org, dest, MotorQueFalha())
         assert not await dest.existe(doc)
 
@@ -92,7 +92,7 @@ class TestPipeline:
         with pytest.raises(KeyError):
             await processar_evento(
                 {"id_documento": str(uuid.uuid4()),
-                 "orgao_origem": "tjpa", "id_processo": CASO},
+                 "orgao_no": "tjpa", "id_processo": CASO},
                 org, dest, MotorRapido())
 
 
@@ -111,7 +111,7 @@ class TestFeedbackTrilha:
                                      org_a.orgao)
         motor = MotorRapido()
         await processar_evento(
-            {"id_documento": str(out.id), "orgao_origem": "tjpa",
+            {"id_documento": str(out.id), "orgao_no": "tjpa",
              "id_processo": payload_criacao["caso_cnj"]},
             st_org, st_dest, motor, repo=org_a.repo)
         from sqlalchemy import select
@@ -149,7 +149,7 @@ class TestMetricas:
         doc = str(uuid.uuid4())
         await org.guardar(doc, io.BytesIO(self.DOC_PII))
         await processar_evento(
-            {"id_documento": doc, "orgao_origem": "tjpa",
+            {"id_documento": doc, "orgao_no": "tjpa",
              "id_processo": CASO}, org, dest, DemoMotorIA(atraso=0))
         m = metricas.ultimo(doc)
         assert m["detectadas"]["cpf"] == 1
@@ -176,7 +176,7 @@ class TestMetricas:
             "Requerente: MARIA SOUZA, CPF 987.654.321-00.\n"
             "Endereço: Travessa B, 42 — Belém/PA.".encode()))
         await processar_evento(
-            {"id_documento": doc, "orgao_origem": "tjpa",
+            {"id_documento": doc, "orgao_no": "tjpa",
              "id_processo": CASO}, org, dest, DemoMotorIA(atraso=0))
         m = metricas.ultimo(doc)
         assert m["detectadas"]["nome"] == 1
@@ -196,7 +196,7 @@ class TestMetricas:
         doc = str(uuid.uuid4())
         await org.guardar(doc, io.BytesIO(self.DOC_PII))
         await processar_evento(
-            {"id_documento": doc, "orgao_origem": "tjpa",
+            {"id_documento": doc, "orgao_no": "tjpa",
              "id_processo": CASO}, org, dest, MotorRapido())
         m = metricas.ultimo(doc)
         assert m["detectadas"]["cpf"] == 1
@@ -307,7 +307,7 @@ class TestAvaliacaoCorpus:
         doc = str(uuid.uuid4())
         await org.guardar(doc, io.BytesIO(texto.encode()))
         await processar_evento(
-            {"id_documento": doc, "orgao_origem": "tjpa",
+            {"id_documento": doc, "orgao_no": "tjpa",
              "id_processo": CASO}, org, dest, DemoMotorIA(atraso=0))
         m = metricas.ultimo(doc)
         for k, v in det.items():
@@ -341,7 +341,7 @@ class TestAvaliacaoCorpus:
         await org.guardar(doc, io.BytesIO(bruto))
         from app.worker import DemoMotorIA
         await processar_evento(
-            {"id_documento": doc, "orgao_origem": "tjpa",
+            {"id_documento": doc, "orgao_no": "tjpa",
              "id_processo": CASO}, org, dest, DemoMotorIA(atraso=0))
         m = metricas.ultimo(doc)
         assert m["detectadas"]["cpf"] == 1
@@ -369,7 +369,7 @@ class TestAvaliacaoCorpus:
         await org_a.storage.guardar(doc, io.BytesIO(pdf_de_texto(
             _CORPUS[0].values[0])))
         await processar_evento(
-            {"id_documento": doc, "orgao_origem": "tjpa",
+            {"id_documento": doc, "orgao_no": "tjpa",
              "id_processo": CASO}, org_a.storage, st_dest,
             DemoMotorIA(atraso=0), repo=org_a.repo)
         assert not await st_dest.existe(doc)      # nada gravado
@@ -392,7 +392,7 @@ class TestAvaliacaoCorpus:
         with caplog.at_level(logging.WARNING,
                              "tramitacao.metricas"):
             await processar_evento(
-                {"id_documento": doc, "orgao_origem": "tjpa",
+                {"id_documento": doc, "orgao_no": "tjpa",
                  "id_processo": CASO}, org, dest,
                 MotorRapido())
         m = metricas.ultimo(doc)
@@ -411,7 +411,7 @@ class TestFalhaDLQ:
             self, org_a, payload_criacao):
         out = await org_a.criar(payload_criacao)
         await registrar_falha(
-            {"id_documento": str(out.id), "orgao_origem": "tjpa"},
+            {"id_documento": str(out.id), "orgao_no": "tjpa"},
             org_a.repo)
         trilha = await org_a.repo.trilha(out.id)
         evs = [t["evento"] for t in trilha]
@@ -481,7 +481,7 @@ class TestWorkerIntegracao:
         doc = str(rec.id)
         await org.guardar(doc, io.BytesIO(DOC))    # seed MinIO
         await pub.publicar({"id_documento": doc,
-                            "orgao_origem": "tjpa",
+                            "orgao_no": "tjpa",
                             "id_processo": CASO})
         motor = MotorRapido()
         assert await um_ciclo(q, fab, motor, repo=repo) is True
@@ -511,7 +511,7 @@ class TestWorkerIntegracao:
         org, dest = await fab.par("tjpa")
         await org.guardar(doc, io.BytesIO(DOC))
         await pub.publicar({"id_documento": doc,
-                            "orgao_origem": "tjpa",
+                            "orgao_no": "tjpa",
                             "id_processo": CASO})
         with pytest.raises(RuntimeError):
             await um_ciclo(q, fab, MotorQueFalha())
@@ -538,7 +538,7 @@ class TestWorkerIntegracao:
         org, dest = await fab.par("tjpa")
         await org.guardar(doc, io.BytesIO(DOC))
         await pub.publicar({"id_documento": doc,
-                            "orgao_origem": "tjpa",
+                            "orgao_no": "tjpa",
                             "id_processo": CASO})
         motor = MotorQueFalha()
         # cada ciclo falha -> nack+requeue; após o limite de

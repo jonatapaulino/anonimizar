@@ -4,8 +4,9 @@
 Consome `ia.anonimizacao` (fila durável, declarada pelo
 PublicadorRabbitMQ — ADR-0013). Pipeline por mensagem:
 
-  payload {id_documento, orgao_origem, id_processo}
-    → download de <org>-docs        (MinIO do órgão de origem)
+  payload {id_documento, orgao_no, id_processo}
+    → download de <org>-docs        (MinIO local — orgao_no é
+                                      o nó dono dos bytes)
     → MotorIA.anonimizar(bytes)
     → upload em <org>-docs-anonimizados
     → ACK   (só aqui — sucesso completo)
@@ -190,7 +191,7 @@ async def processar_evento(payload: dict, st_origem, st_dest,
             await tx.encadear_uma_vez(
                 _uuid.UUID(doc), ev_doc_anonimizado(doc))
     log.info("worker: %s anonimizado (%d bytes) de %s",
-             doc, len(anonimizado), payload.get("orgao_origem"))
+             doc, len(anonimizado), payload.get("orgao_no"))
     return doc
 
 
@@ -226,7 +227,7 @@ async def processar_mensagem(m, fabrica: FabricaStorages,
     """ack/nack em torno do pipeline — usado pelo loop infinito
     e pelo ciclo único dos testes."""
     payload = payload_de_mensagem(m)
-    st_org, st_dest = await fabrica.par(payload["orgao_origem"])
+    st_org, st_dest = await fabrica.par(payload["orgao_no"])
     await processar_evento(payload, st_org, st_dest, motor, repo)
 
 
