@@ -7,6 +7,7 @@ monta o quadro, dispara contra uvicorn real e decifra a resposta:
    dois apps, dois ports, mesmo envelope cifrado;
 3. par que responde em claro => ErroCripto (não engole).
 """
+import asyncio
 import hashlib
 import json
 
@@ -125,6 +126,42 @@ class TestAB:
         finally:
             srv_a.should_exit = True
             srv_b.should_exit = True
+
+
+    async def test_download_e2e_streaming_multi_quadro(self, caso):
+        """Regressão: StreamingResponse dispara listen_for_disconnect
+        — uma task que consulta receive() até ver http.disconnect.
+        O receive_claro esgotado devolvia http.request instantâneo
+        para sempre: a task girava sem suspender, o cancelamento do
+        fim da resposta nunca era entregue e o event loop ficava em
+        100% CPU (todo download E2E travava o nó). Também exercita
+        resposta multi-quadro: doc > CHUNK chega em N quadros."""
+        doc = b"%PDF-1.4\n" + b"bloco do doc " * 20_000   # ~250 KiB
+        porta, srv = _boot("tjpa")
+        try:
+            cli = ClienteE2E(f"http://127.0.0.1:{porta}", CHAVE,
+                             orgao="tjpa")
+            r = await cli.post("/v1/tramitacoes", dict(
+                caso_cnj=caso, destino="mpf.pa",
+                modo="pseudonimizacao",
+                hash_documento_sha256=
+                hashlib.sha256(doc).hexdigest(),
+                metadados={}, idempotency_key="tjpa-cli-dl-0001"))
+            assert r.status_code == 201, r.content
+            tid = r.json()["id"]
+            up = await cli.post_multipart(
+                f"/v1/documentos/{tid}/upload",
+                "arquivo", "d.pdf", doc, "application/pdf")
+            assert up.status_code == 201, up.content
+            dl = await asyncio.wait_for(
+                cli.get(f"/v1/documentos/{tid}/download"), 30)
+            assert dl.status_code == 200 and dl.content == doc
+            # e o nó continua vivo — o loop não foi sequestrado
+            st = await cli.get(f"/v1/tramitacoes/{tid}")
+            assert st.status_code == 200
+            await cli.fechar()
+        finally:
+            srv.should_exit = True
 
 
 class TestParForaDoE2E:

@@ -21,8 +21,26 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from app.cofre import ChavesE2E, abrir_todas
-from app.crypto_e2e import (CT_E2E, ErroCripto, eh_e2e, selar)
+from app.cofre import ChavesE2E
+from app.crypto_e2e import (CT_E2E, ErroCripto, abrir_stream,
+                            eh_e2e, selar)
+
+
+def _abrir_resposta(chaves: ChavesE2E, dados: bytes) -> bytes:
+    """Abre a resposta selada coletando TODOS os quadros —
+    `abrir` exige exatamente um (válido para JSON de comando);
+    downloads streaming chegam em N quadros e são juntados na
+    ordem. Rotação: tenta atual -> anteriores, como `abrir_todas`.
+    """
+    import io
+    ult = None
+    for c in chaves.todas():
+        try:
+            return b"".join(
+                abrir_stream(c, io.BytesIO(dados)))
+        except ErroCripto as e:
+            ult = e
+    raise ult or ErroCripto("conjunto de chaves vazio")
 
 
 class RespostaE2E:
@@ -92,7 +110,8 @@ class ClienteE2E:
         ct_resp = r.headers.get("content-type", "").split(";")[0]
         if ct_resp == CT_E2E or eh_e2e(r.content[:34]):
             return RespostaE2E(r.status_code,
-                               abrir_todas(self.chaves, r.content))
+                               _abrir_resposta(self.chaves,
+                                               r.content))
         # resposta em claro quando o canal exige E2E: nao engole.
         # 400/415 sao erros de transporte que o proprio middleware
         # devolve em JSON claro (o par nem falou E2E ainda).

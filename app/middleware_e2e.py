@@ -126,23 +126,34 @@ class MiddlewareE2E:
             return
 
         if vio_e2e:
+            esgotado = False
+
             async def receive_claro():
-                nonlocal primeiro
+                nonlocal primeiro, esgotado
                 if primeiro is not None:
                     b, primeiro = primeiro, None
                     return {"type": "http.request", "body": b,
                             "more_body": True}
-                try:
-                    b = await stream.__anext__()
-                    return {"type": "http.request", "body": b,
-                            "more_body": True}
-                except StopAsyncIteration:
-                    return {"type": "http.request", "body": b"",
-                            "more_body": False}
-                # ErroCripto mid-stream propaga — o handler falha e
-                # o except abaixo devolve 500 (a janela e o selo já
-                # decidiram no quadro 0; quebra posterior é erro de
-                # transporte, não nova decisão de segurança)
+                if not esgotado:
+                    try:
+                        b = await stream.__anext__()
+                        return {"type": "http.request", "body": b,
+                                "more_body": True}
+                    except StopAsyncIteration:
+                        esgotado = True
+                        return {"type": "http.request", "body": b"",
+                                "more_body": False}
+                    # ErroCripto mid-stream propaga — o handler
+                    # falha e o except abaixo devolve 500 (a janela
+                    # e o selo já decidiram no quadro 0; quebra
+                    # posterior é erro de transporte, não nova
+                    # decisão de segurança)
+                # corpo E2E esgotado => delega ao receive real: só
+                # o transporte sinaliza http.disconnect. Devolver
+                # http.request aqui fazia o listen_for_disconnect
+                # do StreamingResponse girar instantâneo para
+                # sempre — 100% CPU e event loop bloqueado.
+                return await receive()
         else:
             receive_claro = receive      # claro: passa direto —
                                          # nada de materializar
