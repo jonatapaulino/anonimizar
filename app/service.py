@@ -374,7 +374,7 @@ class NoTramitacao:
         self._transitar(rec, novo)
         h = await self._commit(
             rec, c.tramitacao_id,
-            ev_confirma(c.tramitacao_id, novo))
+            ev_confirma(c.tramitacao_id, novo.value))
         out = ConfirmacaoOut(
             tramitacao_id=c.tramitacao_id, status=novo,
             confirmado_em=_agora(), hash_cadeia=h)

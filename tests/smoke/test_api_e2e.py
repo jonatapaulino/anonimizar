@@ -96,6 +96,17 @@ class TestFluxoHTTP:
                     headers=hdr("tjpa"))
         assert dl.status_code == 200 and dl.content == DOC
 
+    def test_evento_confirma_usa_valor_do_status(
+            self, ca, cb, payload):
+        """O evento gravado na trilha de B usa o VALOR do status
+        ('confirmada') — o repr do enum vazaria 'StatusTramitacao.
+        CONFIRMADA', divergindo de 'conf:{id}:confirmada' em A."""
+        tid, *_ = fluxo_http(ca, cb, payload)
+        st = cb.get(f"/v1/tramitacoes/{tid}",
+                    headers=hdr("mpf.pa")).json()
+        eventos = [e["evento"] for e in st["trilha"]]
+        assert f"confirma:{tid}:confirmada" in eventos
+
     def test_resposta_nao_contem_documento(self, ca, cb, payload):
         tid, env, rec, conf, fin = fluxo_http(ca, cb, payload)
         st = ca.get(f"/v1/tramitacoes/{tid}", headers=hdr("tjpa")).json()
