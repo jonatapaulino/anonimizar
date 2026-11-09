@@ -7,7 +7,9 @@ a jornada do documento entre os dois nós.
 
 Uso na apresentação:
   1. docker compose -f deploy/malha/compose.malha.yaml up -d
-  2. python scripts/demo_web.py          -> abre o browser (projetor)
+  2. python scripts/demo_web.py [--limpar] -> abre o browser
+     (--limpar zera o estado da execução anterior — a página
+     abre em espera em vez de mostrar a run passada)
   3. python scripts/demo_coordenador.py --pausar  (terminal do apresentador)
 
 A tela é 100% local (HTML sem CDN — funciona offline) e apenas
@@ -64,7 +66,18 @@ def main():
     # peer de pé? (a página tolera malha descendo, mas avisar ajuda)
     r = subprocess.run(["docker", "ps", "--format", "{{.Names}}"],
                        capture_output=True)
-    if PEER not in r.stdout.decode("utf-8", "replace"):
+    peer_ok = PEER in r.stdout.decode("utf-8", "replace")
+    if "--limpar" in sys.argv:
+        # zera o estado persistido — a página abre em espera em
+        # vez de mostrar o resultado da execução anterior
+        if peer_ok:
+            subprocess.run(["docker", "exec", PEER, "rm", "-f",
+                            "/run/demo_state.json"],
+                           capture_output=True)
+            print("estado zerado — a página abre limpa.")
+        else:
+            print("aviso: --limpar ignorado, peer não está de pé.")
+    if not peer_ok:
         print(f"aviso: {PEER} não está de pé — suba a malha antes"
               " de iniciar a demo (a página abre em espera).")
     srv = ThreadingHTTPServer(("127.0.0.1", PORTA), Handler)

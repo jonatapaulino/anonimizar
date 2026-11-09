@@ -121,22 +121,21 @@ def main():
     r.bullet("docker compose -f deploy/malha/compose.malha.yaml up -d")
     r.p("     -> espera 30-60s (banco migra e os healthchecks "
         "sobem)", 6)
-    r.bullet("python scripts/demo_web.py   (terminal 1 - deixa "
-             "aberto; abre a pagina no browser)")
+    r.bullet("python scripts/demo_web.py --limpar   (terminal 1 "
+             "- deixa aberto; abre a pagina com a tela zerada)")
     r.bullet("python scripts/demo_coordenador.py --pausar   "
              "(terminal 2 - o seu, do apresentador)")
     r.ln(4)
     r.h2("Tela limpa antes de apresentar")
     r.p(
-        "Se voce ensaiou antes, a pagina abre mostrando a "
-        "execucao anterior ja concluida. Para comecar com a "
-        "tela zerada (tudo 'aguardando'), apague o estado:")
-    r.bullet("docker exec isaci-malha-peer-1 rm -f "
-             "/run/demo_state.json")
-    r.p(
-        "(/run e tmpfs: derrubar e subir a malha tambem zera. "
-        "Entre execucoes a pagina ja se limpa sozinha quando um "
-        "novo caso comeca - este passo e so para a abertura.)")
+        "O estado da execucao sobrevive no /run do peer entre "
+        "runs - por isso a pagina abre mostrando o resultado "
+        "anterior. O flag --limpar do demo_web.py ja zera ao "
+        "subir (equivale a 'docker exec isaci-malha-peer-1 rm -f "
+        "/run/demo_state.json'). Entre execucoes na MESMA sessao "
+        "nao precisa fazer nada: a pagina se reseta sozinha "
+        "quando um novo caso comeca, e as trilhas dos cards "
+        "sempre mostram so os eventos do caso atual.")
     r.ln(4)
     r.h2("Como funciona o palco")
     r.p(
