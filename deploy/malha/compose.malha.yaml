@@ -74,6 +74,8 @@ services:
       # públicas dos pares (dev — seeds no .env gitignored)
       ORG_SIGN_SEED_B64: ${ORG_SIGN_SEED_TJPA}
       ORGAO_PUBKEYS_JSON: ${ORGAO_PUBKEYS_JSON}
+    restart: on-failure    # alembic/boot pode correr com o
+                           # postgres ainda aceitando conexões
     command: >
       sh -c "alembic upgrade head &&
              uvicorn app.servidor:app --host 0.0.0.0 --port 8000"
@@ -159,6 +161,8 @@ services:
       VAULT_KV_PATH: isaci/e2e
       VAULT_ROLE_ID_FILE: /segredos/role_id
       VAULT_SECRET_ID_FILE: /segredos/secret_id
+    restart: on-failure    # corrida de subida fria: o broker pode
+                           # estar 'healthy' antes do listener TLS
     volumes:
       - ./certs/ca.crt:/run/certs/ca.crt:ro
       - segredos:/segredos:ro
@@ -232,6 +236,7 @@ services:
       # custódia assinada (mesmo diretório de públicas de A)
       ORG_SIGN_SEED_B64: ${ORG_SIGN_SEED_MFPA}
       ORGAO_PUBKEYS_JSON: ${ORGAO_PUBKEYS_JSON}
+    restart: on-failure    # idem api-a
     command: >
       sh -c "alembic upgrade head &&
              uvicorn app.servidor:app --host 0.0.0.0 --port 8000"
@@ -311,6 +316,8 @@ services:
       RABBITMQ_URL: amqps://edvar:edvar_dev@rabbitmq-b:5671
       MINIO_URL: https://minio-b:9000
       E2E_FONTE: env
+    restart: on-failure    # idem worker-a — TLS listener pode
+                           # atrasar apesar do healthcheck
     volumes:
       - ./certs/ca.crt:/run/certs/ca.crt:ro
     depends_on:
