@@ -223,7 +223,11 @@ function resetarTela(){
   document.getElementById("doc-anon").textContent =
     "aguardando a esteira de B…";
   const doc = document.getElementById("doc");
-  doc.classList.remove("show","ataque"); doc.style.left = "-3%";
+  doc.classList.remove("ataque");
+  doc.textContent = "📄"; doc.style.left = "-3%";
+  doc.classList.add("show");   // o documento já existe em A —
+                              // fica parado na porta até a
+                              // primeira travessia
   document.getElementById("movtag").textContent =
     "canal: mTLS + envelope AEAD E2E";
   document.getElementById("movhist").innerHTML = "";
