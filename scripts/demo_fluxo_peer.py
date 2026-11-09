@@ -128,7 +128,10 @@ async def criar():
             progresso=[])
     _prog("criar", "A registra o caso",
           "metadados + hash declarado — o binário não sai daqui",
-          lado="A", prova="sem-bytes")
+          lado="A", prova="sem-bytes",
+          narr="A abertura registra só a 'capa' e a impressão "
+              "digital do documento — o conteúdo fica dentro "
+              "da instituição.")
     await a.fechar()
     print(f"\n  -> status CRIADA; hash declarado = âncora de"
           f" integridade (o PDF/texto em si NÃO saiu daqui)")
@@ -143,7 +146,10 @@ async def upload():
     ok(r.status_code == 201, r.content[:200])
     _prog("upload", "A arquiva o documento",
           "SHA-256 conferido byte a byte; objeto E2E no MinIO de A",
-          lado="A", prova="cifrado")
+          lado="A", prova="cifrado",
+          narr="O arquivo é guardado trancado no cofre da própria "
+              "instituição — nem o banco de dados guarda o "
+              "documento em si.")
     await a.fechar()
     print("\n  -> SHA-256 conferido byte a byte; magic bytes do"
           " formato validados; objeto gravado no MinIO do nó A"
@@ -159,7 +165,10 @@ async def envio():
     _prog("envio", "Envelope A → B emitido",
           "só metadados + hash + assinatura Ed25519 de A — "
           "zero bytes do documento",
-          movimento="A->B", tipo="envelope", prova="sem-bytes")
+          movimento="A->B", tipo="envelope", prova="sem-bytes",
+          narr="O que atravessa a fronteira é só um aviso: "
+              "'existe este documento, com esta impressão "
+              "digital' — o papel em si não viaja.")
     await a.fechar()
     print("\n  -> O ENVELOPE É SÓ METADADOS: hash + assinatura"
           " Ed25519 de A. Nenhum byte do documento atravessa"
@@ -180,7 +189,10 @@ async def adulterar():
     _prog("adulterar", "ATAQUE: hash adulterado em trânsito",
           f"B recusou ({r.status_code}) — assinatura Ed25519 "
           "inválida; o envelope não vira registro",
-          movimento="A->B", tipo="ataque", prova="adulteracao")
+          movimento="A->B", tipo="ataque", prova="adulteracao",
+          narr="Alguém mexeu no aviso no caminho — a assinatura "
+              "não confere e B joga a cópia fora. Ela não vira "
+              "registro em lugar nenhum.")
     await b.fechar()
     print("\n  -> B verificou a assinatura Ed25519 de A sobre os"
           " campos ANTES de persistir — o campo adulterado quebra"
@@ -195,7 +207,9 @@ async def receber():
     _prog("receber", "B recebe o envelope",
           "CN do certificado mTLS = origem; assinatura válida; "
           "destino = este nó",
-          lado="B")
+          lado="B", movimento="A->B", tipo="envelope",
+          narr="O aviso verdadeiro atravessa de novo e B confere "
+              "a assinatura — agora sim vira registro.")
     await b.fechar()
     print("\n  -> B conferiu: CN do certificado mTLS = 'tjpa' ="
           " envelope.origem; destino = 'mpfpa' = este nó;"
@@ -213,7 +227,10 @@ async def download():
     _prog("download", "B baixa os bytes de A",
           "canal E2E decifrado no cliente — bytes idênticos "
           "ao hash declarado no passo 1",
-          movimento="A->B", tipo="doc")
+          movimento="A->B", tipo="doc",
+          narr="B busca o documento direto na fonte, por canal "
+              "trancado de ponta a ponta, e confere a impressão "
+              "digital.")
     await a.fechar()
     print("\n  -> B baixou de A pelo canal E2E: o storage de A"
           " guarda ciphertext; a API decifra em streaming; o"
@@ -231,7 +248,9 @@ async def upload_b():
     _prog("upload_b", "B arquiva a própria cópia",
           "hash conferido; ciphertext E2E no MinIO de B — "
           "soberania de storage",
-          lado="B", prova="cifrado")
+          lado="B", prova="cifrado",
+          narr="B tranca a própria cópia no próprio cofre — "
+              "cada instituição é dona dos seus objetos.")
     await b.fechar()
     print("\n  -> mesma disciplina do nó A: hash conferido contra"
           " o registrado, formato validado, cópia de B cifrada"
@@ -250,7 +269,10 @@ async def confirmar():
     _prog("confirmar", "B confirma e assina o recebimento",
           "SHA-256 recomputado no storage de B; ack sai "
           "assinado Ed25519",
-          lado="B")
+          lado="B",
+          narr="B não apenas 'diz que recebeu': recalcula a "
+              "impressão digital do que guardou e assina o "
+              "recibo.")
     await b.fechar()
     print("\n  -> 'dizer que recebeu' não basta: B recomputou o"
           " SHA-256 dos bytes no PRÓPRIO MinIO e exigiu que"
@@ -268,7 +290,10 @@ async def ack():
     _prog("ack", "A aplica o ack assinado de B",
           "assinatura verificada contra a chave pública de B — "
           "status CONFIRMADA; custódia fechada",
-          movimento="B->A", tipo="ack", prova="custodia")
+          movimento="B->A", tipo="ack", prova="custodia",
+          narr="O recibo assinado volta para A e fecha o ciclo: "
+              "A entregou, B confirmou — com prova nas duas "
+              "pontas.")
     await a.fechar()
     print("\n  -> A verificou a assinatura do ack contra a chave"
           " pública de B e aplicou: status CONFIRMADA — ciclo de"
@@ -297,7 +322,9 @@ async def trilha():
           f"A: {len(trilhas['a']['eventos'])} elos | "
           f"B: {len(trilhas['b']['eventos'])} elos — "
           "sha256(elo anterior | evento)",
-          prova="cadeia")
+          prova="cadeia",
+          narr="Cada acontecimento vira um elo numa corrente "
+              "que não pode ser apagada nem reescrita depois.")
     print("\n  -> cada elo = sha256(elo anterior | evento):"
           " append-only, sem UPDATE/DELETE (trigger no Postgres)."
           " Adulterar uma linha quebra todos os elos seguintes.")
@@ -324,7 +351,9 @@ async def anon():
           f"{tags} trechos de PII substituídos por "
           "[ANONIMIZADO_LGPD] — objeto publicado no bucket "
           "anonimizados de B",
-          lado="B", prova="anonimizacao")
+          lado="B", prova="anonimizacao",
+          narr="Nome, CPF, e-mail e telefone viraram tarjas "
+              "[ANONIMIZADO_LGPD] no objeto público de B.")
     await b.fechar()
     print("\n  -> worker de B baixou a cópia de B, aplicou o motor"
           " e só gravou depois do gate de PII residual (nome, CPF,"
@@ -348,7 +377,10 @@ async def esperar():
             _prog("esperar", "Esteira assíncrona de B concluída",
                   "outbox → relay → fila RabbitMQ TLS → worker → "
                   "gate de PII residual → bucket anonimizados",
-                  lado="B")
+                  lado="B",
+                  narr="A anonimização roda em segundo plano "
+                      "dentro do próprio B — o documento não "
+                      "precisa sair de lá para ser tratado.")
             await b.fechar()
             return
         if any(e.startswith("falha_anonimizacao:") for e in trilha):
@@ -376,7 +408,10 @@ async def verificar():
     _prog("verificar", "Cadeia rejogada elo a elo",
           "integro=True nos dois nós — cada elo recomputado "
           "do GENESIS e comparado ao gravado",
-          prova="cadeia")
+          prova="cadeia",
+          narr="As duas correntes são refeitas do zero e "
+              "conferem — qualquer mexida teria quebrado os "
+              "elos seguintes.")
     print("\n  -> auditoria AUTÔNOMA: cada elo foi recomputado do"
           " GENESIS e comparado ao gravado — a prova não é o topo,"
           " é o replay da cadeia inteira, nos DOIS nós.")
@@ -407,7 +442,9 @@ async def replay():
     _prog("replay", "Pacote copiado é rejeitado",
           "1ª entrega 200 — 2ª idêntica 400: o nonce do quadro "
           "já foi reivindicado no Postgres",
-          prova="replay")
+          prova="replay",
+          narr="Copiar e reenviar o mesmo pacote não funciona: "
+              "o carimbo único dele já foi gasto.")
     print("\n  -> o nonce do quadro AEAD é reivindicado"
           " atomicamente no Postgres (replay_nonces): um pacote"
           " copiado no fio e reentregue não executa a operação"
