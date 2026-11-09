@@ -108,6 +108,29 @@ async def cli(url, cert):
                       cert=cert, verify=CA)
 
 
+async def _trilhas() -> None:
+    """Reconsulta a trilha do caso nos dois nós e espelha no
+    estado — a mini-trilha do visualizador cresce a cada marco,
+    não só na etapa 'trilha'. Best-effort (é display, não prova):
+    nó sem registro do caso responde 404 e é pulado — em B antes
+    do recebimento isso É a prova de que nada foi persistido."""
+    tr = _estado().get("trilhas", {})
+    for no, url in (("a", "https://nginx-a"), ("b", "https://nginx-b")):
+        try:
+            c = await cli(url, CERT_TJPA)
+            r = await c.get(f"/v1/tramitacoes/{_tid()}")
+            await c.fechar()
+            if r.status_code == 200:
+                j = r.json()
+                tr[no] = {"status": j["status"],
+                          "eventos": [e["evento"]
+                                      for e in j.get("trilha", [])]}
+        except Exception:
+            pass
+    if tr:
+        _salvar(trilhas=tr)
+
+
 # ---------------- etapas ----------------
 
 async def criar():
@@ -132,6 +155,7 @@ async def criar():
           narr="A abertura registra só a 'capa' e a impressão "
               "digital do documento — o conteúdo fica dentro "
               "da instituição.")
+    await _trilhas()
     await a.fechar()
     print(f"\n  -> status CRIADA; hash declarado = âncora de"
           f" integridade (o PDF/texto em si NÃO saiu daqui)")
@@ -150,6 +174,7 @@ async def upload():
           narr="O arquivo é guardado trancado no cofre da própria "
               "instituição — nem o banco de dados guarda o "
               "documento em si.")
+    await _trilhas()
     await a.fechar()
     print("\n  -> SHA-256 conferido byte a byte; magic bytes do"
           " formato validados; objeto gravado no MinIO do nó A"
@@ -169,6 +194,7 @@ async def envio():
           narr="O que atravessa a fronteira é só um aviso: "
               "'existe este documento, com esta impressão "
               "digital' — o papel em si não viaja.")
+    await _trilhas()
     await a.fechar()
     print("\n  -> O ENVELOPE É SÓ METADADOS: hash + assinatura"
           " Ed25519 de A. Nenhum byte do documento atravessa"
@@ -210,6 +236,7 @@ async def receber():
           lado="B", movimento="A->B", tipo="envelope",
           narr="O aviso verdadeiro atravessa de novo e B confere "
               "a assinatura — agora sim vira registro.")
+    await _trilhas()
     await b.fechar()
     print("\n  -> B conferiu: CN do certificado mTLS = 'tjpa' ="
           " envelope.origem; destino = 'mpfpa' = este nó;"
@@ -231,6 +258,7 @@ async def download():
           narr="B busca o documento direto na fonte, por canal "
               "trancado de ponta a ponta, e confere a impressão "
               "digital.")
+    await _trilhas()
     await a.fechar()
     print("\n  -> B baixou de A pelo canal E2E: o storage de A"
           " guarda ciphertext; a API decifra em streaming; o"
@@ -251,6 +279,7 @@ async def upload_b():
           lado="B", prova="cifrado",
           narr="B tranca a própria cópia no próprio cofre — "
               "cada instituição é dona dos seus objetos.")
+    await _trilhas()
     await b.fechar()
     print("\n  -> mesma disciplina do nó A: hash conferido contra"
           " o registrado, formato validado, cópia de B cifrada"
@@ -273,6 +302,7 @@ async def confirmar():
           narr="B não apenas 'diz que recebeu': recalcula a "
               "impressão digital do que guardou e assina o "
               "recibo.")
+    await _trilhas()
     await b.fechar()
     print("\n  -> 'dizer que recebeu' não basta: B recomputou o"
           " SHA-256 dos bytes no PRÓPRIO MinIO e exigiu que"
@@ -294,6 +324,7 @@ async def ack():
           narr="O recibo assinado volta para A e fecha o ciclo: "
               "A entregou, B confirmou — com prova nas duas "
               "pontas.")
+    await _trilhas()
     await a.fechar()
     print("\n  -> A verificou a assinatura do ack contra a chave"
           " pública de B e aplicou: status CONFIRMADA — ciclo de"
@@ -354,6 +385,7 @@ async def anon():
           lado="B", prova="anonimizacao",
           narr="Nome, CPF, e-mail e telefone viraram tarjas "
               "[ANONIMIZADO_LGPD] no objeto público de B.")
+    await _trilhas()
     await b.fechar()
     print("\n  -> worker de B baixou a cópia de B, aplicou o motor"
           " e só gravou depois do gate de PII residual (nome, CPF,"
@@ -371,10 +403,14 @@ async def esperar():
         r = await b.get(f"/v1/tramitacoes/{_tid()}")
         ok(r.status_code == 200, r.content[:160])
         trilha = [e["evento"] for e in r.json().get("trilha", [])]
+        # espelha a trilha de B no estado a cada poll — o evento
+        # aparece na mini-trilha do card no instante em que grava
+        tr = _estado().get("trilhas", {})
+        tr["b"] = {"status": r.json()["status"], "eventos": trilha}
         if any(e.startswith("doc_anonimizado:") for e in trilha):
             print(f"  doc_anonimizado na trilha de B após "
                   f"{time.time() - t0:.0f}s de espera")
-            _salvar(aguardando="")
+            _salvar(aguardando="", trilhas=tr)
             _prog("esperar", "Esteira assíncrona de B concluída",
                   "outbox → relay → fila RabbitMQ TLS → worker → "
                   "gate de PII residual → bucket anonimizados",
@@ -385,11 +421,12 @@ async def esperar():
             await b.fechar()
             return
         if any(e.startswith("falha_anonimizacao:") for e in trilha):
-            _salvar(aguardando="")
+            _salvar(aguardando="", trilhas=tr)
             await b.fechar()
             sys.exit(f"  FALHOU: esteira marcou {trilha}")
         _salvar(aguardando="esteira de B em processamento — "
-                           f"{int(time.time() - t0)}s")
+                           f"{int(time.time() - t0)}s",
+                trilhas=tr)
         print(f"  ... aguardando worker de B "
               f"({int(time.time() - t0)}s): {trilha[-1] if trilha else '-'}")
         await asyncio.sleep(3)

@@ -177,7 +177,8 @@ def main():
     r.h2("Card do No A - tjpa (esquerda)")
     r.tela("'instituicao de origem · storage proprio' | API + "
            "Postgres + RabbitMQ (TLS) | MinIO (HTTPS) + borda "
-           "mTLS | linha de storage + trilha-mini")
+           "mTLS | linha de storage + trilha-mini (cresce ao "
+           "vivo: cada evento aparece quando e gravado)")
     r.fala(
         "Este e o no do orgao de origem. Repare: cada instituicao "
         "roda a MESMA pilha soberana - API, banco, fila e storage "
