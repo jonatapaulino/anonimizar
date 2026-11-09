@@ -60,6 +60,10 @@ anonimização e tramitação de documentos jurídicos. Repo privado:
   `demo_fluxo_peer.py` grava `progresso[]` (n, etapa, título,
   lado, movimento, tipo, prova) + doc/anon/trilhas a cada passo.
   Ordem: malha up → `demo_web.py` → `demo_coordenador.py`.
+- **Roteiro de fala** (guia de palco para a demo web — mapeia
+  cada elemento da página a uma fala sugerida, ato a ato):
+  `python scripts/roteiro_demo_pdf.py` regenera
+  `docs/roteiro_apresentacao_demo.pdf` (fpdf, como os outros).
 - Malha: chaves Ed25519 de custódia (`ORG_SIGN_SEED_TJPA`/
   `ORG_SIGN_SEED_MFPA`/`ORGAO_PUBKEYS_JSON`) vivem em
   `deploy/malha/.env` (gitignored). Sem elas a malha sobe
