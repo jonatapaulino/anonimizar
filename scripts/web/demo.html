@@ -67,18 +67,25 @@
   .doc.ataque { animation: pulsar .5s 3; }
   @keyframes pulsar { 50% { transform: translate(-50%,-50%) scale(1.35); } }
   .movtag {
-    margin-top: 8px; font-size: 12px; color: var(--mut);
-    background: var(--card2); padding: 4px 14px; border-radius: 20px;
+    margin-top: 8px; font-size: 13.5px; color: var(--mut);
+    background: var(--card2); padding: 5px 16px; border-radius: 20px;
     position: absolute; bottom: 12px; white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis; max-width: 320px;
   }
   .movhist {
-    position: absolute; bottom: 48px; display: flex; gap: 6px;
+    position: absolute; bottom: 52px; display: flex; gap: 7px;
     flex-wrap: wrap; justify-content: center; max-width: 330px;
   }
-  .mv { font-size: 11px; background: var(--card2);
-    border-radius: 12px; padding: 2px 9px; color: var(--mut); }
+  .mv { font-size: 13px; background: var(--card2);
+    border-radius: 13px; padding: 4px 12px; color: var(--mut);
+    border: 1px solid transparent; }
+  .mv:last-child { border-color: var(--az); color: var(--tx);
+    font-weight: 600; animation: aparecer .45s ease-out; }
   .mv.bad { color: var(--bad); background: #fdeaea; }
+  .mv.bad:last-child { border-color: var(--bad); }
+  @keyframes aparecer {
+    from { transform: scale(.55); opacity: 0; }
+  }
   .no.processando { animation: respirar 1.7s ease-in-out infinite; }
   @keyframes respirar {
     50% { border-color: var(--az);
@@ -197,7 +204,7 @@ const ICONS = {doc:"📄", envelope:"✉️", ack:"✅", ataque:"⚠️"};
 const PASSOS = ["criar","upload","envio","adulterar","receber","download",
                 "upload_b","confirmar","ack","esperar","trilha","anon",
                 "verificar","replay"];
-let ultimaN = 0, ultimaTid = null;
+let ultimaN = 0, ultimaTid = null, ultimosMovs = -1;
 
 function esc(s){ const d=document.createElement("div");
   d.textContent=s; return d.innerHTML; }
@@ -220,6 +227,7 @@ function resetarTela(){
   document.getElementById("movtag").textContent =
     "canal: mTLS + envelope AEAD E2E";
   document.getElementById("movhist").innerHTML = "";
+  ultimosMovs = -1;
   document.getElementById("no-b").classList.remove("processando");
 }
 
@@ -244,14 +252,20 @@ async function tick(){
     novas.forEach(aplicar);
     ultimaN = prog[prog.length-1].n;
 
-    // histórico das travessias (chips no corredor)
-    document.getElementById("movhist").innerHTML =
-      prog.filter(p=>p.movimento).map(p=>{
-        const lab = p.tipo==="ataque" ? "barrado"
-                  : p.movimento==="A->B" ? "A→B" : "B→A";
-        return `<span class="mv ${p.tipo==="ataque"?"bad":""}">`
-             + `${ICONS[p.tipo]||"📄"} ${lab}</span>`;
-      }).join("");
+    // histórico das travessias (chips no corredor) — só
+    // reconstrói quando uma travessia nova acontece, senão
+    // todos re-animariam a cada poll
+    const movs = prog.filter(p=>p.movimento);
+    if(movs.length !== ultimosMovs){
+      ultimosMovs = movs.length;
+      document.getElementById("movhist").innerHTML =
+        movs.map(p=>{
+          const lab = p.tipo==="ataque" ? "barrado"
+                    : p.movimento==="A->B" ? "A→B" : "B→A";
+          return `<span class="mv ${p.tipo==="ataque"?"bad":""}">`
+               + `${ICONS[p.tipo]||"📄"} ${lab}</span>`;
+        }).join("");
+    }
 
     // espera viva: esteira de B processando em segundo plano
     document.getElementById("no-b")
