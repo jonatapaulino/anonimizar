@@ -71,7 +71,9 @@
     background: var(--card2); padding: 5px 16px; border-radius: 20px;
     position: absolute; bottom: 12px; white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis; max-width: 320px;
+    opacity: 0; transition: opacity .35s;
   }
+  .movtag.on { opacity: 1; }
   .movhist {
     position: absolute; bottom: 52px; display: flex; gap: 7px;
     flex-wrap: wrap; justify-content: center; max-width: 330px;
@@ -242,8 +244,9 @@ function resetarTela(){
   doc.classList.add("show");   // o documento já existe em A —
                               // fica parado na porta até a
                               // primeira travessia
-  document.getElementById("movtag").textContent =
-    "canal: mTLS + envelope AEAD E2E";
+  const mt0 = document.getElementById("movtag");
+  mt0.textContent = "canal: mTLS + envelope AEAD E2E";
+  mt0.classList.remove("on");
   document.getElementById("movhist").innerHTML = "";
   ultimosMovs = -1;
   if(barradoEl){ barradoEl.remove(); barradoEl = null; }
@@ -269,7 +272,7 @@ async function tick(){
     const prog = st.progresso || [];
     if(!prog.length) return;
     const novas = prog.filter(p=>p.n>ultimaN);
-    novas.forEach(aplicar);
+    novas.forEach(p=>aplicar(p, st));
     ultimaN = prog[prog.length-1].n;
 
     // histórico das travessias (chips no corredor) — só
@@ -291,9 +294,12 @@ async function tick(){
     document.getElementById("no-b")
       .classList.toggle("processando", !!st.aguardando);
     const mt = document.getElementById("movtag");
-    if(st.aguardando){ mt.textContent = "⏳ " + st.aguardando; }
+    if(st.aguardando){
+      mt.textContent = "⏳ " + st.aguardando;
+      mt.classList.add("on");
+    }
     else if(mt.textContent.startsWith("⏳")){
-      mt.textContent = "canal: mTLS + envelope AEAD E2E";
+      mt.classList.remove("on");
     }
 
     // execução terminou: banner vira encerramento, não fica
@@ -329,7 +335,7 @@ async function tick(){
   }catch(e){ /* malha descendo — mantém última tela */ }
 }
 
-function aplicar(p){
+function aplicar(p, st){
   // banner do passo
   const passo = document.getElementById("passo");
   passo.classList.toggle("ataque", p.tipo==="ataque");
@@ -369,15 +375,19 @@ function aplicar(p){
     doc.textContent = ICONS[p.tipo] || "📄";
     doc.classList.add("show");
     doc.style.left = p.movimento==="A->B" ? "103%" : "-3%";
+    const mtp = document.getElementById("movtag");
+    mtp.classList.add("on");
     if(p.tipo==="ataque"){ doc.style.left="50%";
       void doc.offsetWidth; doc.classList.add("ataque");
-      document.getElementById("movtag").textContent =
+      mtp.textContent =
         "✖ adulteração detectada — envelope recusado";
     } else {
-      document.getElementById("movtag").textContent =
+      mtp.textContent =
         p.movimento==="A->B" ? "A → B · canal mTLS + E2E"
                              : "B → A · canal mTLS + E2E";
     }
+  } else if(!st.aguardando){
+    document.getElementById("movtag").classList.remove("on");
   }
   // storage marcadores
   if(p.etapa==="upload")
