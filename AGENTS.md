@@ -64,6 +64,10 @@ anonimização e tramitação de documentos jurídicos. Repo privado:
   cada elemento da página a uma fala sugerida, ato a ato):
   `python scripts/roteiro_demo_pdf.py` regenera
   `docs/roteiro_apresentacao_demo.pdf` (fpdf, como os outros).
+- **Relatório de tecnologias** (papel de cada peça da stack +
+  cola "o que o X faz?" em uma frase):
+  `python scripts/relatorio_tecnologias_pdf.py`
+  → `docs/relatorio_tecnologias.pdf`.
 - Malha: chaves Ed25519 de custódia (`ORG_SIGN_SEED_TJPA`/
   `ORG_SIGN_SEED_MFPA`/`ORGAO_PUBKEYS_JSON`) vivem em
   `deploy/malha/.env` (gitignored). Sem elas a malha sobe
