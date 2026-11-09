@@ -126,6 +126,18 @@ def main():
     r.bullet("python scripts/demo_coordenador.py --pausar   "
              "(terminal 2 - o seu, do apresentador)")
     r.ln(4)
+    r.h2("Tela limpa antes de apresentar")
+    r.p(
+        "Se voce ensaiou antes, a pagina abre mostrando a "
+        "execucao anterior ja concluida. Para comecar com a "
+        "tela zerada (tudo 'aguardando'), apague o estado:")
+    r.bullet("docker exec isaci-malha-peer-1 rm -f "
+             "/run/demo_state.json")
+    r.p(
+        "(/run e tmpfs: derrubar e subir a malha tambem zera. "
+        "Entre execucoes a pagina ja se limpa sozinha quando um "
+        "novo caso comeca - este passo e so para a abertura.)")
+    r.ln(4)
     r.h2("Como funciona o palco")
     r.p(
         "O projetor mostra a PAGINA (localhost:8080): dois cards "
