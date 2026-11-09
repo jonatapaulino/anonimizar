@@ -11,6 +11,9 @@ Pré-requisito: malha de pé —
 Uso:
   python scripts/demo_coordenador.py            # roda tudo
   python scripts/demo_coordenador.py --pausar   # pausa entre atos
+  python scripts/demo_coordenador.py --pausar --ritmo 4
+      # pausa entre atos + 4s entre etapas (cada visual da
+      # página web fica na tela tempo de ser percebido)
   python scripts/demo_coordenador.py --sem-preparo  # não mexe nos workers
 
 Estrutura: os passos de protocolo rodam no contêiner `peer`
@@ -51,9 +54,15 @@ def sh(cmd: list[str], mostra: bool = True) -> str:
     return out
 
 
+RITMO = 0.0
+
+
 def peer(etapa: str) -> str:
-    return sh(["docker", "exec", PEER,
-               "python", "/run/demo_fluxo_peer.py", etapa])
+    out = sh(["docker", "exec", PEER,
+              "python", "/run/demo_fluxo_peer.py", etapa])
+    if RITMO:
+        time.sleep(RITMO)   # deixa o visual da página respirar
+    return out
 
 
 def estado() -> dict:
@@ -162,10 +171,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--pausar", action="store_true",
                     help="pausa entre atos (apresentação guiada)")
+    ap.add_argument("--ritmo", type=float, default=None,
+                    metavar="SEG",
+                    help="pausa de SEGs entre etapas dentro de "
+                         "cada ato — com --pausar o padrão é 2.5; "
+                         "sem --pausar, 0")
     ap.add_argument("--sem-preparo", action="store_true",
                     help="pula a troca dos workers p/ IA_ENGINE=demo")
     a = ap.parse_args()
     p = a.pausar
+    global RITMO
+    RITMO = a.ritmo if a.ritmo is not None else (2.5 if p else 0.0)
 
     print(f"""
 {LINHA}

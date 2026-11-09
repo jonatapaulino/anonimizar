@@ -314,8 +314,7 @@ function aplicar(p){
   // banner do passo
   const passo = document.getElementById("passo");
   passo.classList.toggle("ataque", p.tipo==="ataque");
-  document.getElementById("passo-t").textContent =
-    `passo ${p.n} — ${p.titulo}`;
+  document.getElementById("passo-t").textContent = p.titulo;
   document.getElementById("passo-d").textContent = p.detalhe;
   document.getElementById("passo-n").textContent = p.narr || "";
 

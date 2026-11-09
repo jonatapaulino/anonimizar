@@ -44,7 +44,9 @@ anonimização e tramitação de documentos jurídicos. Repo privado:
   (esteira no nó destino), `scripts/prova_pcap.py` (pcap)
 - **Demonstração narrada** (apresentação — jornada completa do
   documento A→B com evidências ao vivo):
-  `python scripts/demo_coordenador.py [--pausar]`
+  `python scripts/demo_coordenador.py [--pausar] [--ritmo SEG]`
+  (--pausar pausa entre atos; --ritmo espaça as etapas — com
+  --pausar o padrão já é 2.5s, para o visualizador respirar)
   (orquestra `scripts/demo_fluxo_peer.py` no `peer` + evidências
   de infra via docker exec; `deploy/malha/compose.demo.yaml`
   troca os workers para `IA_ENGINE=demo` — regex LGPD
