@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>iSACI — jornada do documento (execução real)</title>
+<style>
+  :root {
+    --bg: #0d1420; --card: #151f30; --card2: #1b2940;
+    --tx: #e8eef7; --mut: #8fa3bf;
+    --az: #4da3ff; --ok: #3fd68f; --warn: #ffb340; --bad: #ff5c5c;
+    --linha: #25344d;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    background: var(--bg); color: var(--tx);
+    font-family: "Segoe UI", system-ui, sans-serif;
+    padding: 28px 40px; min-height: 100vh;
+  }
+  h1 { font-size: 26px; font-weight: 700; }
+  .sub { color: var(--mut); font-size: 14px; margin-top: 4px; }
+  .sub b { color: var(--ok); font-weight: 600; }
+
+  /* ---------- palco: dois nós + documento viajando ---------- */
+  .palco {
+    display: grid; grid-template-columns: 1fr 340px 1fr;
+    gap: 20px; margin: 26px 0 18px; align-items: stretch;
+  }
+  .no {
+    background: var(--card); border: 1px solid var(--linha);
+    border-radius: 14px; padding: 18px 20px; position: relative;
+    min-height: 220px; transition: border-color .4s, box-shadow .4s;
+  }
+  .no.ativo { border-color: var(--az); box-shadow: 0 0 24px #4da3ff33; }
+  .no h2 { font-size: 19px; }
+  .no .org { color: var(--mut); font-size: 13px; margin-bottom: 10px; }
+  .no .papeis { font-size: 12.5px; color: var(--mut); line-height: 1.65; }
+  .no .storage {
+    margin-top: 12px; background: var(--card2); border-radius: 8px;
+    padding: 8px 12px; font-size: 12px; color: var(--mut);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .no .storage .cadeado { font-size: 14px; }
+  .no .trilha-mini {
+    margin-top: 10px; font-size: 11px; color: var(--mut);
+    max-height: 92px; overflow: hidden;
+  }
+  .no .trilha-mini div {
+    padding: 2px 0; border-bottom: 1px dashed var(--linha);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .corredor {
+    display: flex; flex-direction: column; justify-content: center;
+    align-items: center; position: relative; min-height: 220px;
+  }
+  .corredor .fio {
+    position: absolute; top: 50%; left: 6%; right: 6%; height: 2px;
+    background: var(--linha);
+  }
+  .doc {
+    position: absolute; top: 50%; transform: translate(-50%,-50%);
+    font-size: 40px; transition: left 1.1s ease-in-out, opacity .4s;
+    left: 10%; opacity: 0; filter: drop-shadow(0 2px 8px #000a);
+  }
+  .doc.show { opacity: 1; }
+  .doc.ataque { animation: pulsar .5s 3; }
+  @keyframes pulsar { 50% { transform: translate(-50%,-50%) scale(1.35); } }
+  .movtag {
+    margin-top: 8px; font-size: 12px; color: var(--mut);
+    background: var(--card2); padding: 4px 14px; border-radius: 20px;
+    position: absolute; bottom: 12px; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; max-width: 320px;
+  }
+
+  /* ---------- banner do passo corrente ---------- */
+  .passo {
+    background: linear-gradient(90deg, #1b2940, #16202f);
+    border-left: 5px solid var(--az); border-radius: 10px;
+    padding: 14px 20px; margin-bottom: 18px;
+  }
+  .passo .t { font-size: 18px; font-weight: 600; }
+  .passo .d { color: var(--mut); font-size: 14px; margin-top: 3px; }
+  .passo.ataque { border-left-color: var(--bad); }
+
+  /* ---------- documento x anonimizado ---------- */
+  .docs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 18px; }
+  .doccard {
+    background: var(--card); border: 1px solid var(--linha);
+    border-radius: 12px; padding: 14px 18px;
+  }
+  .doccard h3 { font-size: 14px; color: var(--mut); font-weight: 600; margin-bottom: 8px; }
+  .doccard pre {
+    font-family: Consolas, monospace; font-size: 12px; line-height: 1.55;
+    color: #c9d6ea; white-space: pre-wrap; max-height: 190px; overflow: auto;
+  }
+  .doccard .pii { color: var(--warn); font-weight: 700; }
+  .doccard .tag { color: var(--ok); font-weight: 700; }
+  .doccard.vazio pre { color: #55657d; font-style: italic; }
+
+  /* ---------- provas ---------- */
+  .provas {
+    background: var(--card); border: 1px solid var(--linha);
+    border-radius: 12px; padding: 14px 20px; margin-bottom: 14px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px 22px;
+  }
+  .prova { font-size: 13px; color: var(--mut); display: flex; gap: 8px; align-items: center; }
+  .prova::before {
+    content: "○"; color: #4a5b75; font-size: 15px;
+  }
+  .prova.ok { color: var(--tx); }
+  .prova.ok::before { content: "●"; color: var(--ok); }
+
+  .rodape { font-size: 11.5px; color: #55657d; line-height: 1.5; }
+  .rodape b { color: var(--warn); font-weight: 600; }
+</style>
+</head>
+<body>
+  <h1>iSACI / Anonimizar — jornada real de um documento</h1>
+  <div class="sub">dois nós soberanos em execução — <b>isto está rodando de verdade agora</b>, não é simulação</div>
+
+  <div class="palco">
+    <div class="no" id="no-a">
+      <h2>Nó A — tjpa</h2>
+      <div class="org">instituição de origem · storage próprio</div>
+      <div class="papeis">API + Postgres + RabbitMQ (TLS)<br>MinIO (HTTPS) + borda mTLS</div>
+      <div class="storage"><span class="cadeado">🔒</span><span id="st-a">aguardando…</span></div>
+      <div class="trilha-mini" id="tr-a"></div>
+    </div>
+    <div class="corredor">
+      <div class="fio"></div>
+      <div class="doc" id="doc">📄</div>
+      <div class="movtag" id="movtag">canal: mTLS + envelope AEAD E2E</div>
+    </div>
+    <div class="no" id="no-b">
+      <h2>Nó B — mpfpa</h2>
+      <div class="org">instituição de destino · storage próprio</div>
+      <div class="papeis">API + Postgres + RabbitMQ (TLS)<br>MinIO (HTTPS) + worker de anonimização</div>
+      <div class="storage"><span class="cadeado">🔒</span><span id="st-b">aguardando…</span></div>
+      <div class="trilha-mini" id="tr-b"></div>
+    </div>
+  </div>
+
+  <div class="passo" id="passo">
+    <div class="t" id="passo-t">Aguardando início…</div>
+    <div class="d" id="passo-d">execute <code>python scripts/demo_coordenador.py --pausar</code> — esta tela acompanha ao vivo</div>
+  </div>
+
+  <div class="docs">
+    <div class="doccard" id="card-orig">
+      <h3>📄 documento (com dados pessoais)</h3>
+      <pre id="doc-orig">—</pre>
+    </div>
+    <div class="doccard vazio" id="card-anon">
+      <h3>🛡 documento anonimizado (bucket de B)</h3>
+      <pre id="doc-anon">aguardando a esteira de B…</pre>
+    </div>
+  </div>
+
+  <div class="provas" id="provas">
+    <div class="prova" data-p="sem-bytes">envelope sem bytes do documento</div>
+    <div class="prova" data-p="cifrado">só ciphertext no MinIO (AEAD)</div>
+    <div class="prova" data-p="adulteracao">adulteração rejeitada (Ed25519)</div>
+    <div class="prova" data-p="custodia">custódia A→B→A assinada</div>
+    <div class="prova" data-p="anonimizacao">PII removido do objeto publicado</div>
+    <div class="prova" data-p="cadeia">hash-chain íntegra (2 nós)</div>
+    <div class="prova" data-p="replay">replay de pacote barrado</div>
+    <div class="prova" data-p="trigger" id="p-trigger">trigger append-only no Postgres</div>
+  </div>
+
+  <div class="rodape">
+    motor de anonimização nesta demo: <b>regex LGPD determinística</b> (visualização didática —
+    não é o modelo medido; cascata v2: NER F1 0,953 no corpus sintético, fora da porta MotorIA) ·
+    identidade mTLS na borda · payload AEAD ChaCha20-Poly1305 em HTTP/AMQP/S3 ·
+    envelopes e acks assinados Ed25519 · auditoria hash-chain append-only
+  </div>
+
+<script>
+const ICONS = {doc:"📄", envelope:"✉️", ack:"✅", ataque:"⚠️"};
+const PASSOS = ["criar","upload","envio","adulterar","receber","download",
+                "upload_b","confirmar","ack","esperar","trilha","anon",
+                "verificar","replay"];
+let ultimaN = 0, ultimaTid = null;
+
+function esc(s){ const d=document.createElement("div");
+  d.textContent=s; return d.innerHTML; }
+
+function resetarTela(){
+  ultimaN = 0;
+  document.querySelectorAll(".prova.ok")
+    .forEach(e=>e.classList.remove("ok"));
+  document.getElementById("st-a").textContent = "aguardando…";
+  document.getElementById("st-b").textContent = "aguardando…";
+  document.getElementById("tr-a").innerHTML = "";
+  document.getElementById("tr-b").innerHTML = "";
+  document.getElementById("doc-orig").innerHTML = "—";
+  const ca = document.getElementById("card-anon");
+  ca.classList.add("vazio");
+  document.getElementById("doc-anon").textContent =
+    "aguardando a esteira de B…";
+  const doc = document.getElementById("doc");
+  doc.classList.remove("show","ataque"); doc.style.left = "10%";
+  document.getElementById("movtag").textContent =
+    "canal: mTLS + envelope AEAD E2E";
+}
+
+function pintaPII(txt){
+  return esc(txt)
+    .replace(/MARIA EDUARDA NASCIMENTO/g,'<span class="pii">$&</span>')
+    .replace(/123\.456\.789-00/g,'<span class="pii">$&</span>')
+    .replace(/maria\.eduarda@exemplo\.com\.br/g,'<span class="pii">$&</span>')
+    .replace(/\(91\) 98765-4321/g,'<span class="pii">$&</span>');
+}
+function pintaTAG(txt){
+  return esc(txt).replace(/\[ANONIMIZADO_LGPD\]/g,'<span class="tag">$&</span>');
+}
+
+async function tick(){
+  try{
+    const st = await (await fetch("/api/estado")).json();
+    if(st.tid !== ultimaTid){ ultimaTid = st.tid; resetarTela(); }
+    const prog = st.progresso || [];
+    if(!prog.length) return;
+    const novas = prog.filter(p=>p.n>ultimaN);
+    novas.forEach(aplicar);
+    ultimaN = prog[prog.length-1].n;
+
+    // documento original (com PII) assim que existe
+    if(st.doc_texto)
+      document.getElementById("doc-orig").innerHTML = pintaPII(st.doc_texto);
+    if(st.anon_texto){
+      document.getElementById("card-anon").classList.remove("vazio");
+      document.getElementById("doc-anon").innerHTML = pintaTAG(st.anon_texto);
+    }
+    if(st.trilhas){
+      for(const [no,el] of [["a","tr-a"],["b","tr-b"]]){
+        const t = st.trilhas[no]; if(!t) continue;
+        document.getElementById(el).innerHTML =
+          t.eventos.slice(-6).map(e=>`<div>${esc(e)}</div>`).join("");
+      }
+    }
+  }catch(e){ /* malha descendo — mantém última tela */ }
+}
+
+function aplicar(p){
+  // banner do passo
+  const passo = document.getElementById("passo");
+  passo.classList.toggle("ataque", p.tipo==="ataque");
+  document.getElementById("passo-t").textContent =
+    `passo ${p.n} — ${p.titulo}`;
+  document.getElementById("passo-d").textContent = p.detalhe;
+
+  // destaque do nó
+  document.getElementById("no-a").classList.toggle("ativo",
+    p.lado==="A" || p.movimento==="B->A");
+  document.getElementById("no-b").classList.toggle("ativo",
+    p.lado==="B" || p.movimento==="A->B");
+
+  // documento viajando
+  const doc = document.getElementById("doc");
+  doc.classList.remove("ataque");
+  if(p.movimento){
+    doc.textContent = ICONS[p.tipo] || "📄";
+    doc.classList.add("show");
+    doc.style.left = p.movimento==="A->B" ? "86%" : "14%";
+    if(p.tipo==="ataque"){ doc.style.left="50%";
+      void doc.offsetWidth; doc.classList.add("ataque");
+      document.getElementById("movtag").textContent =
+        "✖ adulteração detectada — envelope recusado";
+    } else {
+      document.getElementById("movtag").textContent =
+        p.movimento==="A->B" ? "A → B · canal mTLS + E2E"
+                             : "B → A · canal mTLS + E2E";
+    }
+  }
+  // storage marcadores
+  if(p.etapa==="upload")
+    document.getElementById("st-a").textContent =
+      "tjpa-docs — objeto cifrado (E2E)";
+  if(p.etapa==="upload_b")
+    document.getElementById("st-b").textContent =
+      "mpfpa-docs — objeto cifrado (E2E)";
+  if(p.etapa==="anon")
+    document.getElementById("st-b").textContent =
+      "mpfpa-docs-anonimizados — objeto publicado";
+
+  // provas
+  if(p.prova){
+    const el = document.querySelector(`.prova[data-p="${p.prova}"]`);
+    if(el) el.classList.add("ok");
+  }
+  // trigger aparece na evidência do orquestrador — marca junto da cadeia
+  if(p.prova==="cadeia")
+    document.getElementById("p-trigger").classList.add("ok");
+}
+
+setInterval(tick, 900); tick();
+</script>
+</body>
+</html>

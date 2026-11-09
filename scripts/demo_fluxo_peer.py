@@ -76,6 +76,21 @@ def _salvar(**kw) -> None:
     json.dump(st, open(ESTADO, "w"))
 
 
+def _prog(etapa: str, titulo: str, detalhe: str, **extra) -> None:
+    """Marco de progresso para o visualizador web — o orquestrador
+    `demo_web.py` lê `progresso[]` e anima a jornada na tela.
+    `extra` pode levar: lado ('A'|'B'), movimento ('A->B'|'B->A'),
+    tipo ('doc'|'envelope'|'ack'|'ataque'), prova (id de garantia)."""
+    st = _estado()
+    prog = st.setdefault("progresso", [])
+    entrada = {"n": len(prog) + 1, "etapa": etapa,
+               "titulo": titulo, "detalhe": detalhe,
+               "ts": time.time()}
+    entrada.update(extra)
+    prog.append(entrada)
+    json.dump(st, open(ESTADO, "w"))
+
+
 def _tid() -> str:
     tid = _estado().get("tid")
     if not tid:
@@ -108,7 +123,12 @@ async def criar():
     print(json.dumps(r.json(), indent=2, ensure_ascii=False))
     ok(r.status_code == 201, r.content[:200])
     _salvar(tid=r.json()["id"], caso=CASO,
-            hash_doc=hashlib.sha256(doc).hexdigest())
+            hash_doc=hashlib.sha256(doc).hexdigest(),
+            doc_texto=doc.decode("utf-8", errors="replace"),
+            progresso=[])
+    _prog("criar", "A registra o caso",
+          "metadados + hash declarado — o binário não sai daqui",
+          lado="A", prova="sem-bytes")
     await a.fechar()
     print(f"\n  -> status CRIADA; hash declarado = âncora de"
           f" integridade (o PDF/texto em si NÃO saiu daqui)")
@@ -121,6 +141,9 @@ async def upload():
         "arquivo", "peticao.txt", _doc(), "text/plain")
     print(json.dumps(r.json(), indent=2, ensure_ascii=False))
     ok(r.status_code == 201, r.content[:200])
+    _prog("upload", "A arquiva o documento",
+          "SHA-256 conferido byte a byte; objeto E2E no MinIO de A",
+          lado="A", prova="cifrado")
     await a.fechar()
     print("\n  -> SHA-256 conferido byte a byte; magic bytes do"
           " formato validados; objeto gravado no MinIO do nó A"
@@ -133,6 +156,10 @@ async def envio():
     print(json.dumps(r.json(), indent=2, ensure_ascii=False))
     ok(r.status_code in (200, 201), r.content[:200])
     _salvar(envio=r.json())
+    _prog("envio", "Envelope A → B emitido",
+          "só metadados + hash + assinatura Ed25519 de A — "
+          "zero bytes do documento",
+          movimento="A->B", tipo="envelope", prova="sem-bytes")
     await a.fechar()
     print("\n  -> O ENVELOPE É SÓ METADADOS: hash + assinatura"
           " Ed25519 de A. Nenhum byte do documento atravessa"
@@ -150,6 +177,10 @@ async def adulterar():
     print(f"  resposta: {r.content[:160].decode(errors='replace')}")
     ok(r.status_code >= 400,
        f"B ACEITOU envelope adulterado ({r.status_code})")
+    _prog("adulterar", "ATAQUE: hash adulterado em trânsito",
+          f"B recusou ({r.status_code}) — assinatura Ed25519 "
+          "inválida; o envelope não vira registro",
+          movimento="A->B", tipo="ataque", prova="adulteracao")
     await b.fechar()
     print("\n  -> B verificou a assinatura Ed25519 de A sobre os"
           " campos ANTES de persistir — o campo adulterado quebra"
@@ -161,6 +192,10 @@ async def receber():
     r = await b.post("/v1/recebimentos", _estado()["envio"])
     print(json.dumps(r.json(), indent=2, ensure_ascii=False))
     ok(r.status_code in (200, 201), r.content[:200])
+    _prog("receber", "B recebe o envelope",
+          "CN do certificado mTLS = origem; assinatura válida; "
+          "destino = este nó",
+          lado="B")
     await b.fechar()
     print("\n  -> B conferiu: CN do certificado mTLS = 'tjpa' ="
           " envelope.origem; destino = 'mpfpa' = este nó;"
@@ -175,6 +210,10 @@ async def download():
     h = hashlib.sha256(r.content).hexdigest()
     print(f"  bytes recebidos: {len(r.content)} | sha256: {h[:24]}...")
     ok(h == _estado()["hash_doc"], "hash diverge do declarado")
+    _prog("download", "B baixa os bytes de A",
+          "canal E2E decifrado no cliente — bytes idênticos "
+          "ao hash declarado no passo 1",
+          movimento="A->B", tipo="doc")
     await a.fechar()
     print("\n  -> B baixou de A pelo canal E2E: o storage de A"
           " guarda ciphertext; a API decifra em streaming; o"
@@ -189,6 +228,10 @@ async def upload_b():
         "arquivo", "peticao.txt", _doc(), "text/plain")
     print(json.dumps(r.json(), indent=2, ensure_ascii=False))
     ok(r.status_code == 201, r.content[:200])
+    _prog("upload_b", "B arquiva a própria cópia",
+          "hash conferido; ciphertext E2E no MinIO de B — "
+          "soberania de storage",
+          lado="B", prova="cifrado")
     await b.fechar()
     print("\n  -> mesma disciplina do nó A: hash conferido contra"
           " o registrado, formato validado, cópia de B cifrada"
@@ -204,6 +247,10 @@ async def confirmar():
     print(json.dumps(r.json(), indent=2, ensure_ascii=False))
     ok(r.status_code in (200, 201), r.content[:200])
     _salvar(ack=r.json())
+    _prog("confirmar", "B confirma e assina o recebimento",
+          "SHA-256 recomputado no storage de B; ack sai "
+          "assinado Ed25519",
+          lado="B")
     await b.fechar()
     print("\n  -> 'dizer que recebeu' não basta: B recomputou o"
           " SHA-256 dos bytes no PRÓPRIO MinIO e exigiu que"
@@ -218,6 +265,10 @@ async def ack():
                      _estado()["ack"])
     print(json.dumps(r.json(), indent=2, ensure_ascii=False))
     ok(r.status_code == 200, r.content[:200])
+    _prog("ack", "A aplica o ack assinado de B",
+          "assinatura verificada contra a chave pública de B — "
+          "status CONFIRMADA; custódia fechada",
+          movimento="B->A", tipo="ack", prova="custodia")
     await a.fechar()
     print("\n  -> A verificou a assinatura do ack contra a chave"
           " pública de B e aplicou: status CONFIRMADA — ciclo de"
@@ -225,18 +276,28 @@ async def ack():
 
 
 async def trilha():
+    trilhas = {}
     for nome, url in (("A (tjpa)", "https://nginx-a"),
                       ("B (mpfpa)", "https://nginx-b")):
         c = await cli(url, CERT_TJPA)
         r = await c.get(f"/v1/tramitacoes/{_tid()}")
         ok(r.status_code == 200, r.content[:160])
         j = r.json()
+        trilhas[nome.split()[0].lower()] = {
+            "status": j["status"],
+            "eventos": [e["evento"] for e in j.get("trilha", [])]}
         print(f"  Nó {nome} — status={j['status']} "
               f"topo={j['hash_cadeia'][:20]}...")
         for e in j.get("trilha", []):
             print(f"    seq={e['seq']:>2}  {e['evento']:<44} "
                   f"{e['hash_cadeia'][:16]}...")
         await c.fechar()
+    _salvar(trilhas=trilhas)
+    _prog("trilha", "Hash-chain append-only nos dois nós",
+          f"A: {len(trilhas['a']['eventos'])} elos | "
+          f"B: {len(trilhas['b']['eventos'])} elos — "
+          "sha256(elo anterior | evento)",
+          prova="cadeia")
     print("\n  -> cada elo = sha256(elo anterior | evento):"
           " append-only, sem UPDATE/DELETE (trigger no Postgres)."
           " Adulterar uma linha quebra todos os elos seguintes.")
@@ -258,6 +319,12 @@ async def anon():
        and "123.456.789-00" not in txt
        and "maria.eduarda@" not in txt,
        "PII ainda visível na saída")
+    _salvar(anon_texto=txt)
+    _prog("anon", "Documento anonimizado em B",
+          f"{tags} trechos de PII substituídos por "
+          "[ANONIMIZADO_LGPD] — objeto publicado no bucket "
+          "anonimizados de B",
+          lado="B", prova="anonimizacao")
     await b.fechar()
     print("\n  -> worker de B baixou a cópia de B, aplicou o motor"
           " e só gravou depois do gate de PII residual (nome, CPF,"
@@ -278,6 +345,10 @@ async def esperar():
         if any(e.startswith("doc_anonimizado:") for e in trilha):
             print(f"  doc_anonimizado na trilha de B após "
                   f"{time.time() - t0:.0f}s de espera")
+            _prog("esperar", "Esteira assíncrona de B concluída",
+                  "outbox → relay → fila RabbitMQ TLS → worker → "
+                  "gate de PII residual → bucket anonimizados",
+                  lado="B")
             await b.fechar()
             return
         if any(e.startswith("falha_anonimizacao:") for e in trilha):
@@ -302,6 +373,10 @@ async def verificar():
               f"topo={j['topo_recomputado'][:24]}...")
         ok(j["integro"], f"cadeia de {nome} NÃO íntegra")
         await c.fechar()
+    _prog("verificar", "Cadeia rejogada elo a elo",
+          "integro=True nos dois nós — cada elo recomputado "
+          "do GENESIS e comparado ao gravado",
+          prova="cadeia")
     print("\n  -> auditoria AUTÔNOMA: cada elo foi recomputado do"
           " GENESIS e comparado ao gravado — a prova não é o topo,"
           " é o replay da cadeia inteira, nos DOIS nós.")
@@ -329,6 +404,10 @@ async def replay():
           f"2ª entrega IDÊNTICA -> {r2.status_code}")
     ok(r1.status_code == 200 and r2.status_code == 400,
        f"esperado 200/400, obtido {r1.status_code}/{r2.status_code}")
+    _prog("replay", "Pacote copiado é rejeitado",
+          "1ª entrega 200 — 2ª idêntica 400: o nonce do quadro "
+          "já foi reivindicado no Postgres",
+          prova="replay")
     print("\n  -> o nonce do quadro AEAD é reivindicado"
           " atomicamente no Postgres (replay_nonces): um pacote"
           " copiado no fio e reentregue não executa a operação"

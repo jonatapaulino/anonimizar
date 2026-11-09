@@ -50,6 +50,14 @@ anonimização e tramitação de documentos jurídicos. Repo privado:
   troca os workers para `IA_ENGINE=demo` — regex LGPD
   determinística que torna a anonimização VISÍVEL; NÃO é o
   motor medido nem o de produção)
+- **Visualizador web** (público leigo/misto — acompanha AO VIVO a
+  mesma execução real, sem simular): `python scripts/demo_web.py`
+  serve `scripts/web/demo.html` em `http://localhost:8080` (HTML
+  único, zero dependências — funciona offline no projetor) e
+  faz poll de `/run/demo_state.json` no `peer`, onde o
+  `demo_fluxo_peer.py` grava `progresso[]` (n, etapa, título,
+  lado, movimento, tipo, prova) + doc/anon/trilhas a cada passo.
+  Ordem: malha up → `demo_web.py` → `demo_coordenador.py`.
 - Malha: chaves Ed25519 de custódia (`ORG_SIGN_SEED_TJPA`/
   `ORG_SIGN_SEED_MFPA`/`ORGAO_PUBKEYS_JSON`) vivem em
   `deploy/malha/.env` (gitignored). Sem elas a malha sobe
