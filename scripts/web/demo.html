@@ -86,6 +86,14 @@
   @keyframes aparecer {
     from { transform: scale(.55); opacity: 0; }
   }
+  .barrado {
+    position: absolute; left: 50%; top: 66%;
+    transform: translate(-50%,-50%);
+    font-size: 15px; color: var(--bad); font-weight: 600;
+    background: #fdeaea; padding: 3px 12px; border-radius: 12px;
+    animation: aparecer .4s ease-out; z-index: 4;
+    white-space: nowrap;
+  }
   .no.processando { animation: respirar 1.7s ease-in-out infinite; }
   @keyframes respirar {
     50% { border-color: var(--az);
@@ -204,7 +212,7 @@ const ICONS = {doc:"📄", envelope:"✉️", ack:"✅", ataque:"⚠️"};
 const PASSOS = ["criar","upload","envio","adulterar","receber","download",
                 "upload_b","confirmar","ack","esperar","trilha","anon",
                 "verificar","replay"];
-let ultimaN = 0, ultimaTid = null, ultimosMovs = -1;
+let ultimaN = 0, ultimaTid = null, ultimosMovs = -1, barradoEl = null;
 
 function esc(s){ const d=document.createElement("div");
   d.textContent=s; return d.innerHTML; }
@@ -232,6 +240,7 @@ function resetarTela(){
     "canal: mTLS + envelope AEAD E2E";
   document.getElementById("movhist").innerHTML = "";
   ultimosMovs = -1;
+  if(barradoEl){ barradoEl.remove(); barradoEl = null; }
   document.getElementById("no-b").classList.remove("processando");
 }
 
@@ -314,8 +323,26 @@ function aplicar(p){
 
   // documento viajando
   const doc = document.getElementById("doc");
-  doc.classList.remove("ataque");
   if(p.movimento){
+    if(doc.classList.contains("ataque")){
+      // a copia barrada sai da linha principal mas fica
+      // estacionada embaixo como 'recusado' — so some na
+      // travessia seguinte (proximo Enter da demo)
+      if(!barradoEl){
+        barradoEl = document.createElement("div");
+        barradoEl.className = "barrado";
+        barradoEl.textContent = "⚠️ recusado";
+        document.querySelector(".corredor").appendChild(barradoEl);
+      }
+      doc.classList.remove("ataque");
+      doc.style.transition = "none";
+      doc.classList.remove("show");
+      doc.style.left = "-3%";
+      void doc.offsetWidth;
+      doc.style.transition = "";
+    } else if(barradoEl){
+      barradoEl.remove(); barradoEl = null;
+    }
     doc.textContent = ICONS[p.tipo] || "📄";
     doc.classList.add("show");
     doc.style.left = p.movimento==="A->B" ? "103%" : "-3%";
