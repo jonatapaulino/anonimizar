@@ -125,7 +125,7 @@ async def criar():
     _salvar(tid=r.json()["id"], caso=CASO,
             hash_doc=hashlib.sha256(doc).hexdigest(),
             doc_texto=doc.decode("utf-8", errors="replace"),
-            progresso=[])
+            progresso=[], aguardando="")
     _prog("criar", "A registra o caso",
           "metadados + hash declarado — o binário não sai daqui",
           lado="A", prova="sem-bytes",
@@ -374,6 +374,7 @@ async def esperar():
         if any(e.startswith("doc_anonimizado:") for e in trilha):
             print(f"  doc_anonimizado na trilha de B após "
                   f"{time.time() - t0:.0f}s de espera")
+            _salvar(aguardando="")
             _prog("esperar", "Esteira assíncrona de B concluída",
                   "outbox → relay → fila RabbitMQ TLS → worker → "
                   "gate de PII residual → bucket anonimizados",
@@ -384,11 +385,15 @@ async def esperar():
             await b.fechar()
             return
         if any(e.startswith("falha_anonimizacao:") for e in trilha):
+            _salvar(aguardando="")
             await b.fechar()
             sys.exit(f"  FALHOU: esteira marcou {trilha}")
+        _salvar(aguardando="esteira de B em processamento — "
+                           f"{int(time.time() - t0)}s")
         print(f"  ... aguardando worker de B "
               f"({int(time.time() - t0)}s): {trilha[-1] if trilha else '-'}")
         await asyncio.sleep(3)
+    _salvar(aguardando="")
     await b.fechar()
     sys.exit("  FALHOU: esteira de B não concluiu em 90s")
 

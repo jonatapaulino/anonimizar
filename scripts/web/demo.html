@@ -72,6 +72,18 @@
     position: absolute; bottom: 12px; white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis; max-width: 320px;
   }
+  .movhist {
+    position: absolute; bottom: 48px; display: flex; gap: 6px;
+    flex-wrap: wrap; justify-content: center; max-width: 330px;
+  }
+  .mv { font-size: 11px; background: var(--card2);
+    border-radius: 12px; padding: 2px 9px; color: var(--mut); }
+  .mv.bad { color: var(--bad); background: #fdeaea; }
+  .no.processando { animation: respirar 1.7s ease-in-out infinite; }
+  @keyframes respirar {
+    50% { border-color: var(--az);
+      box-shadow: 0 0 0 4px #1d6fd81c, 0 8px 22px #1d6fd815; }
+  }
 
   /* ---------- banner do passo corrente ---------- */
   .passo {
@@ -133,6 +145,7 @@
     <div class="corredor">
       <div class="fio"></div>
       <div class="doc" id="doc">📄</div>
+      <div class="movhist" id="movhist"></div>
       <div class="movtag" id="movtag">canal: mTLS + envelope AEAD E2E</div>
     </div>
     <div class="no" id="no-b">
@@ -206,6 +219,8 @@ function resetarTela(){
   doc.classList.remove("show","ataque"); doc.style.left = "-3%";
   document.getElementById("movtag").textContent =
     "canal: mTLS + envelope AEAD E2E";
+  document.getElementById("movhist").innerHTML = "";
+  document.getElementById("no-b").classList.remove("processando");
 }
 
 function pintaPII(txt){
@@ -228,6 +243,24 @@ async function tick(){
     const novas = prog.filter(p=>p.n>ultimaN);
     novas.forEach(aplicar);
     ultimaN = prog[prog.length-1].n;
+
+    // histórico das travessias (chips no corredor)
+    document.getElementById("movhist").innerHTML =
+      prog.filter(p=>p.movimento).map(p=>{
+        const lab = p.tipo==="ataque" ? "barrado"
+                  : p.movimento==="A->B" ? "A→B" : "B→A";
+        return `<span class="mv ${p.tipo==="ataque"?"bad":""}">`
+             + `${ICONS[p.tipo]||"📄"} ${lab}</span>`;
+      }).join("");
+
+    // espera viva: esteira de B processando em segundo plano
+    document.getElementById("no-b")
+      .classList.toggle("processando", !!st.aguardando);
+    const mt = document.getElementById("movtag");
+    if(st.aguardando){ mt.textContent = "⏳ " + st.aguardando; }
+    else if(mt.textContent.startsWith("⏳")){
+      mt.textContent = "canal: mTLS + envelope AEAD E2E";
+    }
 
     // documento original (com PII) assim que existe
     if(st.doc_texto)
@@ -263,19 +296,9 @@ function aplicar(p){
 
   // documento viajando
   const doc = document.getElementById("doc");
-  const descartado = doc.classList.contains("ataque");
   doc.classList.remove("ataque");
   if(p.movimento){
     doc.textContent = ICONS[p.tipo] || "📄";
-    if(descartado){
-      // a cópia adulterada morreu no meio do caminho — some
-      // sem animar e reaparece na porta de A como o legítimo
-      doc.style.transition = "none";
-      doc.classList.remove("show");
-      doc.style.left = "-3%";
-      void doc.offsetWidth;
-      doc.style.transition = "";
-    }
     doc.classList.add("show");
     doc.style.left = p.movimento==="A->B" ? "103%" : "-3%";
     if(p.tipo==="ataque"){ doc.style.left="50%";
