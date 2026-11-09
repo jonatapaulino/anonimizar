@@ -125,7 +125,7 @@ async def criar():
     _salvar(tid=r.json()["id"], caso=CASO,
             hash_doc=hashlib.sha256(doc).hexdigest(),
             doc_texto=doc.decode("utf-8", errors="replace"),
-            progresso=[], aguardando="")
+            progresso=[], aguardando="", fim="")
     _prog("criar", "A registra o caso",
           "metadados + hash declarado — o binário não sai daqui",
           lado="A", prova="sem-bytes",
@@ -450,6 +450,7 @@ async def replay():
           prova="replay",
           narr="Copiar e reenviar o mesmo pacote não funciona: "
               "o carimbo único dele já foi gasto.")
+    _salvar(fim=True)
     print("\n  -> o nonce do quadro AEAD é reivindicado"
           " atomicamente no Postgres (replay_nonces): um pacote"
           " copiado no fio e reentregue não executa a operação"
